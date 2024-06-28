@@ -4,28 +4,44 @@
 	let plants = [
 		{
 			name: 'Mesquite',
-			description: 'A nice plant'
+			species: 'Prosopis spp.',
+			image: 'plant1.JPG',
+			waterPeriod: 4,
+			lastWatered: new Date().getTime() - 1000 * 60 * 60 * 24
 		},
 		{
 			name: 'Palo Verde',
-			description: 'A great plant'
+			species: 'Parkinsonia spp.',
+			image: 'plant2.JPG',
+			waterPeriod: 4,
+			lastWatered: new Date().getTime() - 1000 * 60 * 60 * 24 * 2
 		},
 		{
 			name: 'Mesquite',
-			description: 'A nice plant'
+			species: 'Prosopis spp.',
+			image: 'plant1.JPG',
+			waterPeriod: 4,
+			lastWatered: new Date().getTime() - 1000 * 60 * 60 * 24 * 3
 		},
 		{
 			name: 'Palo Verde',
-			description: 'A great plant'
+			species: 'Parkinsonia spp.',
+			image: 'plant2.JPG',
+			waterPeriod: 4,
+			lastWatered: new Date().getTime() - 1000 * 60 * 60 * 24 * 4
+		},
+		{
+			name: 'Mesquite',
+			species: 'Prosopis spp.',
+			image: 'plant1.JPG',
+			waterPeriod: 4,
+			lastWatered: new Date().getTime() - 1000 * 60 * 60 * 24 * 5
 		}
 	];
 </script>
 
-<main class="container mx-auto my-8">
-	<h1 class="text-2xl font-bold">🪴 Happy Plants</h1>
-	<div class="grid grid-cols-3">
-		{#each plants as plant}
-			<PlantCard {plant} />
-		{/each}
-	</div>
-</main>
+<div class="flex flex-wrap">
+	{#each plants as plant}
+		<PlantCard {plant} />
+	{/each}
+</div>
