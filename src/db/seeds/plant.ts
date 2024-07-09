@@ -16,9 +16,11 @@ export default async function seed(db: db) {
 		.where(eq(room.house_id, houseId))
 		.limit(1);
 	const { roomId } = roomResult[0];
-	await db.insert(plant).values({
-		name: faker.person.firstName(),
-		house_id: houseId,
-		room_id: roomId
-	});
+	for (let i = 0; i < 10; i++) {
+		await db.insert(plant).values({
+			name: faker.person.firstName(),
+			house_id: houseId,
+			room_id: roomId
+		});
+	}
 }

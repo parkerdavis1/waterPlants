@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "3f44d85f-cec4-4417-b962-504e8e4a73e4",
+  "id": "2849a118-f8c7-4b2c-8d85-e988b316afa6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -9,11 +9,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'01J2CG29W176DGEM30SHERB3W2'"
+          "autoincrement": true
         },
         "created_at": {
           "name": "created_at",
@@ -41,11 +40,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'01J2CG29W02G9JBKTQF39SETT4'"
+          "autoincrement": true
         },
         "name": {
           "name": "name",
@@ -121,11 +119,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'01J2CG29W195ESBWW9W21AD412'"
+          "autoincrement": true
         },
         "created_at": {
           "name": "created_at",
