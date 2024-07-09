@@ -6,6 +6,7 @@
 	import { Label } from './ui/label';
 	import { Progress } from './ui/progress';
 	import { Textarea } from './ui/textarea';
+	import { toast } from 'svelte-sonner';
 
 	import bluegrad from '$lib/assets/images/bluegrad.png';
 
@@ -24,11 +25,15 @@
 	let dialogOpen = $state(false);
 
 	function handleSaveChanges() {
+		console.log('Saving changes');
+		toast.success('Watered plant!', {
+			description: 'Did it',
+			action: {
+				label: 'Undo',
+				onClick: () => console.info('Undo')
+			}
+		});
 		dialogOpen = false;
-	}
-
-	function randomProgress(max: number) {
-		return Math.floor(Math.random() * max);
 	}
 </script>
 
