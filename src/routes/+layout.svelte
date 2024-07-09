@@ -7,18 +7,18 @@
 	import { Separator } from 'bits-ui';
 	import { Settings } from 'lucide-svelte';
 	import { Toaster } from 'svelte-sonner';
+	import bluegrad from 'src/lib/assets/images/bluegrad.png';
 </script>
 
 <Toaster richColors />
 <div class="container my-8 flex flex-col">
 	<header class="flex justify-between">
 		<h1 class="text-2xl font-bold">🪴 Happy Plants</h1>
-		<!-- TODO: Make this a Dropdown Menu or something else -->
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<div use:builder.action {...builder} class="cursor-pointer">
 					<Avatar.Root>
-						<Avatar.Image src="/src/lib/assets/images/bluegrad.png" />
+						<Avatar.Image src={bluegrad} />
 						<Avatar.Fallback>PD</Avatar.Fallback>
 					</Avatar.Root>
 				</div>

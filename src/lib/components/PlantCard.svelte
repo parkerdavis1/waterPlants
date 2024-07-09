@@ -7,20 +7,15 @@
 	import { Progress } from './ui/progress';
 	import { Textarea } from './ui/textarea';
 	import { toast } from 'svelte-sonner';
-
 	import bluegrad from '$lib/assets/images/bluegrad.png';
+	import { plant as Plant } from 'src/db/schema';
+	import { z } from 'zod';
 
-	interface Plant {
-		name: string;
-		species: string;
-		image: string;
-		waterPeriod: number;
-		lastWatered: number;
-	}
-	let { plant }: { plant: Plant } = $props();
-	let daysSinceLastWatered = $derived(
-		Math.round((new Date().getTime() - plant.lastWatered) / (1000 * 60 * 60 * 24))
-	);
+	let { plant } = $props();
+	// let daysSinceLastWatered = $derived(
+	// 	Math.round((new Date().getTime() - plant.lastWatered) / (1000 * 60 * 60 * 24))
+	// );
+	let daysSinceLastWatered = 4;
 
 	let dialogOpen = $state(false);
 
@@ -41,7 +36,7 @@
 	<Card.Header>
 		<AspectRatio class="overflow-hidden">
 			<img
-				src={plant.image ? `/src/lib/assets/images/${plant.image}` : bluegrad}
+				src={plant.has_image ? `/api/plant/${plant.id}` : bluegrad}
 				alt="placeholder"
 				class="rounded-lg object-cover"
 			/>
