@@ -1,4 +1,4 @@
-import db from 'src/db';
+import db, { client } from 'src/db';
 import { plant } from 'src/db/schema';
 
 export async function load() {

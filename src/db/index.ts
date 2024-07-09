@@ -9,7 +9,8 @@ if (env.LOCAL_DEV) {
 	});
 } else {
 	client = createClient({
-		url: env.TURSO_DATABASE_URL,
+		url: 'file:src/db/replica.db',
+		syncUrl: env.TURSO_DATABASE_URL,
 		authToken: env.TURSO_AUTH_TOKEN
 	});
 }
@@ -20,3 +21,5 @@ const db = drizzle(client, {
 
 export type db = typeof db;
 export default db;
+export type Client = typeof client;
+export { client };
