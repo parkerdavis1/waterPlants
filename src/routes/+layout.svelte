@@ -3,13 +3,39 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import { Button } from '$lib/components/ui/button';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { Separator } from 'bits-ui';
+	import { Settings } from 'lucide-svelte';
+	import { Toaster } from 'svelte-sonner';
 </script>
 
+<Toaster richColors />
 <div class="container my-8 flex flex-col">
 	<header class="flex justify-between">
 		<h1 class="text-2xl font-bold">🪴 Happy Plants</h1>
 		<!-- TODO: Make this a Dropdown Menu or something else -->
-		<Sheet.Root>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild let:builder>
+				<div use:builder.action {...builder} class="cursor-pointer">
+					<Avatar.Root>
+						<Avatar.Image src="/src/lib/assets/images/bluegrad.png" />
+						<Avatar.Fallback>PD</Avatar.Fallback>
+					</Avatar.Root>
+				</div>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content>
+				<DropdownMenu.Label>My Account</DropdownMenu.Label>
+				<DropdownMenu.Separator />
+				<DropdownMenu.Group>
+					<DropdownMenu.Item>
+						<Settings class="mr-2 h-4 w-4" />
+						<span>Settings</span>
+						<!-- <DropdownMenu.Shortcut>⌘S</DropdownMenu.Shortcut> -->
+					</DropdownMenu.Item>
+				</DropdownMenu.Group>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
+		<!-- <Sheet.Root>
 			<Sheet.Trigger asChild let:builder>
 				<div use:builder.action {...builder} class="cursor-pointer">
 					<Avatar.Root>
@@ -27,7 +53,7 @@
 					<p>S e t t i n g s</p>
 				</div>
 			</Sheet.Content>
-		</Sheet.Root>
+		</Sheet.Root> -->
 	</header>
 	<main class="grow-1">
 		<slot></slot>
