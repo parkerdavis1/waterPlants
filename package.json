@@ -17,7 +17,9 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "tsx src/db/migrate.ts",
 		"db:seed": "tsx src/db/seed.ts",
-		"db:reset": "rm -rf src/db/migrations/* && rm src/db/local.db && pnpm db:generate && pnpm db:migrate && pnpm db:seed"
+		"db:resetPre": "touch src/db/migrations/something.txt && rm -rf src/db/migrations/* && rm -f src/db/local.db",
+		"db:resetPost": "pnpm db:generate && pnpm db:migrate && pnpm db:seed",
+		"db:reset": "pnpm db:resetPre && pnpm db:resetPost"
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^8.4.1",

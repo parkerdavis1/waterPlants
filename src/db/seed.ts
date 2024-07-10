@@ -17,3 +17,4 @@ for (const table of [schema.plant, schema.room, schema.house]) {
 await seeds.house(db);
 await seeds.room(db);
 await seeds.plant(db);
+await seeds.user(db);

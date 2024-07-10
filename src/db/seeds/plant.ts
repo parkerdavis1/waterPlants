@@ -1,12 +1,7 @@
 import { faker } from '@faker-js/faker';
 import type { db } from 'src/db';
-import { plant, room, house, plantImage } from '../schema';
+import { plant, room, house } from '../schema';
 import { eq } from 'drizzle-orm';
-import { getImageBuffer } from 'src/lib/utils/images';
-// import plant1 from '$lib/assets/images/plant1.jpg';
-// import plant2 from '$lib/assets/images/plant2.jpg';
-// console.log('plant1', plant1);
-// console.log('plant2', plant2);
 
 export default async function seed(db: db) {
 	const houseResult = await db
@@ -22,25 +17,12 @@ export default async function seed(db: db) {
 		.limit(1);
 	const { roomId } = roomResult[0];
 
-	for (let i = 0; i < 10; i++) {
-		const [result] = await db
-			.insert(plant)
-			.values({
-				name: faker.person.firstName(),
-				species: 'Prosopsis spp.',
-				house_id: houseId,
-				room_id: roomId,
-				has_image: true
-			})
-			.returning();
-
-		const insertedId = result.id;
-
-		if (insertedId) {
-			await db.insert(plantImage).values({
-				plant_id: insertedId,
-				data: await getImageBuffer('src/lib/assets/images/plant1.jpg')
-			});
-		}
+	for (let i = 0; i < 6; i++) {
+		await db.insert(plant).values({
+			name: faker.person.firstName(),
+			species: 'Prosopsis spp.',
+			house_id: houseId,
+			room_id: roomId
+		});
 	}
 }

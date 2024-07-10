@@ -1,5 +1,7 @@
 <script lang="ts">
 	import PlantCard from '$lib/components/PlantCard.svelte';
+	import Toolbar from 'src/lib/components/Toolbar.svelte';
+	import Button from 'src/lib/components/ui/button/button.svelte';
 
 	export let data;
 	const { plants } = data;
@@ -15,7 +17,8 @@
 	// ];
 </script>
 
-<div class="flex flex-wrap">
+<Toolbar />
+<div class="flex flex-wrap gap-4">
 	{#each plants as plant}
 		<PlantCard {plant} {data} />
 	{/each}

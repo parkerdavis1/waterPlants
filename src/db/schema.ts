@@ -1,14 +1,12 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, blob, integer } from 'drizzle-orm/sqlite-core';
-// import { ulid } from 'ulid';
+import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
 
 export const plant = sqliteTable('plant', {
-	// id: text('id').primaryKey().default(ulid()),
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	name: text('name').notNull(),
 	species: text('species'),
 	water_period: integer('water_period').default(7),
-	has_image: integer('has_image', { mode: 'boolean' }),
+	image_url: text('image_url'),
 	house_id: integer('house_id')
 		.notNull()
 		.references(() => house.id),
@@ -18,14 +16,18 @@ export const plant = sqliteTable('plant', {
 		.default(sql`(current_timestamp)`)
 });
 
-export const plantImage = sqliteTable('plant_image', {
+export const watering_events = sqliteTable('watering_events', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+	comments: text('comments'),
+	fertilized: integer('id', { mode: 'boolean' }),
+	image_url: text('image_url'),
 	plant_id: integer('plant_id').references(() => plant.id),
-	data: blob('data', { mode: 'buffer' })
+	timestamp: text('timestamp')
+		.notNull()
+		.default(sql`(current_timestamp)`)
 });
 
 export const house = sqliteTable('house', {
-	// id: text('id').primaryKey().default(ulid()),
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	created_at: text('created_at')
 		.notNull()
@@ -34,7 +36,6 @@ export const house = sqliteTable('house', {
 });
 
 export const room = sqliteTable('room', {
-	// id: text('id').primaryKey().default(ulid()),
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	created_at: text('created_at')
 		.notNull()
@@ -42,3 +43,26 @@ export const room = sqliteTable('room', {
 	house_id: integer('house_id').references(() => house.id),
 	name: text('name').notNull()
 });
+
+export const user = sqliteTable('user', {
+	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+	name: text('name'),
+	avatar_url: text('avatar_url'),
+	created_at: text('created_at')
+		.notNull()
+		.default(sql`(current_timestamp)`),
+	default_house_id: integer('default_house_id').references(() => house.id)
+});
+
+export const user_to_house = sqliteTable(
+	'user_to_house',
+	{
+		user_id: integer('user_id'),
+		house_id: integer('house_id')
+	},
+	(table) => {
+		return {
+			pk: primaryKey({ columns: [table.user_id, table.house_id] })
+		};
+	}
+);
