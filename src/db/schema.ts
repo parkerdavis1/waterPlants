@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
-import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
+import { type InferSelectModel } from 'drizzle-orm';
 
 export const plant = sqliteTable('plant', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),

@@ -1,13 +1,25 @@
-<script>
+<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import { Textarea } from './ui/textarea';
 	import { Label } from './ui/label';
-	import FileUploader from './FileUploader.svelte';
+	import { fileProxy, superForm } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { waterPlantSchema } from '../formSchemas/waterPlantSchema';
+	import type { SelectPlant } from 'src/db/schema';
+	import { Input } from './ui/input';
+	import { Checkbox } from './ui/checkbox';
+	import SuperDebug from 'sveltekit-superforms';
 
-	let { plant, data } = $props();
+	const { plant, data }: { plant: SelectPlant; data: any } = $props();
 	let dialogOpen = $state(false);
+
+	const { form, enhance, errors, message } = superForm(data.form, {
+		validators: zodClient(waterPlantSchema)
+	});
+
+	const file = fileProxy(form, 'image');
 
 	function handleSaveChanges() {
 		console.log('Saving changes');
@@ -20,6 +32,8 @@
 		});
 		dialogOpen = false;
 	}
+
+	const formId = 'waterForm' + plant.id;
 </script>
 
 <Dialog.Root bind:open={dialogOpen}>
@@ -29,21 +43,51 @@
 	<Dialog.Content class="sm:max-w-[425px]">
 		<Dialog.Header>
 			<Dialog.Title>
-				Water {plant.name}
+				{plant.name}
 			</Dialog.Title>
-			<Dialog.Description>Water plant, add any notes or photos if wanted.</Dialog.Description>
+			<Dialog.Description>
+				<p>{plant.species}</p>
+				<p>Room: {plant.room_id}</p>
+			</Dialog.Description>
 		</Dialog.Header>
 		<!-- TODO: Add form here -->
-		<form action=""></form>
-		<div class="grid w-full gap-1.5">
-			<Label for="message">Notes</Label>
-			<Textarea placeholder="Type your message here." id="message" />
-		</div>
-		<div>
-			<FileUploader {data} />
-		</div>
+		<SuperDebug data={$form} />
+		<form
+			enctype="multipart/form-data"
+			action="?/water"
+			method="POST"
+			id={formId}
+			class="flex flex-col gap-8"
+			use:enhance
+		>
+			<div>
+				<Label for="comments">Notes</Label>
+				<Textarea
+					placeholder="Type your message here."
+					id="comments"
+					name="comments"
+					bind:value={$form.comments}
+				/>
+			</div>
+			<div>
+				<Input type="file" name="image" accept="image/*" bind:files={$file} />
+			</div>
+			<div class="flex items-center space-x-2">
+				<Checkbox id="fertilized" bind:checked={$form.fertilized} />
+				<Input type="hidden" name="fertilized" bind:value={$form.fertilized} />
+				<Label
+					for="fertilized"
+					class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+					>Fertilized?</Label
+				>
+			</div>
+			<Input type="hidden" name="plant_id" value={plant.id} />
+			<Input type="hidden" name="user_id" value={1} />
+			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
+			{#if $message}<p>{$message}</p>{/if}
+		</form>
 		<Dialog.Footer>
-			<Button type="submit" on:click={handleSaveChanges}>Save changes</Button>
+			<Button type="submit" form={formId} on:click={handleSaveChanges}>Save Watering</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

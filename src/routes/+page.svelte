@@ -1,5 +1,6 @@
 <script lang="ts">
 	import PlantCard from '$lib/components/PlantCard.svelte';
+	import type { PlantWateringEventJoin } from 'src/db/schema.js';
 	import Toolbar from 'src/lib/components/Toolbar.svelte';
 	import Button from 'src/lib/components/ui/button/button.svelte';
 

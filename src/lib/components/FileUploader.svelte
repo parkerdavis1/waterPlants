@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { fileProxy, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { imageSchema } from '../formSchemas/imageSchema';
+	import { waterPlantSchema } from '../formSchemas/waterPlantSchema';
 
 	export let data;
 
 	const { form, enhance, errors, message } = superForm(data.form, {
-		validators: zodClient(imageSchema)
+		validators: zodClient(waterPlantSchema)
 	});
 
 	const file = fileProxy(form, 'image');

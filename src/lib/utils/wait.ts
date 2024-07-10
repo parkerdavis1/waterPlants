@@ -1,4 +1,4 @@
-export async function wait(milliseconds) {
+export async function wait(milliseconds: number) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve('go');
