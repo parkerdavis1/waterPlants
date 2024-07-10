@@ -17,6 +17,6 @@
 
 <div class="flex flex-wrap">
 	{#each plants as plant}
-		<PlantCard {plant} />
+		<PlantCard {plant} {data} />
 	{/each}
 </div>

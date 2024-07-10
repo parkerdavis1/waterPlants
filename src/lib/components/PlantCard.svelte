@@ -8,28 +8,13 @@
 	import { Textarea } from './ui/textarea';
 	import { toast } from 'svelte-sonner';
 	import bluegrad from '$lib/assets/images/bluegrad.png';
-	import { plant as Plant } from 'src/db/schema';
-	import { z } from 'zod';
+	import WaterPlantDialog from './WaterPlantDialog.svelte';
 
-	let { plant } = $props();
+	let { plant, data } = $props();
 	// let daysSinceLastWatered = $derived(
 	// 	Math.round((new Date().getTime() - plant.lastWatered) / (1000 * 60 * 60 * 24))
 	// );
 	let daysSinceLastWatered = 4;
-
-	let dialogOpen = $state(false);
-
-	function handleSaveChanges() {
-		console.log('Saving changes');
-		toast.success('Watered plant!', {
-			description: 'Did it',
-			action: {
-				label: 'Undo',
-				onClick: () => console.info('Undo')
-			}
-		});
-		dialogOpen = false;
-	}
 </script>
 
 <Card.Root class="m-4 w-[350px]">
@@ -49,25 +34,6 @@
 		<Progress value={daysSinceLastWatered} max={plant.waterPeriod} id="progress"></Progress>
 	</Card.Content>
 	<Card.Footer>
-		<Dialog.Root bind:open={dialogOpen}>
-			<Dialog.Trigger>
-				<Button variant="default">Water</Button>
-			</Dialog.Trigger>
-			<Dialog.Content class="sm:max-w-[425px]">
-				<Dialog.Header>
-					<Dialog.Title>
-						Water {plant.name}
-					</Dialog.Title>
-					<Dialog.Description>Water plant, add any notes or photos if wanted.</Dialog.Description>
-				</Dialog.Header>
-				<div class="grid w-full gap-1.5">
-					<Label for="message">Notes</Label>
-					<Textarea placeholder="Type your message here." id="message" />
-				</div>
-				<Dialog.Footer>
-					<Button type="submit" on:click={handleSaveChanges}>Save changes</Button>
-				</Dialog.Footer>
-			</Dialog.Content>
-		</Dialog.Root>
+		<WaterPlantDialog {plant} {data} />
 	</Card.Footer>
 </Card.Root>

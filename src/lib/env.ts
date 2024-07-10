@@ -9,7 +9,13 @@ const stringBoolean = z.coerce
 const EnvSchema = z.object({
 	TURSO_DATABASE_URL: z.string(),
 	TURSO_AUTH_TOKEN: z.string(),
-	LOCAL_DEV: stringBoolean
+	LOCAL_DEV: stringBoolean,
+	R2_ACCOUNT_ID: z.string(),
+	R2_TOKEN: z.string(),
+	R2_ACCESS_KEY_ID: z.string(),
+	R2_SECRET_ACCESS_KEY: z.string(),
+	R2_ENDPOINT: z.string().url(),
+	R2_BUCKET_NAME: z.string()
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;

@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import db from 'src/db/index';
-import { plantImage } from 'src/db/schema/index.js';
+import { plantImage } from 'src/db/schema';
 
 export const GET = async ({ params }) => {
 	if (!params.plantId) {
