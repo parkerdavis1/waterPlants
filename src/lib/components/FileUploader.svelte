@@ -5,7 +5,7 @@
 
 	export let data;
 
-	const { form, enhance, errors } = superForm(data.form, {
+	const { form, enhance, errors, message } = superForm(data.form, {
 		validators: zodClient(imageSchema)
 	});
 
@@ -14,6 +14,7 @@
 
 <form enctype="multipart/form-data" action="?/upload" method="POST" use:enhance>
 	<input type="file" name="image" accept="image/*" bind:files={$file} />
-	{#if $errors.image}<span class="text-red-500">{$errors.image}</span>{/if}
+	{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
+	{#if $message}<p>{$message}</p>{/if}
 	<button type="submit">Upload</button>
 </form>

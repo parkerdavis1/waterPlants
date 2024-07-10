@@ -3,10 +3,8 @@ import { plant } from 'src/db/schema';
 import s3Client from 'src/lib/s3Client.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import env from 'src/lib/env.js';
-import { error } from '@sveltejs/kit';
 import { superValidate, fail, message } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { z } from 'zod';
 import { imageSchema } from 'src/lib/formSchemas/imageSchema.js';
 
 export async function load() {
@@ -39,7 +37,12 @@ export const actions = {
 			});
 
 			await s3Client.send(command);
-			return message(form, 'You have uploaded a file!');
+
+			// TODO: save url to database for later retrieval
+			const imageUrl = env.R2_BUCKET_BASE_URL + fileName;
+			console.log('imageUrl', imageUrl);
+
+			return message(form, 'Successful upload!');
 		} catch (error) {
 			console.error('Upload error: ', error);
 			return fail(500, { form });
