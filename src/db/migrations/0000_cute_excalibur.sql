@@ -40,11 +40,14 @@ CREATE TABLE `user_to_house` (
 	PRIMARY KEY(`house_id`, `user_id`)
 );
 --> statement-breakpoint
-CREATE TABLE `watering_events` (
-	`id` integer,
+CREATE TABLE `watering_event` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`comments` text,
+	`fertilized` integer DEFAULT false,
 	`image_url` text,
-	`plant_id` integer,
+	`plant_id` integer NOT NULL,
+	`user_id` integer NOT NULL,
 	`timestamp` text DEFAULT (current_timestamp) NOT NULL,
-	FOREIGN KEY (`plant_id`) REFERENCES `plant`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`plant_id`) REFERENCES `plant`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );

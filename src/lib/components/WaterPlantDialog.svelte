@@ -33,6 +33,8 @@
 			</Dialog.Title>
 			<Dialog.Description>Water plant, add any notes or photos if wanted.</Dialog.Description>
 		</Dialog.Header>
+		<!-- TODO: Add form here -->
+		<form action=""></form>
 		<div class="grid w-full gap-1.5">
 			<Label for="message">Notes</Label>
 			<Textarea placeholder="Type your message here." id="message" />

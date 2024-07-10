@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
+import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 
 export const plant = sqliteTable('plant', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
@@ -16,12 +17,17 @@ export const plant = sqliteTable('plant', {
 		.default(sql`(current_timestamp)`)
 });
 
-export const watering_events = sqliteTable('watering_events', {
+export const watering_event = sqliteTable('watering_event', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	comments: text('comments'),
-	fertilized: integer('id', { mode: 'boolean' }),
+	fertilized: integer('fertilized', { mode: 'boolean' }).default(false),
 	image_url: text('image_url'),
-	plant_id: integer('plant_id').references(() => plant.id),
+	plant_id: integer('plant_id')
+		.references(() => plant.id)
+		.notNull(),
+	user_id: integer('user_id')
+		.references(() => user.id)
+		.notNull(),
 	timestamp: text('timestamp')
 		.notNull()
 		.default(sql`(current_timestamp)`)
@@ -66,3 +72,14 @@ export const user_to_house = sqliteTable(
 		};
 	}
 );
+
+export type SelectUser = InferSelectModel<typeof user>;
+export type SelectRoom = InferSelectModel<typeof room>;
+export type SelectHouse = InferSelectModel<typeof house>;
+export type SelectWateringEvent = InferSelectModel<typeof watering_event>;
+export type SelectPlant = InferSelectModel<typeof plant>;
+
+export type PlantWateringEventJoin = {
+	plant: SelectPlant;
+	watering_event: SelectWateringEvent;
+};

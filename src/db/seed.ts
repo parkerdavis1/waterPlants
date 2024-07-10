@@ -18,3 +18,4 @@ await seeds.house(db);
 await seeds.room(db);
 await seeds.plant(db);
 await seeds.user(db);
+await seeds.watering_event(db);

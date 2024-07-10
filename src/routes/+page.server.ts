@@ -1,16 +1,39 @@
+import env from 'src/lib/env.js';
+
 import db from 'src/db';
-import { plant } from 'src/db/schema';
+import { desc, eq, and } from 'drizzle-orm';
+import { plant, watering_event } from 'src/db/schema';
+
 import s3Client from 'src/lib/s3Client.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
-import env from 'src/lib/env.js';
+
 import { superValidate, fail, message } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+
 import { imageSchema } from 'src/lib/formSchemas/imageSchema.js';
 
 export async function load() {
-	const plants = await db.select().from(plant);
+	const plants = await db
+		.select()
+		.from(plant)
+		.leftJoin(
+			watering_event,
+			and(
+				eq(plant.id, watering_event.plant_id),
+				eq(
+					watering_event.id,
+					db
+						.select({ id: watering_event.id })
+						.from(watering_event)
+						.where(eq(watering_event.plant_id, plant.id))
+						.orderBy(desc(watering_event.timestamp))
+						.limit(1)
+				)
+			)
+		);
+
 	return {
-		plants: plants,
+		plants,
 		form: await superValidate(zod(imageSchema))
 	};
 }

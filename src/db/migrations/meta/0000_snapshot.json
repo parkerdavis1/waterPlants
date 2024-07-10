@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "44903372-361e-48cf-88ed-be3f7a46771c",
+  "id": "69d22d46-040f-4f35-babd-29017fd10700",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -271,15 +271,15 @@
       },
       "uniqueConstraints": {}
     },
-    "watering_events": {
-      "name": "watering_events",
+    "watering_event": {
+      "name": "watering_event",
       "columns": {
         "id": {
           "name": "id",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
         },
         "comments": {
           "name": "comments",
@@ -287,6 +287,14 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "fertilized": {
+          "name": "fertilized",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
         },
         "image_url": {
           "name": "image_url",
@@ -299,7 +307,14 @@
           "name": "plant_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
           "autoincrement": false
         },
         "timestamp": {
@@ -313,12 +328,25 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "watering_events_plant_id_plant_id_fk": {
-          "name": "watering_events_plant_id_plant_id_fk",
-          "tableFrom": "watering_events",
+        "watering_event_plant_id_plant_id_fk": {
+          "name": "watering_event_plant_id_plant_id_fk",
+          "tableFrom": "watering_event",
           "tableTo": "plant",
           "columnsFrom": [
             "plant_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "watering_event_user_id_user_id_fk": {
+          "name": "watering_event_user_id_user_id_fk",
+          "tableFrom": "watering_event",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
           ],
           "columnsTo": [
             "id"
