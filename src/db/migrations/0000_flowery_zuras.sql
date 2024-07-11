@@ -1,6 +1,6 @@
 CREATE TABLE `house` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
+	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	`name` text NOT NULL
 );
 --> statement-breakpoint
@@ -8,18 +8,18 @@ CREATE TABLE `plant` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
 	`species` text,
-	`water_period` integer DEFAULT 7,
+	`water_period` integer DEFAULT 7 NOT NULL,
 	`image_url` text,
 	`house_id` integer NOT NULL,
 	`room_id` integer,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
+	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	FOREIGN KEY (`house_id`) REFERENCES `house`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`room_id`) REFERENCES `room`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `room` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
+	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	`house_id` integer,
 	`name` text NOT NULL,
 	FOREIGN KEY (`house_id`) REFERENCES `house`(`id`) ON UPDATE no action ON DELETE no action
@@ -29,7 +29,7 @@ CREATE TABLE `user` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text,
 	`avatar_url` text,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
+	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	`default_house_id` integer,
 	FOREIGN KEY (`default_house_id`) REFERENCES `house`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -47,7 +47,7 @@ CREATE TABLE `watering_event` (
 	`image_url` text,
 	`plant_id` integer NOT NULL,
 	`user_id` integer NOT NULL,
-	`timestamp` text DEFAULT (current_timestamp) NOT NULL,
+	`timestamp` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	FOREIGN KEY (`plant_id`) REFERENCES `plant`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );

@@ -17,7 +17,7 @@ export default async function seed(db: db) {
 		.limit(1);
 	const { roomId } = roomResult[0];
 
-	for (let i = 0; i < 6; i++) {
+	for (let i = 0; i < 4; i++) {
 		await db.insert(plant).values({
 			name: faker.person.firstName(),
 			species: 'Prosopsis spp.',

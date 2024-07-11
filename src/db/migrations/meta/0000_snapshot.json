@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "69d22d46-040f-4f35-babd-29017fd10700",
+  "id": "78b77ca0-f821-4d74-91b2-84c6b226d222",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -16,11 +16,11 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(current_timestamp)"
+          "default": "(unixepoch() * 1000)"
         },
         "name": {
           "name": "name",
@@ -63,7 +63,7 @@
           "name": "water_period",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": 7
         },
@@ -90,11 +90,11 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(current_timestamp)"
+          "default": "(unixepoch() * 1000)"
         }
       },
       "indexes": {},
@@ -141,11 +141,11 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(current_timestamp)"
+          "default": "(unixepoch() * 1000)"
         },
         "house_id": {
           "name": "house_id",
@@ -207,11 +207,11 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(current_timestamp)"
+          "default": "(unixepoch() * 1000)"
         },
         "default_house_id": {
           "name": "default_house_id",
@@ -319,11 +319,11 @@
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(current_timestamp)"
+          "default": "(unixepoch() * 1000)"
         }
       },
       "indexes": {},

@@ -11,12 +11,16 @@
 	import { Input } from './ui/input';
 	import { Checkbox } from './ui/checkbox';
 	import SuperDebug from 'sveltekit-superforms';
+	import { invalidateAll } from '$app/navigation';
 
 	const { plant, data }: { plant: SelectPlant; data: any } = $props();
 	let dialogOpen = $state(false);
 
 	const { form, enhance, errors, message } = superForm(data.form, {
-		validators: zodClient(waterPlantSchema)
+		validators: zodClient(waterPlantSchema),
+		invalidateAll: 'force',
+		onResult: () => handleSaveChanges(),
+		onError: ({ result }) => console.log(result)
 	});
 
 	const file = fileProxy(form, 'image');
@@ -31,6 +35,7 @@
 			}
 		});
 		dialogOpen = false;
+		invalidateAll();
 	}
 
 	const formId = 'waterForm' + plant.id;
@@ -50,8 +55,7 @@
 				<p>Room: {plant.room_id}</p>
 			</Dialog.Description>
 		</Dialog.Header>
-		<!-- TODO: Add form here -->
-		<SuperDebug data={$form} />
+		<!-- <SuperDebug data={$form} /> -->
 		<form
 			enctype="multipart/form-data"
 			action="?/water"
@@ -87,7 +91,7 @@
 			{#if $message}<p>{$message}</p>{/if}
 		</form>
 		<Dialog.Footer>
-			<Button type="submit" form={formId} on:click={handleSaveChanges}>Save Watering</Button>
+			<Button type="submit" form={formId}>Save Watering</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

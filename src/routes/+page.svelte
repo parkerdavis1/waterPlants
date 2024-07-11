@@ -1,21 +1,9 @@
 <script lang="ts">
 	import PlantCard from '$lib/components/PlantCard.svelte';
-	import type { PlantWateringEventJoin } from 'src/db/schema.js';
 	import Toolbar from 'src/lib/components/Toolbar.svelte';
-	import Button from 'src/lib/components/ui/button/button.svelte';
 
 	export let data;
 	const { plants } = data;
-
-	// let plants2 = [
-	// 	{
-	// 		name: 'Mesquite',
-	// 		species: 'Prosopis spp.',
-	// 		image: 'plant1.JPG',
-	// 		waterPeriod: 4,
-	// 		lastWatered: new Date().getTime() - 1000 * 60 * 60 * 24
-	// 	}
-	// ];
 </script>
 
 <Toolbar />

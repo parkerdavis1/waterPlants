@@ -1,45 +1,32 @@
-import env from 'src/lib/env.js';
-import db from 'src/db';
-import { desc, eq, and } from 'drizzle-orm';
-import { plant, watering_event } from 'src/db/schema';
-
-import s3Client from 'src/lib/s3Client.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
-
-import { superValidate, fail, message } from 'sveltekit-superforms';
+import { eq, and, desc } from 'drizzle-orm';
+import db from 'src/db';
+import { plant, watering_event } from 'src/db/schema.js';
+import env from 'src/lib/env';
+import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
+import s3Client from 'src/lib/s3Client';
+import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
-
-export async function load() {
-	console.log('\nLoad function running!', new Date(), '\n');
-
-	// TODO: add column for fertilization data
-	// TODO: calculate watering due date and add that column, for sorting?
-
-	// Get plants with their most recent watering data
-	const plants = await db
+export async function load({ params }) {
+	const { plantId } = params;
+	const plantIdInt = parseInt(plantId);
+	const [plantData] = await db.select().from(plant).where(eq(plant.id, plantIdInt)).limit(1);
+	// const wateringEvents = await db
+	// 	.select()
+	// 	.from(watering_event)
+	// 	.where(eq(watering_event.plant_id, plantIdInt));
+	const wateringEvents = await db
 		.select()
-		.from(plant)
-		.leftJoin(
-			watering_event,
-			and(
-				eq(plant.id, watering_event.plant_id),
-				eq(
-					watering_event.id,
-					db
-						.select({ id: watering_event.id })
-						.from(watering_event)
-						.where(eq(watering_event.plant_id, plant.id))
-						.orderBy(desc(watering_event.timestamp))
-						.limit(1)
-				)
-			)
-		);
+		.from(watering_event)
+		.where(eq(watering_event.plant_id, plantIdInt))
+		.orderBy(desc(watering_event.timestamp));
 
 	return {
-		plants,
-		form: await superValidate(zod(waterPlantSchema))
+		plant: plantData,
+		wateringEvents,
+		form: await superValidate(zod(waterPlantSchema)),
+		randomNumber: Math.random()
 	};
 }
 
@@ -83,5 +70,6 @@ export const actions = {
 				return fail(500, { form });
 			}
 		}
+		return message(form, 'Success...');
 	}
 };

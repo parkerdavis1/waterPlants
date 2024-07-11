@@ -16,7 +16,7 @@ if (env.LOCAL_DEV) {
 }
 
 const db = drizzle(client, {
-	logger: true
+	logger: false
 });
 
 export type db = typeof db;
