@@ -13,6 +13,7 @@
 	import { browser } from '$app/environment';
 	import ImageUploader from '../ImageUploader.svelte';
 	import Spinner from '../Spinner.svelte';
+	import ClaudeImage from '../ImageUploader.svelte';
 
 	export let data;
 
@@ -63,7 +64,7 @@
 	<Dialog.Trigger>
 		<Button variant="outline">Add new plant</Button>
 	</Dialog.Trigger>
-	<Dialog.Content>
+	<Dialog.Content class="max-h-screen overflow-auto">
 		<Dialog.Title>Add New Plant</Dialog.Title>
 		<!-- <Dialog.Description>Add a friendly new plant.</Dialog.Description> -->
 		<SuperDebug data={form} />
@@ -74,6 +75,13 @@
 			action="?/newPlant"
 			enctype="multipart/form-data"
 		>
+			<!-- TODO: add client image resizing -->
+
+			<Label for="image">Image</Label>
+			<ImageUploader {form} {constraints} />
+			<!-- <Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} /> -->
+			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
+
 			<Label for="name">Name</Label>
 			<Input
 				type="text"
@@ -94,14 +102,6 @@
 				{...$constraints.species}
 			/>
 			{#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if}
-
-			<!-- TODO: add client image resizing -->
-			<!-- TODO: show preview image when image selected -->
-			<!-- TODO: generally make image component more appealing -->
-			<Label for="image">Image</Label>
-			<ImageUploader {form} {constraints} />
-			<!-- <Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} /> -->
-			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 
 			<Label for="room">Room</Label>
 			<Select.Root selected={selectedRoom} onSelectedChange={handleSelectedChange}>
