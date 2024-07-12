@@ -6,7 +6,7 @@ export const plant = sqliteTable('plant', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	name: text('name').notNull(),
 	species: text('species'),
-	water_period: integer('water_period').default(7).notNull(),
+	water_schedule: integer('water_schedule').default(7).notNull(),
 	image_url: text('image_url'),
 	house_id: integer('house_id')
 		.notNull()

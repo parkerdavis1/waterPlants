@@ -10,23 +10,23 @@
 	import '@shoelace-style/shoelace/dist/themes/light.css';
 	import RadialProgress from './RadialProgress.svelte';
 
-	// let { plant: plantWater, data }: { plant: PlantWateringEventJoin } = $props();
-	export let plant;
 	export let data;
-	const plantWater = plant;
-	// const { plant, watering_event } = plantWater;
+	export let plantWater;
+	console.log('plantWater', plantWater);
 
-	$: daysSinceLastWatered = Math.round(
-		(new Date().getTime() - new Date(plantWater.watering_event.timestamp).getTime()) /
-			(1000 * 60 * 60 * 24)
-	);
+	$: daysSinceLastWatered = plantWater.watering_event
+		? Math.round(
+				(new Date().getTime() - new Date(plantWater.watering_event?.timestamp).getTime()) /
+					(1000 * 60 * 60 * 24)
+			)
+		: 0;
 	// const daysSinceLastWatered = $derived(
 	// 	Math.round(
 	// 		(new Date().getTime() - new Date(plantWater.watering_event.timestamp).getTime()) /
 	// 			(1000 * 60 * 60 * 24)
 	// 	)
 	// );
-	const waterPeriod = plantWater.plant.water_period;
+	const waterPeriod = plantWater.plant.water_schedule;
 
 	// let waterProgressPercent = $derived((daysSinceLastWatered / waterPeriod) * 100);
 	$: waterProgressPercent = (daysSinceLastWatered / waterPeriod) * 100;
@@ -68,7 +68,7 @@
 	</Card.Header>
 	<Card.Content>
 		<Label for="progress">Days since last watered: {daysSinceLastWatered}</Label>
-		<Progress value={daysSinceLastWatered} max={plantWater.plant.water_period || 0} id="progress"
+		<Progress value={daysSinceLastWatered} max={plantWater.plant.water_schedule || 0} id="progress"
 		></Progress>
 	</Card.Content>
 	<Card.Footer>

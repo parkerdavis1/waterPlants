@@ -11,26 +11,9 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import PlantCard from 'src/lib/components/PlantCard.svelte';
 
-	// const { data } = $props();
 	export let data;
-	// let { plant, wateringEvents } = data;
-
-	// const wateringEvents = $derived(
-	// 	data.wateringEvents.toSorted((a, b) => b.timestamp - a.timestamp)
-	// );
 
 	const { form, enhance, errors, message, constraints } = superForm(data.form);
-
-	// {
-	// 	applyAction: true,
-	// 	validators: zodClient(waterPlantSchema),
-	// 	invalidateAll: 'force',
-	// 	onResult: ({ result }) => {
-	// 		console.log('result', result);
-	// 		toast.success(result.data.form.message);
-	// 	},
-	// 	onError: ({ result }) => console.warn(result)
-	// }
 
 	const file = fileProxy(form, 'image');
 
@@ -47,10 +30,15 @@
 		});
 		invalidateAll();
 	}
+
+	const plantCardData = {
+		plant: data.plant,
+		watering_event: data.wateringEvents[0]
+	};
 </script>
 
-<div class="container">
-	<!-- <PlantCard plant={data.plant} {data} /> -->
+<div class="container mt-8 flex flex-col gap-4">
+	<PlantCard plant={plantCardData} {data} />
 	<form
 		enctype="multipart/form-data"
 		action="?/water"

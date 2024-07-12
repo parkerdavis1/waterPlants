@@ -8,7 +8,7 @@ CREATE TABLE `plant` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
 	`species` text,
-	`water_period` integer DEFAULT 7 NOT NULL,
+	`water_schedule` integer DEFAULT 7 NOT NULL,
 	`image_url` text,
 	`house_id` integer NOT NULL,
 	`room_id` integer,

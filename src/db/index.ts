@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/libsql';
 import { createClient } from '@libsql/client';
 import env from '$lib/env';
+import * as schema from 'src/db/schema';
 
 let client;
 if (env.LOCAL_DEV) {
@@ -16,7 +17,8 @@ if (env.LOCAL_DEV) {
 }
 
 const db = drizzle(client, {
-	logger: false
+	logger: false,
+	schema
 });
 
 export type db = typeof db;

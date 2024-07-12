@@ -11,7 +11,7 @@
 </script>
 
 <Toaster richColors />
-<div class="container my-8 flex flex-col">
+<div class="container flex h-screen flex-col pt-8">
 	<header class="flex justify-between">
 		<h1 class="text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
 		<DropdownMenu.Root>
@@ -35,7 +35,7 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</header>
-	<main class="grow-1">
+	<main class="grow">
 		<slot></slot>
 	</main>
 	<footer>&copy; Parker Davis {new Date().getFullYear()}</footer>

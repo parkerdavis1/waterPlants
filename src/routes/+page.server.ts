@@ -1,7 +1,7 @@
 import env from 'src/lib/env.js';
 import db from 'src/db';
 import { desc, eq, and } from 'drizzle-orm';
-import { plant, watering_event } from 'src/db/schema';
+import { plant, room, watering_event } from 'src/db/schema';
 
 import s3Client from 'src/lib/s3Client.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
@@ -10,15 +10,14 @@ import { superValidate, fail, message } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
+import { newPlantSchema } from 'src/lib/formSchemas/newPlantSchema.js';
 
 export async function load() {
-	console.log('\nLoad function running!', new Date(), '\n');
-
 	// TODO: add column for fertilization data
 	// TODO: calculate watering due date and add that column, for sorting?
 
 	// Get plants with their most recent watering data
-	const plants = await db
+	const plantsWater = await db
 		.select()
 		.from(plant)
 		.leftJoin(
@@ -37,13 +36,26 @@ export async function load() {
 			)
 		);
 
+	const rooms = await db.select().from(room);
+
 	return {
-		plants,
-		form: await superValidate(zod(waterPlantSchema))
+		plantsWater,
+		rooms,
+		form: await superValidate(zod(waterPlantSchema)),
+		newPlantForm: await superValidate(zod(newPlantSchema))
 	};
 }
 
 export const actions = {
+	newPlant: async ({ request }) => {
+		const form = await superValidate(request, zod(newPlantSchema));
+		if (!form.valid) return fail(400, { form });
+
+		const [insertedPlant] = await db.insert(plant).values(form.data).returning();
+		console.log('insertedPlant', insertedPlant);
+		return { form };
+	},
+
 	water: async ({ request }) => {
 		const form = await superValidate(request, zod(waterPlantSchema));
 		console.log('form', form);

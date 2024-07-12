@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "78b77ca0-f821-4d74-91b2-84c6b226d222",
+  "id": "7474fe36-9bd8-452f-b9ba-df08c0c2df42",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -59,8 +59,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "water_period": {
-          "name": "water_period",
+        "water_schedule": {
+          "name": "water_schedule",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
