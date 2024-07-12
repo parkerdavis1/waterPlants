@@ -83,14 +83,14 @@
 			</Select.Root>
 			{#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if}
 
-			<Label for="waterSchedule">Watering Schedule (days)</Label>
+			<Label for="water_schedule">Watering Schedule (days)</Label>
 			<Input
 				type="number"
-				bind:value={$form.waterSchedule}
-				name="waterSchedule"
-				{...$constraints.waterSchedule}
+				bind:value={$form.water_schedule}
+				name="water_schedule"
+				{...$constraints.water_schedule}
 			/>
-			{#if $errors.waterSchedule}<p class="text-red-500">{$errors.waterSchedule}</p>{/if}
+			{#if $errors.water_schedule}<p class="text-red-500">{$errors.water_schedule}</p>{/if}
 		</form>
 
 		<Dialog.Footer>

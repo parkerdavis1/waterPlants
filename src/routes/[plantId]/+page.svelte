@@ -31,14 +31,14 @@
 		invalidateAll();
 	}
 
-	const plantCardData = {
+	$: plantCardData = {
 		plant: data.plant,
 		watering_event: data.wateringEvents[0]
 	};
 </script>
 
 <div class="container mt-8 flex flex-col gap-4">
-	<PlantCard plant={plantCardData} {data} />
+	<PlantCard plantWater={plantCardData} {data} />
 	<form
 		enctype="multipart/form-data"
 		action="?/water"

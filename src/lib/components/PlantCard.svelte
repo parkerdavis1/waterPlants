@@ -41,8 +41,8 @@
 	<div class="grid grid-cols-2 gap-4">
 		<div>
 			<h2 class="text-lg font-bold"><a href={url}>{plantWater.plant.name}</a></h2>
-			<p>{plantWater.plant.species}</p>
-			<p>Days since last watered: {daysSinceLastWatered}</p>
+			{#if plantWater.plant.species}<p>{plantWater.plant.species}</p>{/if}
+			<p class="text-sm opacity-60">Days since last watered: {daysSinceLastWatered}</p>
 		</div>
 		<div class="flex gap-4">
 			<div class="flex flex-col items-center justify-start">
