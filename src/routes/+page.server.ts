@@ -15,6 +15,7 @@ import { newPlantSchema } from 'src/lib/formSchemas/newPlantSchema.js';
 export async function load() {
 	// TODO: add column for fertilization data
 	// TODO: calculate watering due date and add that column, for sorting?
+	// TODO: group by room?
 
 	// Get plants with their most recent watering data
 	const plantsWater = await db

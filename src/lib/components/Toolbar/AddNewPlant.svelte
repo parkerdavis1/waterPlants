@@ -42,9 +42,7 @@
 	$: {
 		if (browser) {
 			const num = localStorage.getItem('selectedRoom');
-			console.log('num', num);
 			if (num) selectedRoomId = parseInt(num);
-			console.log('selectedRoomId', selectedRoomId);
 		}
 	}
 
@@ -62,12 +60,12 @@
 
 <Dialog.Root bind:open={dialogOpen}>
 	<Dialog.Trigger>
-		<Button variant="outline">Add new plant</Button>
+		<Button>Add new plant</Button>
 	</Dialog.Trigger>
 	<Dialog.Content class="max-h-screen overflow-auto">
 		<Dialog.Title>Add New Plant</Dialog.Title>
 		<!-- <Dialog.Description>Add a friendly new plant.</Dialog.Description> -->
-		<SuperDebug data={form} />
+		<!-- <SuperDebug data={form} /> -->
 		<form
 			id="new-plant"
 			use:enhance
@@ -103,6 +101,7 @@
 			/>
 			{#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if}
 
+			<!-- TODO: Add new room option to side of select -->
 			<Label for="room">Room</Label>
 			<Select.Root selected={selectedRoom} onSelectedChange={handleSelectedChange}>
 				<Select.Trigger class="w-[180px]">
@@ -117,7 +116,7 @@
 			</Select.Root>
 			{#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if}
 
-			<Label for="water_schedule">Watering Schedule (days)</Label>
+			<Label for="water_schedule">Watering Schedule (Every __ days)</Label>
 			<Input
 				type="number"
 				bind:value={$form.water_schedule}

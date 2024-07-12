@@ -22,7 +22,8 @@ export default async function seed(db: db) {
 			name: faker.person.firstName(),
 			species: 'Prosopsis spp.',
 			house_id: houseId,
-			room_id: roomId
+			room_id: roomId,
+			water_schedule: i + 4
 		});
 	}
 }

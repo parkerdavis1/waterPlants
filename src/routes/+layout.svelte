@@ -29,14 +29,16 @@
 				<DropdownMenu.Group>
 					<DropdownMenu.Item>
 						<Settings class="mr-2 h-4 w-4" />
-						<span>Settings</span>
+						<span on:click={() => alert("This doesn't do anything yet")}>Settings</span>
 					</DropdownMenu.Item>
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</header>
 	<main class="grow">
-		<slot></slot>
+		<div class="container max-w-3xl">
+			<slot></slot>
+		</div>
 	</main>
-	<footer>&copy; Parker Davis {new Date().getFullYear()}</footer>
+	<footer class="text-xs opacity-50">&copy; Parker Davis {new Date().getFullYear()}</footer>
 </div>

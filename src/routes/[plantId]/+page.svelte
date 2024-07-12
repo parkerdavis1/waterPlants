@@ -7,29 +7,41 @@
 	import { Textarea } from 'src/lib/components/ui/textarea/index';
 	import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
 	import { toast } from 'svelte-sonner';
-	import { fileProxy, superForm } from 'sveltekit-superforms';
+	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import PlantCard from 'src/lib/components/PlantCard.svelte';
+	import ImageUploader from 'src/lib/components/ImageUploader.svelte';
+	import Spinner from 'src/lib/components/Spinner.svelte';
 
 	export let data;
 
-	const { form, enhance, errors, message, constraints } = superForm(data.form);
+	let isSubmitting = false;
+
+	const { form, enhance, errors, message, constraints } = superForm(data.form, {
+		onSubmit: () => (isSubmitting = true),
+		onResult: ({ result }) => {
+			isSubmitting = false;
+			if (result.type === 'success') {
+				toast.success(`Successfully watered ${data.plant.name}!`);
+			}
+		}
+	});
 
 	const file = fileProxy(form, 'image');
 
 	const formId = 'waterForm' + data.plant.id;
 
-	function handleSaveChanges() {
-		console.log('Saving changes');
-		toast.success('Watered plant!', {
-			description: 'Did it',
-			action: {
-				label: 'Undo',
-				onClick: () => console.info('Undo')
-			}
-		});
-		invalidateAll();
-	}
+	// function handleSaveChanges() {
+	// 	console.log('Saving changes');
+	// 	toast.success('Watered plant!', {
+	// 		description: 'Did it',
+	// 		action: {
+	// 			label: 'Undo',
+	// 			onClick: () => console.info('Undo')
+	// 		}
+	// 	});
+	// 	invalidateAll();
+	// }
 
 	$: plantCardData = {
 		plant: data.plant,
@@ -37,7 +49,9 @@
 	};
 </script>
 
-<div class="container mt-8 flex flex-col gap-4">
+<div class="mt-8 flex max-w-4xl flex-col gap-4">
+	<h1 class="text-3xl font-bold">Watering</h1>
+	<!-- <SuperDebug data={form} /> -->
 	<PlantCard plantWater={plantCardData} {data} />
 	<form
 		enctype="multipart/form-data"
@@ -49,7 +63,8 @@
 	>
 		<div>
 			<Label for="image">Image</Label>
-			<Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} />
+			<ImageUploader {form} {constraints} />
+			<!-- <Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} /> -->
 			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 		</div>
 		<div>
@@ -80,16 +95,15 @@
 		</div>
 		<Input type="hidden" name="plant_id" value={data.plant.id} />
 		<Input type="hidden" name="user_id" value={1} />
-		<!-- {#if $message}<p>{$message}</p>{/if} -->
-		<Button type="submit">Water</Button>
+		<Button form={formId} type="submit" bind:disabled={isSubmitting}
+			>Water
+			{#if isSubmitting}
+				<Spinner className="w-4 h-4 ml-4" />
+			{/if}
+		</Button>
 	</form>
-
-	<!-- <pre class="text-xs text-black/30">
-Plant Info:
-    {JSON.stringify(plant, null, 2)}
-Watering Events: -->
+	<h2 class="text-lg font-bold">Past Watering Events</h2>
 	{#each data.wateringEvents as wateringEvent}
-		<p>{wateringEvent.id} - {wateringEvent.comments}</p>
+		<pre class="text-xs opacity-50">{JSON.stringify(wateringEvent, null, 2)}</pre>
 	{/each}
-	<!-- </pre> -->
 </div>

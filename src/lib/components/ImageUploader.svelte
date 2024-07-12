@@ -60,7 +60,7 @@
 			<img
 				src={previewImage}
 				alt="Selected image preview"
-				class="aspect-square w-full max-w-full rounded-lg object-cover"
+				class="aspect-square w-full max-w-[400px] rounded-lg object-cover"
 			/>
 		</div>
 		<div class="flex max-w-full items-center gap-4">

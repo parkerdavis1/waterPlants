@@ -8,6 +8,9 @@
 	const radius = 45;
 	const circumference = 2 * Math.PI * radius;
 	$: dashOffset = circumference - (clampedProgress / 100) * circumference;
+
+	// TODO: When watering time has arrived, show a water icon or something? A clickable button that just waters the plant.
+	// When fertilization is due, show a relevant icon, but clicking the button opens the watering page
 </script>
 
 <div class="radial-progress">
