@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Form from '$lib/components/ui/form';
@@ -9,19 +9,49 @@
 	import * as Select from '$lib/components/ui/select/index';
 	import { faker } from '@faker-js/faker';
 	import { toast } from 'svelte-sonner';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	const defaultName = faker.person.firstName();
 
 	export let data;
 	const { form, enhance, constraints, errors } = superForm(data.newPlantForm, {
-		onSubmit: ({ formData }) => {
-			toast.success('Created new plant:');
-			dialogOpen = false;
+		onResult: ({ result }) => {
+			if (result.type === 'success') {
+				toast.success('Created new plant');
+				dialogOpen = false;
+			} else {
+				toast.error('Error creating plant');
+			}
 		}
 	});
 	const file = fileProxy(form, 'image');
 
 	let dialogOpen = false;
+
+	// Selected Room Memory
+	let selectedRoomId = 1;
+	$form.room_id = selectedRoomId;
+
+	$: {
+		if (browser) {
+			const num = localStorage.getItem('selectedRoom');
+			console.log('num', num);
+			if (num) selectedRoomId = parseInt(num);
+			console.log('selectedRoomId', selectedRoomId);
+		}
+	}
+
+	$: selectedRoom = {
+		label: data.rooms.find((obj) => obj.id === selectedRoomId).name,
+		value: selectedRoomId
+	};
+
+	function handleSelectedChange(v) {
+		v && ($form.room_id = v.value);
+		selectedRoomId = $form.room_id;
+		localStorage.setItem('selectedRoom', $form.room_id);
+	}
 </script>
 
 <Dialog.Root bind:open={dialogOpen}>
@@ -65,12 +95,7 @@
 			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 
 			<Label for="room">Room</Label>
-			<Select.Root
-				selected={data.rooms[0]}
-				onSelectedChange={(v) => {
-					v && ($form.room_id = v.value);
-				}}
-			>
+			<Select.Root selected={selectedRoom} onSelectedChange={handleSelectedChange}>
 				<Select.Trigger class="w-[180px]">
 					<Select.Value placeholder="Select a room" />
 				</Select.Trigger>

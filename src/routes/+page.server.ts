@@ -6,7 +6,7 @@ import { plant, room, watering_event } from 'src/db/schema';
 import s3Client from 'src/lib/s3Client.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
-import { superValidate, fail, message } from 'sveltekit-superforms';
+import { superValidate, fail, message, setError } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
@@ -52,13 +52,45 @@ export const actions = {
 		if (!form.valid) return fail(400, { form });
 
 		const [insertedPlant] = await db.insert(plant).values(form.data).returning();
-		console.log('insertedPlant', insertedPlant);
+		if (!insertedPlant) return fail(400, { form });
+
+		if (form.data.image) {
+			// Image upload
+			const image = form.data.image;
+
+			const fileBuffer = await image.arrayBuffer();
+			const fileName = `${Date.now()}-${image.name}`;
+
+			try {
+				const command = new PutObjectCommand({
+					Bucket: env.R2_BUCKET_NAME,
+					Key: fileName,
+					Body: Buffer.from(fileBuffer),
+					ContentType: image.type
+				});
+
+				await s3Client.send(command);
+
+				const imageUrl = env.R2_BUCKET_BASE_URL + fileName;
+				console.log('imageUrl', imageUrl);
+				const resultAfterUpload = await db
+					.update(plant)
+					.set({ image_url: imageUrl })
+					.where(eq(plant.id, insertedPlant.id))
+					.returning();
+				console.log('Image uploaded...', resultAfterUpload);
+			} catch (error) {
+				console.error('Upload error: ', error);
+				return fail(500, { form });
+			}
+			return message(form, 'Image uploaded successfully');
+		}
+
 		return { form };
 	},
 
 	water: async ({ request }) => {
 		const form = await superValidate(request, zod(waterPlantSchema));
-		console.log('form', form);
 
 		if (!form.valid) return fail(400, { form });
 

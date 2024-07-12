@@ -8,7 +8,6 @@ export default async function seed(db: DbType) {
 		.from(house)
 		.where(eq(house.name, 'Pants'))
 		.limit(1);
-	console.log('house result', houseResult);
 	const { houseId } = houseResult[0];
 	await db.insert(room).values([
 		{
