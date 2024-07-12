@@ -11,12 +11,15 @@
 	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-
-	const defaultName = faker.person.firstName();
+	import ImageUploader from '../ImageUploader.svelte';
+	import Spinner from '../Spinner.svelte';
 
 	export let data;
+
 	const { form, enhance, constraints, errors } = superForm(data.newPlantForm, {
+		onSubmit: () => (isSubmitting = true),
 		onResult: ({ result }) => {
+			isSubmitting = false;
 			if (result.type === 'success') {
 				toast.success('Created new plant');
 				dialogOpen = false;
@@ -25,9 +28,11 @@
 			}
 		}
 	});
-	const file = fileProxy(form, 'image');
 
 	let dialogOpen = false;
+	let isSubmitting = false;
+
+	const defaultName = faker.person.firstName();
 
 	// Selected Room Memory
 	let selectedRoomId = 1;
@@ -90,8 +95,12 @@
 			/>
 			{#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if}
 
+			<!-- TODO: add client image resizing -->
+			<!-- TODO: show preview image when image selected -->
+			<!-- TODO: generally make image component more appealing -->
 			<Label for="image">Image</Label>
-			<Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} />
+			<ImageUploader {form} {constraints} />
+			<!-- <Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} /> -->
 			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 
 			<Label for="room">Room</Label>
@@ -119,7 +128,12 @@
 		</form>
 
 		<Dialog.Footer>
-			<Button form="new-plant" type="submit">Submit</Button>
+			<Button form="new-plant" type="submit" bind:disabled={isSubmitting}
+				>Submit
+				{#if isSubmitting}
+					<Spinner className="w-4 h-4 ml-4" />
+				{/if}
+			</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
