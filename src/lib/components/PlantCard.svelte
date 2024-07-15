@@ -2,6 +2,7 @@
 	import bluegrad from '$lib/assets/images/bluegrad.png';
 	import '@shoelace-style/shoelace/dist/themes/light.css';
 	import RadialProgress from './RadialProgress.svelte';
+	import WaterProgress from './WaterProgress.svelte';
 
 	export let data;
 	export let plantWater;
@@ -15,7 +16,8 @@
 
 	const waterPeriod = plantWater.plant.water_schedule;
 
-	$: waterProgressPercent = (daysSinceLastWatered / waterPeriod) * 100;
+	$: waterProgressPercent = 100 - (daysSinceLastWatered / waterPeriod) * 100;
+	console.log('waterProgressPercent', waterProgressPercent);
 
 	const url = `/${plantWater.plant.id}`;
 	const imageUrl = plantWater.plant.image_url;
@@ -38,13 +40,13 @@
 		<div class="flex gap-4">
 			<div class="flex flex-col items-center justify-start">
 				<p>Water</p>
-				<RadialProgress progress={waterProgressPercent} />
+				<!-- <RadialProgress progress={waterProgressPercent} /> -->
+				<WaterProgress progress={waterProgressPercent} />
 			</div>
-			<div class="flex flex-col items-center justify-start">
+			<!-- <div class="flex flex-col items-center justify-start">
 				<p>Fertilized</p>
 				<RadialProgress progress={waterProgressPercent} />
-				<!-- <div class="radial-progress" style="--value:70;" role="progressbar">70%</div> -->
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
