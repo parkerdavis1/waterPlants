@@ -60,11 +60,10 @@
 
 <Dialog.Root bind:open={dialogOpen}>
 	<Dialog.Trigger>
-		<Button>Add new plant</Button>
+		<Button variant="outline">Add new plant</Button>
 	</Dialog.Trigger>
 	<Dialog.Content class="max-h-screen overflow-auto">
 		<Dialog.Title>Add New Plant</Dialog.Title>
-		<!-- <Dialog.Description>Add a friendly new plant.</Dialog.Description> -->
 		<!-- <SuperDebug data={form} /> -->
 		<form
 			id="new-plant"
@@ -77,8 +76,17 @@
 
 			<Label for="image">Image</Label>
 			<ImageUploader {form} {constraints} />
-			<!-- <Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} /> -->
 			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
+
+			<Label for="species">Species</Label>
+			<Input
+				type="text"
+				name="species"
+				autocomplete="off"
+				bind:value={$form.species}
+				{...$constraints.species}
+			/>
+			{#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if}
 
 			<Label for="name">Name</Label>
 			<Input
@@ -91,15 +99,7 @@
 			/>
 			{#if $errors.name}<p class="text-red-500">{$errors.name}</p>{/if}
 
-			<Label for="species">Species</Label>
-			<Input
-				type="text"
-				name="species"
-				autocomplete="off"
-				bind:value={$form.species}
-				{...$constraints.species}
-			/>
-			{#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if}
+			<!-- TODO: Add Care notes textarea field -->
 
 			<!-- TODO: Add new room option to side of select -->
 			<Label for="room">Room</Label>
@@ -116,7 +116,7 @@
 			</Select.Root>
 			{#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if}
 
-			<Label for="water_schedule">Watering Schedule (Every __ days)</Label>
+			<Label for="water_schedule">Watering Schedule (days)</Label>
 			<Input
 				type="number"
 				bind:value={$form.water_schedule}

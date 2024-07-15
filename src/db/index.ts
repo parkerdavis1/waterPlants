@@ -17,7 +17,7 @@ if (env.LOCAL_DEV) {
 }
 
 const db = drizzle(client, {
-	logger: false,
+	logger: true,
 	schema
 });
 

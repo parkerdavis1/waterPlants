@@ -1,4 +1,5 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { redirect } from '@sveltejs/kit';
 import { eq, and, desc } from 'drizzle-orm';
 import db from 'src/db';
 import { plant, watering_event } from 'src/db/schema.js';
@@ -70,6 +71,7 @@ export const actions = {
 				return fail(500, { form });
 			}
 		}
-		return message(form, 'Success...');
+		// return message(form, 'Success...');
+		return redirect(302, '/');
 	}
 };

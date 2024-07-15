@@ -6,12 +6,13 @@ CREATE TABLE `house` (
 --> statement-breakpoint
 CREATE TABLE `plant` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`name` text NOT NULL,
-	`species` text,
+	`species` text NOT NULL,
+	`name` text,
 	`water_schedule` integer DEFAULT 7 NOT NULL,
+	`care` text,
 	`image_url` text,
 	`house_id` integer NOT NULL,
-	`room_id` integer,
+	`room_id` integer NOT NULL,
 	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	FOREIGN KEY (`house_id`) REFERENCES `house`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`room_id`) REFERENCES `room`(`id`) ON UPDATE no action ON DELETE no action
@@ -48,6 +49,6 @@ CREATE TABLE `watering_event` (
 	`plant_id` integer NOT NULL,
 	`user_id` integer NOT NULL,
 	`timestamp` integer DEFAULT (unixepoch() * 1000) NOT NULL,
-	FOREIGN KEY (`plant_id`) REFERENCES `plant`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`plant_id`) REFERENCES `plant`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );

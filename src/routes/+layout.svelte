@@ -36,7 +36,7 @@
 		</DropdownMenu.Root>
 	</header>
 	<main class="grow">
-		<div class="container max-w-3xl">
+		<div class="max-w-3xl sm:container">
 			<slot></slot>
 		</div>
 	</main>

@@ -4,14 +4,17 @@ import { type InferSelectModel } from 'drizzle-orm';
 
 export const plant = sqliteTable('plant', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
-	name: text('name').notNull(),
-	species: text('species'),
+	species: text('species').notNull(),
+	name: text('name'),
 	water_schedule: integer('water_schedule').default(7).notNull(),
+	care: text('care'),
 	image_url: text('image_url'),
 	house_id: integer('house_id')
 		.notNull()
 		.references(() => house.id),
-	room_id: integer('room_id').references(() => room.id),
+	room_id: integer('room_id')
+		.references(() => room.id)
+		.notNull(),
 	created_at: integer('created_at', { mode: 'number' })
 		.notNull()
 		.default(sql`(unixepoch() * 1000)`)
@@ -23,7 +26,7 @@ export const watering_event = sqliteTable('watering_event', {
 	fertilized: integer('fertilized', { mode: 'boolean' }).default(false),
 	image_url: text('image_url'),
 	plant_id: integer('plant_id')
-		.references(() => plant.id)
+		.references(() => plant.id, { onDelete: 'cascade' })
 		.notNull(),
 	user_id: integer('user_id')
 		.references(() => user.id)

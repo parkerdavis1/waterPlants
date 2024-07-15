@@ -18,7 +18,7 @@ importers:
         specifier: ^2.15.1
         version: 2.15.1(@types/react@18.3.3)
       bits-ui:
-        specifier: ^0.21.11
+        specifier: ^0.21.12
         version: 0.21.12(svelte@4.2.18)
       clsx:
         specifier: ^2.1.1

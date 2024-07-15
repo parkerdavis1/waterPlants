@@ -18,13 +18,7 @@
 		</pattern>
 	</defs>
 
-	<rect
-		x="0"
-		y={waveHeight}
-		width="100"
-		height="100"
-		clip-path="url(#circle-clip)"
-		fill="var(--fill)"
+	<rect x="0" y={waveHeight} width="100" height="100" clip-path="circle(45%)" fill="var(--fill)"
 		>#0284c5
 		<!-- fill="url(#wave-pattern)" -->
 		<!-- <animate attributeName="y" from="100" to="-20" dur="2s" repeatCount="indefinite" /> -->

@@ -1,6 +1,6 @@
 import env from 'src/lib/env.js';
 import db from 'src/db';
-import { desc, eq, and } from 'drizzle-orm';
+import { desc, eq, and, sql } from 'drizzle-orm';
 import { plant, room, watering_event } from 'src/db/schema';
 
 import s3Client from 'src/lib/s3Client.js';
@@ -10,7 +10,29 @@ import { superValidate, fail, message, setError } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
-import { newPlantSchema } from 'src/lib/formSchemas/newPlantSchema.js';
+import { plantSchema } from 'src/lib/formSchemas/plantSchema';
+
+interface PlantData {
+	plant: {
+		id: number;
+		name: string;
+		species: string | null;
+		water_schedule: number;
+		image_url: string | null;
+		house_id: number;
+		room_id: number;
+		created_at: number;
+	};
+	watering_event: {
+		id: number;
+		comments: string;
+		fertilized: boolean;
+		image_url: string | null;
+		plant_id: number;
+		user_id: number;
+		timestamp: number;
+	};
+}
 
 export async function load() {
 	// TODO: add column for fertilization data
@@ -37,19 +59,24 @@ export async function load() {
 			)
 		);
 
+	const modPlantsWater = plantsWater.map((obj) => ({
+		...obj,
+		dueDate: getDueDate(obj.watering_event?.timestamp, obj.plant.water_schedule)
+	}));
+
 	const rooms = await db.select().from(room);
 
 	return {
-		plantsWater,
+		plantsWater: modPlantsWater,
 		rooms,
 		form: await superValidate(zod(waterPlantSchema)),
-		newPlantForm: await superValidate(zod(newPlantSchema))
+		newPlantForm: await superValidate(zod(plantSchema))
 	};
 }
 
 export const actions = {
 	newPlant: async ({ request }) => {
-		const form = await superValidate(request, zod(newPlantSchema));
+		const form = await superValidate(request, zod(plantSchema));
 		if (!form.valid) return fail(400, { form });
 
 		const [insertedPlant] = await db.insert(plant).values(form.data).returning();
@@ -130,3 +157,28 @@ export const actions = {
 		}
 	}
 };
+
+function getDueDate(eventTime: number | undefined, period: number) {
+	if (!eventTime) return new Date().getTime();
+	const unixPeriod = period * 1000 * 60 * 60 * 24;
+	return eventTime + unixPeriod;
+}
+
+// async function groupPlantDataByRoomId(
+// 	plantDataArray: PlantData[]
+// ): Promise<Record<string, PlantData[]>> {
+// 	const groupedData: Record<string, PlantData[]> = {};
+// 	const rooms = await db.select({ id: room.id, name: room.name }).from(room);
+// 	for (const plantData of plantDataArray) {
+// 		const roomId = plantData.plant.room_id;
+// 		const room = rooms.find((obj) => obj.id === roomId);
+// 		if (!room) throw new Error('Cant find room');
+// 		const roomName = room.name as string;
+
+// 		if (!groupedData[roomName]) {
+// 			groupedData[roomName] = [];
+// 		}
+// 		groupedData[roomName].push(plantData);
+// 	}
+// 	return groupedData;
+// }
