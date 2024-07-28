@@ -1,37 +1,36 @@
-import env from 'src/lib/env.js';
-import db from 'src/db';
-import { desc, eq, and, sql } from 'drizzle-orm';
-import { plant, room, watering_event } from 'src/db/schema';
+import env from 'src/lib/env.js'
+import db from 'src/db'
+import { desc, eq, and, sql } from 'drizzle-orm'
+import { plant, room, watering_event } from 'src/db/schema'
 
-import s3Client from 'src/lib/s3Client.js';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import s3Client from 'src/lib/s3Client.js'
+import { PutObjectCommand } from '@aws-sdk/client-s3'
 
-import { superValidate, fail, message, setError } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { superValidate, fail, message, setError } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
 
-import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
-import { plantSchema } from 'src/lib/formSchemas/plantSchema';
+import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
 
 interface PlantData {
 	plant: {
-		id: number;
-		name: string;
-		species: string | null;
-		water_schedule: number;
-		image_url: string | null;
-		house_id: number;
-		room_id: number;
-		created_at: number;
-	};
+		id: number
+		name: string
+		species: string | null
+		water_schedule: number
+		image_url: string | null
+		house_id: number
+		room_id: number
+		created_at: number
+	}
 	watering_event: {
-		id: number;
-		comments: string;
-		fertilized: boolean;
-		image_url: string | null;
-		plant_id: number;
-		user_id: number;
-		timestamp: number;
-	};
+		id: number
+		notes: string
+		fertilized: boolean
+		image_url: string | null
+		plant_id: number
+		user_id: number
+		timestamp: number
+	}
 }
 
 export async function load() {
@@ -54,114 +53,114 @@ export async function load() {
 						.from(watering_event)
 						.where(eq(watering_event.plant_id, plant.id))
 						.orderBy(desc(watering_event.timestamp))
-						.limit(1)
-				)
-			)
-		);
+						.limit(1),
+				),
+			),
+		)
 
 	const modPlantsWater = plantsWater.map((obj) => ({
 		...obj,
-		dueDate: getDueDate(obj.watering_event?.timestamp, obj.plant.water_schedule)
-	}));
+		dueDate: getDueDate(obj.watering_event?.timestamp, obj.plant.water_schedule),
+	}))
 
-	const rooms = await db.select().from(room);
+	const rooms = await db.select().from(room)
 
 	return {
 		plantsWater: modPlantsWater,
 		rooms,
-		form: await superValidate(zod(waterPlantSchema)),
-		newPlantForm: await superValidate(zod(plantSchema))
-	};
+		// form: await superValidate(zod(waterPlantSchema)),
+		// newPlantForm: await superValidate(zod(waterPlantSchema))
+	}
 }
 
 export const actions = {
 	newPlant: async ({ request }) => {
-		const form = await superValidate(request, zod(plantSchema));
-		if (!form.valid) return fail(400, { form });
+		const form = await superValidate(request, zod(waterPlantSchema))
+		if (!form.valid) return fail(400, { form })
 
-		const [insertedPlant] = await db.insert(plant).values(form.data).returning();
-		if (!insertedPlant) return fail(400, { form });
+		const [insertedPlant] = await db.insert(plant).values(form.data).returning()
+		if (!insertedPlant) return fail(400, { form })
 
 		if (form.data.image) {
 			// Image upload
-			const image = form.data.image;
+			const image = form.data.image
 
-			const fileBuffer = await image.arrayBuffer();
-			const fileName = `${Date.now()}-${image.name}`;
+			const fileBuffer = await image.arrayBuffer()
+			const fileName = `${Date.now()}-${image.name}`
 
 			try {
 				const command = new PutObjectCommand({
 					Bucket: env.R2_BUCKET_NAME,
 					Key: fileName,
 					Body: Buffer.from(fileBuffer),
-					ContentType: image.type
-				});
+					ContentType: image.type,
+				})
 
-				await s3Client.send(command);
+				await s3Client.send(command)
 
-				const imageUrl = env.R2_BUCKET_BASE_URL + fileName;
-				console.log('imageUrl', imageUrl);
+				const imageUrl = env.R2_BUCKET_BASE_URL + fileName
+				console.log('imageUrl', imageUrl)
 				const resultAfterUpload = await db
 					.update(plant)
 					.set({ image_url: imageUrl })
 					.where(eq(plant.id, insertedPlant.id))
-					.returning();
-				console.log('Image uploaded...', resultAfterUpload);
+					.returning()
+				console.log('Image uploaded...', resultAfterUpload)
 			} catch (error) {
-				console.error('Upload error: ', error);
-				return fail(500, { form });
+				console.error('Upload error: ', error)
+				return fail(500, { form })
 			}
-			return message(form, 'Image uploaded successfully');
+			return message(form, 'Image uploaded successfully')
 		}
 
-		return { form };
+		return { form }
 	},
 
 	water: async ({ request }) => {
-		const form = await superValidate(request, zod(waterPlantSchema));
+		const form = await superValidate(request, zod(waterPlantSchema))
 
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) return fail(400, { form })
 
-		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning();
-		if (!insertedWaterEvent) return fail(400, { form });
+		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning()
+		if (!insertedWaterEvent) return fail(400, { form })
 
 		if (form.data.image) {
 			// Image upload
-			const image = form.data.image;
+			const image = form.data.image
 
-			const fileBuffer = await image.arrayBuffer();
-			const fileName = `${Date.now()}-${image.name}`;
+			const fileBuffer = await image.arrayBuffer()
+			const fileName = `${Date.now()}-${image.name}`
 
 			try {
 				const command = new PutObjectCommand({
 					Bucket: env.R2_BUCKET_NAME,
 					Key: fileName,
 					Body: Buffer.from(fileBuffer),
-					ContentType: image.type
-				});
+					ContentType: image.type,
+				})
 
-				await s3Client.send(command);
+				await s3Client.send(command)
 
-				const imageUrl = env.R2_BUCKET_BASE_URL + fileName;
-				console.log('imageUrl', imageUrl);
+				const imageUrl = env.R2_BUCKET_BASE_URL + fileName
+				console.log('imageUrl', imageUrl)
 				const resultAfterUpload = await db
 					.update(watering_event)
 					.set({ image_url: imageUrl })
 					.where(eq(watering_event.id, insertedWaterEvent.id))
-					.returning();
-				console.log('Image uploaded...', resultAfterUpload);
+					.returning()
+				console.log('Image uploaded...', resultAfterUpload)
 			} catch (error) {
-				console.error('Upload error: ', error);
-				return fail(500, { form });
+				console.error('Upload error: ', error)
+				return fail(500, { form })
 			}
 		}
-	}
-};
+	},
+}
 
 function getDueDate(eventTime: number | undefined, period: number) {
-	if (!eventTime) return new Date().getTime();
-	const unixPeriod = period * 1000 * 60 * 60 * 24;
-	return eventTime + unixPeriod;
+	if (!eventTime) return new Date().getTime()
+	const unixPeriod = period * 1000 * 60 * 60 * 24
+	return eventTime + unixPeriod
 }
 
 // async function groupPlantDataByRoomId(

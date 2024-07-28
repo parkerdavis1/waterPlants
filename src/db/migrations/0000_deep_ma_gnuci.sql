@@ -9,7 +9,7 @@ CREATE TABLE `plant` (
 	`species` text NOT NULL,
 	`name` text,
 	`water_schedule` integer DEFAULT 7 NOT NULL,
-	`care` text,
+	`notes` text,
 	`image_url` text,
 	`house_id` integer NOT NULL,
 	`room_id` integer NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `user_to_house` (
 --> statement-breakpoint
 CREATE TABLE `watering_event` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`comments` text,
+	`notes` text,
 	`fertilized` integer DEFAULT false,
 	`image_url` text,
 	`plant_id` integer NOT NULL,

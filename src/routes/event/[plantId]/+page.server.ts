@@ -1,12 +1,12 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { redirect } from '@sveltejs/kit';
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import db from 'src/db';
 import { plant, watering_event } from 'src/db/schema.js';
 import env from 'src/lib/env';
-import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
+import { waterPlantSchema, plantEventSchema } from 'src/lib/zodSchemas/plantSchema';
 import s3Client from 'src/lib/s3Client';
-import { fail, message, superValidate } from 'sveltekit-superforms';
+import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export async function load({ params }) {
@@ -26,14 +26,14 @@ export async function load({ params }) {
 	return {
 		plant: plantData,
 		wateringEvents,
-		form: await superValidate(zod(waterPlantSchema)),
+		form: await superValidate(zod(plantEventSchema)),
 		randomNumber: Math.random()
 	};
 }
 
 export const actions = {
 	water: async ({ request }) => {
-		const form = await superValidate(request, zod(waterPlantSchema));
+		const form = await superValidate(request, zod(plantEventSchema));
 		console.log('form', form);
 
 		if (!form.valid) return fail(400, { form });

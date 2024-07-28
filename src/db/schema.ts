@@ -7,7 +7,7 @@ export const plant = sqliteTable('plant', {
 	species: text('species').notNull(),
 	name: text('name'),
 	water_schedule: integer('water_schedule').default(7).notNull(),
-	care: text('care'),
+	notes: text('notes'),
 	image_url: text('image_url'),
 	house_id: integer('house_id')
 		.notNull()
@@ -22,7 +22,7 @@ export const plant = sqliteTable('plant', {
 
 export const watering_event = sqliteTable('watering_event', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
-	comments: text('comments'),
+	notes: text('notes'),
 	fertilized: integer('fertilized', { mode: 'boolean' }).default(false),
 	image_url: text('image_url'),
 	plant_id: integer('plant_id')

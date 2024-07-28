@@ -5,6 +5,7 @@
 
 	const radius = 45;
 	const circumference = 2 * Math.PI * radius;
+	const randomId = 'circle-clip' + Math.round(Math.random() * 100);
 </script>
 
 <svg viewBox="0 0 100 100">
@@ -17,20 +18,25 @@
 			<path d="M0 5 Q 5 0, 10 5 T 20 5" fill="none" stroke="var(--fill)" stroke-width="2" />
 		</pattern>
 	</defs>
-
-	<rect x="0" y={waveHeight} width="100" height="100" clip-path="circle(45%)" fill="var(--fill)"
-		>#0284c5
-		<!-- fill="url(#wave-pattern)" -->
-		<!-- <animate attributeName="y" from="100" to="-20" dur="2s" repeatCount="indefinite" /> -->
-	</rect>
 	<circle
 		cx="50"
 		cy="50"
 		r={radius}
-		fill="none"
-		stroke={progress <= 0 ? 'var(--dry-fill)' : '#e0e0e0'}
+		fill="white"
+		stroke={progress > 0 ? 'var(--dry-fill)' : 'rgb(253 186 116)'}
 		stroke-width="6"
 	/>
+	<rect
+		x="0"
+		y={waveHeight}
+		width="100"
+		height="100"
+		clip-path="url(#circle-clip)"
+		fill="var(--fill)"
+		>#0284c5
+		<!-- fill="url(#wave-pattern)" -->
+		<!-- <animate attributeName="y" from="100" to="-20" dur="2s" repeatCount="indefinite" /> -->
+	</rect>
 
 	<!-- <circle
 		cx="60"

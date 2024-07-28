@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d85b7e56-7408-4cf4-89dc-9361a0d63d00",
+  "id": "14814b23-aaff-4ed2-9020-7e316324fe2e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -67,8 +67,8 @@
           "autoincrement": false,
           "default": 7
         },
-        "care": {
-          "name": "care",
+        "notes": {
+          "name": "notes",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -288,8 +288,8 @@
           "notNull": true,
           "autoincrement": true
         },
-        "comments": {
-          "name": "comments",
+        "notes": {
+          "name": "notes",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

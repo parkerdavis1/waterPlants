@@ -19,5 +19,6 @@
 		</Select.Content>
 		<Select.Input name="insideOutside" />
 	</Select.Root> -->
-	<AddNewPlant {data} />
+	<!-- <AddNewPlant {data} /> -->
+	<a href="/new/plant"><Button>Add New Plant</Button></a>
 </div>

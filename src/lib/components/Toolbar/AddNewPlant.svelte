@@ -14,6 +14,7 @@
 	import ImageUploader from '../ImageUploader.svelte';
 	import Spinner from '../Spinner.svelte';
 	import ClaudeImage from '../ImageUploader.svelte';
+	import NewPlantForm from '../NewPlantForm.svelte';
 
 	export let data;
 
@@ -65,66 +66,7 @@
 	<Dialog.Content class="max-h-screen overflow-auto">
 		<Dialog.Title>Add New Plant</Dialog.Title>
 		<!-- <SuperDebug data={form} /> -->
-		<form
-			id="new-plant"
-			use:enhance
-			method="POST"
-			action="?/newPlant"
-			enctype="multipart/form-data"
-		>
-			<!-- TODO: add client image resizing -->
-
-			<Label for="image">Image</Label>
-			<ImageUploader {form} {constraints} />
-			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
-
-			<Label for="species">Species</Label>
-			<Input
-				type="text"
-				name="species"
-				autocomplete="off"
-				bind:value={$form.species}
-				{...$constraints.species}
-			/>
-			{#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if}
-
-			<Label for="name">Name</Label>
-			<Input
-				type="text"
-				name="name"
-				autocomplete="off"
-				bind:value={$form.name}
-				{...$constraints.name}
-				placeholder={defaultName}
-			/>
-			{#if $errors.name}<p class="text-red-500">{$errors.name}</p>{/if}
-
-			<!-- TODO: Add Care notes textarea field -->
-
-			<!-- TODO: Add new room option to side of select -->
-			<Label for="room">Room</Label>
-			<Select.Root selected={selectedRoom} onSelectedChange={handleSelectedChange}>
-				<Select.Trigger class="w-[180px]">
-					<Select.Value placeholder="Select a room" />
-				</Select.Trigger>
-				<Select.Content>
-					{#each data.rooms as room}
-						<Select.Item value={room.id} label={room.name}>{room.name}</Select.Item>
-					{/each}
-				</Select.Content>
-				<Select.Input name="room_id" bind:value={$form.room_id} />
-			</Select.Root>
-			{#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if}
-
-			<Label for="water_schedule">Watering Schedule (days)</Label>
-			<Input
-				type="number"
-				bind:value={$form.water_schedule}
-				name="water_schedule"
-				{...$constraints.water_schedule}
-			/>
-			{#if $errors.water_schedule}<p class="text-red-500">{$errors.water_schedule}</p>{/if}
-		</form>
+		<NewPlantForm {data} />
 
 		<Dialog.Footer>
 			<Button form="new-plant" type="submit" bind:disabled={isSubmitting}

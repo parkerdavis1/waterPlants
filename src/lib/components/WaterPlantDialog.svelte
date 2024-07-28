@@ -2,14 +2,14 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
-	import { Textarea } from './ui/textarea';
-	import { Label } from './ui/label';
+	import { Textarea } from 'src/lib/components/ui/textarea';
+	import { Label } from 'src/lib/components/ui/label';
 	import { fileProxy, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { waterPlantSchema } from '../formSchemas/waterPlantSchema';
+	import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema';
 	import type { SelectPlant } from 'src/db/schema';
-	import { Input } from './ui/input';
-	import { Checkbox } from './ui/checkbox';
+	import { Input } from 'src/lib/components/ui/input';
+	import { Checkbox } from 'src/lib/components/ui/checkbox';
 	import SuperDebug from 'sveltekit-superforms';
 	import { invalidateAll } from '$app/navigation';
 
@@ -65,12 +65,12 @@
 			use:enhance
 		>
 			<div>
-				<Label for="comments">Notes</Label>
+				<Label for="notes">Notes</Label>
 				<Textarea
 					placeholder="Type your message here."
-					id="comments"
-					name="comments"
-					bind:value={$form.comments}
+					id="notes"
+					name="notes"
+					bind:value={$form.notes}
 				/>
 			</div>
 			<div>

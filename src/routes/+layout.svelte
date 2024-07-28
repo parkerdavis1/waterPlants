@@ -40,5 +40,5 @@
 			<slot></slot>
 		</div>
 	</main>
-	<footer class="text-xs opacity-50">&copy; Parker Davis {new Date().getFullYear()}</footer>
+	<!-- <footer class="text-xs opacity-50">&copy; Parker Davis {new Date().getFullYear()}</footer> -->
 </div>

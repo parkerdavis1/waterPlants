@@ -1,66 +1,89 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import Button from './ui/button/button.svelte';
-	import { fileProxy } from 'sveltekit-superforms';
+	import Button from './ui/button/button.svelte'
+	import { fileProxy } from 'sveltekit-superforms'
 
-	export let form, constraints;
+	export let form
 
-	let fileInput: HTMLInputElement;
-	let previewImage: string | null = null;
-	let fileName: string = '';
+	let fileInput: HTMLInputElement
+	let previewImage: string | null = null
+	let fileName: string = ''
 
-	// const dispatch = createEventDispatcher();
+	const fileProx = fileProxy(form, 'image')
 
-	function handleFileSelect(event: Event) {
-		const target = event.target as HTMLInputElement;
-		const file = target.files?.[0];
-		if (file) {
-			loadFile(file);
-		}
-	}
+	async function handleFileSelect(event: Event) {
+		const file = (event.target as HTMLInputElement).files?.[0]
+		if (!file) return
 
-	function loadFile(file: File) {
-		if (file.type.startsWith('image/')) {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				previewImage = e.target?.result as string;
-				fileName = file.name;
-				// dispatch('fileSelected', { file });
-			};
-			reader.readAsDataURL(file);
-		} else {
-			alert('Please select an image file.');
-		}
+		// Create preview
+		previewImage = URL.createObjectURL(file)
+
+		// Resize image
+		const resizedBlob = await resizeImage(file, 1000, 1000)
+		const newImageFile = new File([resizedBlob], file.name, { type: resizedBlob.type })
+
+		// Update form data
+		fileProx.set(newImageFile)
+		// $form.image = newImageFile
 	}
 
 	function triggerFileInput() {
-		fileInput.click();
+		fileInput.click()
 	}
 
-	const file = fileProxy(form, 'image');
+	async function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<Blob> {
+		console.log('Doing new resizeImage')
+		return new Promise((resolve) => {
+			const reader = new FileReader()
+			reader.onload = (e) => {
+				const img = new Image()
+				img.onload = () => {
+					const canvas = document.createElement('canvas')
+					let width = img.width
+					let height = img.height
+
+					if (width > height) {
+						if (width > maxWidth) {
+							height *= maxWidth / width
+							width = maxWidth
+						}
+					} else {
+						if (height > maxHeight) {
+							width *= maxHeight / height
+							height = maxHeight
+						}
+					}
+
+					canvas.width = width
+					canvas.height = height
+					const ctx = canvas.getContext('2d')
+					ctx?.drawImage(img, 0, 0, width, height)
+
+					canvas.toBlob((blob) => {
+						resolve(blob as Blob)
+					}, file.type)
+				}
+				img.src = e.target?.result as string
+			}
+			reader.readAsDataURL(file)
+		})
+	}
 </script>
 
 <div class="flex flex-col gap-4">
 	<input
 		type="file"
 		accept="image/*"
-		on:change={handleFileSelect}
-		bind:this={fileInput}
-		bind:files={$file}
-		id="file-input"
 		name="image"
-		class="visually-hidden"
-		capture="environment"
-		aria-describedby="file-input-description"
-		{...constraints}
+		bind:files={$fileProx}
+		on:change={handleFileSelect}
 	/>
 
-	{#if previewImage}
+	<!-- {#if previewImage}
 		<div class="w-full">
 			<img
 				src={previewImage}
 				alt="Selected image preview"
-				class="aspect-square w-full max-w-[400px] rounded-lg object-cover"
+				class="aspect-square w-full max-w-[200px] rounded-lg object-cover"
 			/>
 		</div>
 		<div class="flex max-w-full items-center gap-4">
@@ -80,7 +103,7 @@
 				/>
 			</svg>Select Image</Button
 		>
-	{/if}
+	{/if} -->
 </div>
 
 <style>

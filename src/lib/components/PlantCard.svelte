@@ -12,16 +12,17 @@
 
 	let showPlantCare = false;
 
-	$: daysSinceLastWatered = plantWater.watering_event
-		? Math.round(
-				(new Date().getTime() - new Date(plantWater.watering_event?.timestamp).getTime()) /
-					(1000 * 60 * 60 * 24)
-			)
-		: 0;
+	$: lastWateringEventTimestamp = plantWater.watering_event?.timestamp;
+
+	$: daysSinceLastWatered = Math.round(
+		(new Date().getTime() - new Date(lastWateringEventTimestamp).getTime()) / (1000 * 60 * 60 * 24)
+	);
 
 	const waterPeriod = plantWater.plant.water_schedule;
 
-	$: waterProgressPercent = 100 - (daysSinceLastWatered / waterPeriod) * 100;
+	$: waterProgressPercent = lastWateringEventTimestamp
+		? 100 - (daysSinceLastWatered / waterPeriod) * 100
+		: 0;
 
 	const url = `/event/${plantWater.plant.id}`;
 	const imageUrl = plantWater.plant.image_url;
@@ -34,28 +35,17 @@
 			alt="placeholder"
 			class="aspect-square min-h-32 rounded-lg object-cover sm:w-32"
 		/>
-		<div class="absolute bottom-4 right-4 sm:hidden">
+		<!-- <div class="absolute bottom-4 right-4 sm:hidden">
 			<WaterProgress progress={waterProgressPercent} />
-		</div>
+		</div> -->
 	</div>
-	<div class="flex-wrap justify-between gap-4 sm:flex sm:flex-row-reverse">
-		<div class="flex justify-start gap-4">
-			<div class="flex flex-col items-center justify-start">
-				<p class="water-label">Water</p>
-				<!-- <RadialProgress progress={waterProgressPercent} /> -->
-				<div class="hidden sm:inline">
-					<WaterProgress progress={waterProgressPercent} />
-				</div>
-			</div>
-			<!-- <div class="flex flex-col items-center justify-start">
-				<p>Fertilized</p>
-				<RadialProgress progress={waterProgressPercent} />
-			</div> -->
-		</div>
+	<div class="flex flex-wrap justify-between gap-4">
 		<div>
 			<h2 class="text-lg font-bold">{plantWater.plant.species}</h2>
 			{#if plantWater.plant.name}<p>{plantWater.plant.name}</p>{/if}
-			<p class="text-sm opacity-60">Days since last watered: {daysSinceLastWatered}</p>
+			{#if plantWater.watering_event?.timestamp}<p class="text-sm opacity-60">
+					{daysSinceLastWatered} day{daysSinceLastWatered === 1 ? '' : 's'} since last water
+				</p>{/if}
 			<!-- <Button variant="secondary" on:click={() => (showPlantCare = !showPlantCare)}
 				>Plant Care Info</Button
 			> -->
@@ -66,6 +56,19 @@
 			{#if context !== 'event'}<a href={`/event/${plantWater.plant.id}`}
 					><Button>Water Plant</Button></a
 				>{/if}
+		</div>
+		<div class="flex justify-start gap-4">
+			<div class="flex flex-col items-center justify-start">
+				<p class="water-label">Water</p>
+				<!-- <RadialProgress progress={waterProgressPercent} /> -->
+				<!-- <div class="hidden sm:inline"> -->
+				<WaterProgress progress={waterProgressPercent} />
+				<!-- </div> -->
+			</div>
+			<!-- <div class="flex flex-col items-center justify-start">
+				<p>Fertilized</p>
+				<RadialProgress progress={waterProgressPercent} />
+			</div> -->
 		</div>
 	</div>
 	{#if showPlantCare}

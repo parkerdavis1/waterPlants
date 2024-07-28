@@ -24,7 +24,7 @@ export default async function seed(db: db) {
 			house_id: houseId,
 			room_id: roomId,
 			water_schedule: i + 4,
-			care: faker.lorem.paragraphs(3)
+			notes: faker.lorem.paragraphs(3)
 		});
 	}
 }

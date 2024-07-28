@@ -1,14 +1,10 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
 	import { Button } from 'src/lib/components/ui/button';
-	import { Checkbox } from 'src/lib/components/ui/checkbox/index';
 	import { Input } from 'src/lib/components/ui/input/index';
 	import { Label } from 'src/lib/components/ui/label/index';
 	import { Textarea } from 'src/lib/components/ui/textarea/index';
-	import { waterPlantSchema } from 'src/lib/formSchemas/waterPlantSchema';
 	import { toast } from 'svelte-sonner';
 	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
 	import PlantCard from 'src/lib/components/PlantCard.svelte';
 	import ImageUploader from 'src/lib/components/ImageUploader.svelte';
 	import Spinner from 'src/lib/components/Spinner.svelte';
@@ -54,9 +50,9 @@
 	<h1 class="text-3xl font-bold">Watering</h1>
 	<!-- <SuperDebug data={form} /> -->
 	<PlantCard plantWater={plantCardData} {data} context="event" />
-	<h2 class="text-xl font-bold">Plant Care Info</h2>
+	<h2 class="text-xl font-bold">Notes</h2>
 	<div class="whitespace-pre-wrap">
-		{data.plant.care}
+		{data.plant.notes}
 	</div>
 	<Separator />
 	<h2 class="text-xl font-bold">Water Event</h2>
@@ -69,21 +65,23 @@
 		use:enhance
 	>
 		<div class="self-start">
-			<Label for="image">Image</Label>
+			<Label for="image">Image <span class="text-xs text-muted-foreground"> (optional)</span></Label
+			>
 			<ImageUploader {form} {constraints} />
 			<!-- <Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} /> -->
 			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 		</div>
 		<div>
-			<Label for="comments">Notes</Label>
+			<Label for="notes">Notes <span class="text-xs text-muted-foreground"> (optional)</span></Label
+			>
 			<Textarea
 				placeholder="Type your message here."
-				id="comments"
-				name="comments"
-				bind:value={$form.comments}
-				{...$constraints.comments}
+				id="notes"
+				name="notes"
+				bind:value={$form.notes}
+				{...$constraints.notes}
 			/>
-			{#if $errors.comments}<p class="text-red-500">{$errors.comments}</p>{/if}
+			{#if $errors.notes}<p class="text-red-500">{$errors.notes}</p>{/if}
 		</div>
 		<!-- <div class="flex items-center space-x-2">
 			<Checkbox id="fertilized" bind:checked={$form.fertilized} />
@@ -112,7 +110,7 @@
 	<!-- <Separator />
 	<h2 class="text-xl font-bold">Past Watering Events</h2>
 	{#each data.wateringEvents as wateringEvent}
-		<pre class="text-xs opacity-50">{JSON.stringify(wateringEvent, null, 2)}</pre>
+		<pre class="break-words text-xs opacity-50">{JSON.stringify(wateringEvent, null, 2)}</pre>
 		<p>{wateringEvent.timestamp}</p>
 		<p>{wateringEvent}</p>
 	{/each} -->
