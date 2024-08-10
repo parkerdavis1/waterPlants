@@ -58,10 +58,12 @@ export async function load() {
 			),
 		)
 
-	const modPlantsWater = plantsWater.map((obj) => ({
-		...obj,
-		dueDate: getDueDate(obj.watering_event?.timestamp, obj.plant.water_schedule),
-	}))
+	const modPlantsWater = plantsWater
+		.map((obj) => ({
+			...obj,
+			dueDate: getDueDate(obj.watering_event?.timestamp, obj.plant.water_schedule),
+		}))
+		.sort((a, b) => a.dueDate - b.dueDate)
 
 	const rooms = await db.select().from(room)
 

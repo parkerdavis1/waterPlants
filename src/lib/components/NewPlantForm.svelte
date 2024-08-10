@@ -78,7 +78,7 @@
 	}
 </script>
 
-<SuperDebug data={{ $form, $errors }} />
+<!-- <SuperDebug data={{ $form, $errors }} /> -->
 <form id="new-plant" method="POST" action="?/newPlant" enctype="multipart/form-data" use:enhance>
 	<Label for="image">Image</Label>
 	<ImageUploader {form} />

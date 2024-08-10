@@ -1,13 +1,13 @@
 <script>
-	import '../app.css';
-	import * as Avatar from '$lib/components/ui/avatar';
-	import * as Sheet from '$lib/components/ui/sheet';
-	import { Button } from '$lib/components/ui/button';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { Separator } from 'bits-ui';
-	import { Settings } from 'lucide-svelte';
-	import { Toaster } from 'svelte-sonner';
-	import bluegrad from 'src/lib/assets/images/bluegrad.png';
+	import '../app.css'
+	import * as Avatar from '$lib/components/ui/avatar'
+	import * as Sheet from '$lib/components/ui/sheet'
+	import { Button } from '$lib/components/ui/button'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Separator } from 'bits-ui'
+	import { Settings } from 'lucide-svelte'
+	import { Toaster } from 'svelte-sonner'
+	import bluegrad from 'src/lib/assets/images/bluegrad.png'
 </script>
 
 <Toaster richColors />
@@ -35,7 +35,7 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</header>
-	<main class="grow">
+	<main class="grow pb-16">
 		<div class="max-w-3xl sm:container">
 			<slot></slot>
 		</div>
