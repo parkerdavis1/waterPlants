@@ -11,6 +11,7 @@
 	import { toast } from 'svelte-sonner'
 	import { superForm } from 'sveltekit-superforms'
 	import * as AlertDialog from 'src/lib/components/ui/alert-dialog'
+	import { goto } from '$app/navigation'
 
 	export let data
 
@@ -28,9 +29,14 @@
 			// Could upload files from here
 			isSubmitting = true
 		},
-		onResult: ({ result }) => {
+		onResult: async ({ result }) => {
 			isSubmitting = false
+			console.log('result', result)
 			if (result.type === 'success') {
+				await goto('/')
+				// console.log('go to')
+				// goto('/')
+				// window.location.href = '/'
 				toast.success(`Edited plant`)
 			} else {
 				toast.error('Error editing plant')

@@ -12,17 +12,23 @@
 
 	async function handleFileSelect(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0]
+		console.log('new file', file)
 		if (!file) return
 
 		// Create preview
 		previewImage = URL.createObjectURL(file)
+		console.log('previewImage', previewImage)
 
 		// Resize image
 		const resizedBlob = await resizeImage(file, 1000, 1000)
+		console.log('resizedBlob', resizedBlob)
 		const newImageFile = new File([resizedBlob], file.name, { type: resizedBlob.type })
+		console.log('newImageFile', newImageFile)
 
 		// Update form data
 		fileProx.set(newImageFile)
+		console.log('$form.image', $form.image)
+
 		// $form.image = newImageFile
 	}
 
@@ -36,7 +42,9 @@
 			const reader = new FileReader()
 			reader.onload = (e) => {
 				const img = new Image()
+				console.log('img', img)
 				img.onload = () => {
+					console.log('image on load')
 					const canvas = document.createElement('canvas')
 					let width = img.width
 					let height = img.height
@@ -57,10 +65,11 @@
 					canvas.height = height
 					const ctx = canvas.getContext('2d')
 					ctx?.drawImage(img, 0, 0, width, height)
-
+					console.log('pre-resolve blob')
 					canvas.toBlob((blob) => {
 						resolve(blob as Blob)
 					}, file.type)
+					console.log('post resolve blob')
 				}
 				img.src = e.target?.result as string
 			}
@@ -75,10 +84,12 @@
 		accept="image/*"
 		name="image"
 		bind:files={$fileProx}
+		bind:this={fileInput}
 		on:change={handleFileSelect}
+		hidden
 	/>
 
-	<!-- {#if previewImage}
+	{#if previewImage}
 		<div class="w-full">
 			<img
 				src={previewImage}
@@ -103,7 +114,7 @@
 				/>
 			</svg>Select Image</Button
 		>
-	{/if} -->
+	{/if}
 </div>
 
 <style>
