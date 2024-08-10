@@ -1,32 +1,33 @@
 <script lang="ts">
-	import { Button } from 'src/lib/components/ui/button';
-	import { Input } from 'src/lib/components/ui/input/index';
-	import { Label } from 'src/lib/components/ui/label/index';
-	import { Textarea } from 'src/lib/components/ui/textarea/index';
-	import { toast } from 'svelte-sonner';
-	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms';
-	import PlantCard from 'src/lib/components/PlantCard.svelte';
-	import ImageUploader from 'src/lib/components/ImageUploader.svelte';
-	import Spinner from 'src/lib/components/Spinner.svelte';
-	import Separator from 'src/lib/components/ui/separator/separator.svelte';
+	import { Button } from 'src/lib/components/ui/button'
+	import { Input } from 'src/lib/components/ui/input/index'
+	import { Label } from 'src/lib/components/ui/label/index'
+	import { Textarea } from 'src/lib/components/ui/textarea/index'
+	import { toast } from 'svelte-sonner'
+	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms'
+	import PlantCard from 'src/lib/components/PlantCard.svelte'
+	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
+	import Spinner from 'src/lib/components/Spinner.svelte'
+	import Separator from 'src/lib/components/ui/separator/separator.svelte'
+	import { Checkbox } from 'src/lib/components/ui/checkbox/'
 
-	export let data;
+	export let data
 
-	let isSubmitting = false;
+	let isSubmitting = false
 
 	const { form, enhance, errors, message, constraints } = superForm(data.form, {
 		onSubmit: () => (isSubmitting = true),
 		onResult: ({ result }) => {
-			isSubmitting = false;
+			isSubmitting = false
 			if (result.type === 'success') {
-				toast.success(`Successfully watered ${data.plant.name}!`);
+				toast.success(`Successfully watered ${data.plant.name}!`)
 			}
-		}
-	});
+		},
+	})
 
-	const file = fileProxy(form, 'image');
+	const file = fileProxy(form, 'image')
 
-	const formId = 'waterForm' + data.plant.id;
+	const formId = 'waterForm' + data.plant.id
 
 	// function handleSaveChanges() {
 	// 	console.log('Saving changes');
@@ -42,15 +43,15 @@
 
 	$: plantCardData = {
 		plant: data.plant,
-		watering_event: data.wateringEvents[0]
-	};
+		watering_event: data.wateringEvents[0],
+	}
 </script>
 
 <div class="mt-8 flex max-w-4xl flex-col gap-4">
-	<h1 class="text-3xl font-bold">Watering</h1>
+	<h1 class="text-3xl font-bold">Watering Event</h1>
 	<!-- <SuperDebug data={form} /> -->
 	<PlantCard plantWater={plantCardData} {data} context="event" />
-	<h2 class="text-xl font-bold">Notes</h2>
+	<h2 class="text-xl font-bold">Care Notes</h2>
 	<div class="whitespace-pre-wrap">
 		{data.plant.notes}
 	</div>
@@ -83,7 +84,17 @@
 			/>
 			{#if $errors.notes}<p class="text-red-500">{$errors.notes}</p>{/if}
 		</div>
-		<!-- <div class="flex items-center space-x-2">
+		<div class="flex items-center space-x-2">
+			<Checkbox id="watered" bind:checked={$form.watered} />
+			<Input type="hidden" name="watered" bind:value={$form.watered} {...$constraints.watered} />
+			<Label
+				for="watered"
+				class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+				>Watering</Label
+			>
+			{#if $errors.watered}<p class="text-red-500">{$errors.watered}</p>{/if}
+		</div>
+		<div class="flex items-center space-x-2">
 			<Checkbox id="fertilized" bind:checked={$form.fertilized} />
 			<Input
 				type="hidden"
@@ -94,10 +105,10 @@
 			<Label
 				for="fertilized"
 				class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-				>Fertilized?</Label
+				>Fertilizing</Label
 			>
 			{#if $errors.fertilized}<p class="text-red-500">{$errors.fertilized}</p>{/if}
-		</div> -->
+		</div>
 		<Input type="hidden" name="plant_id" value={data.plant.id} />
 		<Input type="hidden" name="user_id" value={1} />
 		<Button form={formId} type="submit" bind:disabled={isSubmitting}

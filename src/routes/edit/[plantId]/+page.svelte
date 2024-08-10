@@ -129,8 +129,8 @@
 	<Input type="hidden" value={data.plant.id} name="id" />
 	<Input type="hidden" value={data.plant.image_url} name="oldImageUrl" />
 
-	<div class="mt-4 flex justify-between">
-		<Button form="edit-plant" type="submit" bind:disabled={isSubmitting}
+	<div class="mt-4 flex justify-between gap-4">
+		<Button form="edit-plant" type="submit" bind:disabled={isSubmitting} class="w-full"
 			>Save
 			{#if isSubmitting}
 				<Spinner className="w-4 h-4 ml-4" />
@@ -138,7 +138,7 @@
 		</Button>
 		<AlertDialog.Root>
 			<AlertDialog.Trigger asChild let:builder>
-				<Button builders={[builder]} variant="destructive">Delete Plant</Button>
+				<Button builders={[builder]} variant="destructive">🗑️</Button>
 			</AlertDialog.Trigger>
 			<AlertDialog.Content>
 				<AlertDialog.Header>

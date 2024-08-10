@@ -14,6 +14,7 @@ export const waterPlantSchema = z.object({
 export const plantEventSchema = z.object({
 	notes: z.string().optional(),
 	fertilized: z.boolean(),
+	watered: z.boolean().default(true),
 	plant_id: z.number(),
 	user_id: z.number(),
 	image: imageSchema,

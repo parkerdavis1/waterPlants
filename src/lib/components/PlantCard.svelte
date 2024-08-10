@@ -1,39 +1,39 @@
 <script lang="ts">
-	import bluegrad from '$lib/assets/images/bluegrad.png';
-	import '@shoelace-style/shoelace/dist/themes/light.css';
-	import RadialProgress from './RadialProgress.svelte';
-	import WaterProgress from './WaterProgress.svelte';
-	import * as Accordion from '$lib/components/ui/accordion';
-	import { Button } from './ui/button';
+	import bluegrad from '$lib/assets/images/bluegrad.png'
+	import '@shoelace-style/shoelace/dist/themes/light.css'
+	import RadialProgress from './RadialProgress.svelte'
+	import WaterProgress from './WaterProgress.svelte'
+	import * as Accordion from '$lib/components/ui/accordion'
+	import { Button } from './ui/button'
 
-	export let data;
-	export let plantWater;
-	export let context = 'default';
+	export let data
+	export let plantWater
+	export let context = 'default'
 
-	let showPlantCare = false;
+	let showPlantCare = false
 
-	$: lastWateringEventTimestamp = plantWater.watering_event?.timestamp;
+	$: lastWateringEventTimestamp = plantWater.watering_event?.timestamp
 
 	$: daysSinceLastWatered = Math.round(
-		(new Date().getTime() - new Date(lastWateringEventTimestamp).getTime()) / (1000 * 60 * 60 * 24)
-	);
+		(new Date().getTime() - new Date(lastWateringEventTimestamp).getTime()) / (1000 * 60 * 60 * 24),
+	)
 
-	const waterPeriod = plantWater.plant.water_schedule;
+	const waterPeriod = plantWater.plant.water_schedule
 
 	$: waterProgressPercent = lastWateringEventTimestamp
 		? 100 - (daysSinceLastWatered / waterPeriod) * 100
-		: 0;
+		: 0
 
-	const url = `/event/${plantWater.plant.id}`;
-	const imageUrl = plantWater.plant.image_url;
+	const url = `/event/${plantWater.plant.id}`
+	const imageUrl = plantWater.plant.image_url
 </script>
 
-<div class="plant-card w-full rounded-lg border p-4">
+<div class="plant-card w-fit rounded-lg border p-4 sm:w-full">
 	<div class="relative">
 		<img
 			src={imageUrl ? imageUrl : bluegrad}
 			alt="placeholder"
-			class="aspect-square min-h-32 rounded-lg object-cover sm:w-32"
+			class="mx-auto aspect-square min-h-16 w-48 rounded-lg object-cover sm:w-32"
 		/>
 		<!-- <div class="absolute bottom-4 right-4 sm:hidden">
 			<WaterProgress progress={waterProgressPercent} />

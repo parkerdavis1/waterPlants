@@ -51,7 +51,7 @@ export async function load() {
 					db
 						.select({ id: watering_event.id })
 						.from(watering_event)
-						.where(eq(watering_event.plant_id, plant.id))
+						.where(and(eq(watering_event.watered, true), eq(watering_event.plant_id, plant.id)))
 						.orderBy(desc(watering_event.timestamp))
 						.limit(1),
 				),

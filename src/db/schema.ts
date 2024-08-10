@@ -1,6 +1,6 @@
-import { sql } from 'drizzle-orm';
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
-import { type InferSelectModel } from 'drizzle-orm';
+import { sql } from 'drizzle-orm'
+import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core'
+import { type InferSelectModel } from 'drizzle-orm'
 
 export const plant = sqliteTable('plant', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
@@ -17,12 +17,13 @@ export const plant = sqliteTable('plant', {
 		.notNull(),
 	created_at: integer('created_at', { mode: 'number' })
 		.notNull()
-		.default(sql`(unixepoch() * 1000)`)
-});
+		.default(sql`(unixepoch() * 1000)`),
+})
 
 export const watering_event = sqliteTable('watering_event', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	notes: text('notes'),
+	watered: integer('fertilized', { mode: 'boolean' }).default(true),
 	fertilized: integer('fertilized', { mode: 'boolean' }).default(false),
 	image_url: text('image_url'),
 	plant_id: integer('plant_id')
@@ -33,16 +34,16 @@ export const watering_event = sqliteTable('watering_event', {
 		.notNull(),
 	timestamp: integer('timestamp', { mode: 'number' })
 		.notNull()
-		.default(sql`(unixepoch() * 1000)`)
-});
+		.default(sql`(unixepoch() * 1000)`),
+})
 
 export const house = sqliteTable('house', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	created_at: integer('created_at', { mode: 'number' })
 		.notNull()
 		.default(sql`(unixepoch() * 1000)`),
-	name: text('name').notNull()
-});
+	name: text('name').notNull(),
+})
 
 export const room = sqliteTable('room', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
@@ -50,8 +51,8 @@ export const room = sqliteTable('room', {
 		.notNull()
 		.default(sql`(unixepoch() * 1000)`),
 	house_id: integer('house_id').references(() => house.id),
-	name: text('name').notNull()
-});
+	name: text('name').notNull(),
+})
 
 export const user = sqliteTable('user', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
@@ -60,29 +61,29 @@ export const user = sqliteTable('user', {
 	created_at: integer('created_at', { mode: 'number' })
 		.notNull()
 		.default(sql`(unixepoch() * 1000)`),
-	default_house_id: integer('default_house_id').references(() => house.id)
-});
+	default_house_id: integer('default_house_id').references(() => house.id),
+})
 
 export const user_to_house = sqliteTable(
 	'user_to_house',
 	{
 		user_id: integer('user_id'),
-		house_id: integer('house_id')
+		house_id: integer('house_id'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.user_id, table.house_id] })
-		};
-	}
-);
+			pk: primaryKey({ columns: [table.user_id, table.house_id] }),
+		}
+	},
+)
 
-export type SelectUser = InferSelectModel<typeof user>;
-export type SelectRoom = InferSelectModel<typeof room>;
-export type SelectHouse = InferSelectModel<typeof house>;
-export type SelectWateringEvent = InferSelectModel<typeof watering_event>;
-export type SelectPlant = InferSelectModel<typeof plant>;
+export type SelectUser = InferSelectModel<typeof user>
+export type SelectRoom = InferSelectModel<typeof room>
+export type SelectHouse = InferSelectModel<typeof house>
+export type SelectWateringEvent = InferSelectModel<typeof watering_event>
+export type SelectPlant = InferSelectModel<typeof plant>
 
 export type PlantWateringEventJoin = {
-	plant: SelectPlant;
-	watering_event: SelectWateringEvent;
-};
+	plant: SelectPlant
+	watering_event: SelectWateringEvent
+}

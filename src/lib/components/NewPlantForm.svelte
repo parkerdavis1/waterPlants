@@ -38,7 +38,15 @@
 	// 		// goto('/');
 	// 	},
 	// })
-	const superform = superForm(data.newPlantForm, { validators: zod(waterPlantSchema) })
+	const superform = superForm(data.newPlantForm, {
+		validators: zod(waterPlantSchema),
+		onResult: async ({ result }) => {
+			if (result.type === 'success') {
+				await goto('/')
+				toast.success('Created new plant')
+			}
+		},
+	})
 
 	const { form, enhance, constraints, errors } = superform
 
@@ -98,7 +106,7 @@
 	{#if $errors.name}<p class="text-red-500">{$errors.name}</p>{/if}
 
 	<!-- TODO: Add Care notes textarea field -->
-	<Label for="notes">Notes <span class="text-muted-foreground">(optional)</span></Label>
+	<Label for="notes">Care Notes <span class="text-muted-foreground">(optional)</span></Label>
 	<Textarea name="notes" placeholder="Add your notes on caring for the plant here."></Textarea>
 
 	<!-- TODO: Add new room option to side of select -->
