@@ -12,6 +12,7 @@
 	import { Checkbox } from 'src/lib/components/ui/checkbox/'
 
 	export let data
+	console.log(data, 'data')
 
 	let isSubmitting = false
 
@@ -118,11 +119,10 @@
 			{/if}
 		</Button>
 	</form>
-	<!-- <Separator />
+	<Separator />
 	<h2 class="text-xl font-bold">Past Watering Events</h2>
 	{#each data.wateringEvents as wateringEvent}
 		<pre class="break-words text-xs opacity-50">{JSON.stringify(wateringEvent, null, 2)}</pre>
 		<p>{wateringEvent.timestamp}</p>
-		<p>{wateringEvent}</p>
-	{/each} -->
+	{/each}
 </div>

@@ -9,7 +9,7 @@
 	export let imageUrl
 	export let context
 	export let showPlantCare
-    export let className
+	export let className
 </script>
 
 <div class={`plant-card grid w-full rounded-lg border p-4 ${className}`}>
@@ -25,19 +25,19 @@
 			<h2 class="text-lg font-bold">{plantWater.plant.species}</h2>
 			{#if plantWater.plant.name}<p>{plantWater.plant.name}</p>{/if}
 			{#if plantWater.watering_event?.timestamp}
-                <p class="text-sm opacity-60">
+				<p class="text-sm opacity-60">
 					{daysSinceLastWatered} day{daysSinceLastWatered === 1 ? '' : 's'} since last water
 				</p>
-            {/if}
-        </div>
-            <div class="flex justify-start gap-4">
-                <div class="flex flex-col items-center justify-start">
-                    <p class="water-label">Water</p>
-                    <WaterProgress progress={waterProgressPercent} />
-                </div>
-            </div>
+			{/if}
+		</div>
+		<div class="flex justify-start gap-4">
+			<div class="flex flex-col items-center justify-start">
+				<p class="water-label">Water</p>
+				<WaterProgress progress={waterProgressPercent} />
+			</div>
+		</div>
 	</div>
-    <div class="flex flex-wrap flex-row items-center gap-4 col-span-2">
+	<!-- <div class="flex flex-wrap flex-row items-center gap-4 col-span-2">
         {#if context !== 'edit'}
             <a href={`/edit/${plantWater.plant.id}`} class="text-primary">
                 <Button>Edit Plant</Button>
@@ -48,13 +48,13 @@
                 <Button>Water Plant</Button>
             </a>
         {/if}
-    </div>
+    </div> -->
 </div>
 
 <style>
 	.plant-card {
-        grid-template-columns: 8rem minmax(0, 1fr);
-        gap: 1rem;
+		grid-template-columns: 8rem minmax(0, 1fr);
+		gap: 1rem;
 		justify-content: center;
 	}
 
