@@ -38,13 +38,14 @@ CREATE TABLE `user` (
 CREATE TABLE `user_to_house` (
 	`user_id` integer,
 	`house_id` integer,
-	PRIMARY KEY(`house_id`, `user_id`)
+	PRIMARY KEY(`user_id`, `house_id`)
 );
 --> statement-breakpoint
 CREATE TABLE `watering_event` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`notes` text,
-	`fertilized` integer DEFAULT false,
+	`watered` integer,
+	`fertilized` integer,
 	`image_url` text,
 	`plant_id` integer NOT NULL,
 	`user_id` integer NOT NULL,

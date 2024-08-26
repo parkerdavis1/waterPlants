@@ -14,14 +14,15 @@
 	import { Checkbox } from 'src/lib/components/ui/checkbox/'
 
 	export let data
-	console.log(data, 'data')
 
 	let isSubmitting = false
+	let dialogOpen = false
 
 	const { form, enhance, errors, message, constraints } = superForm(data.waterForm, {
 		onSubmit: () => (isSubmitting = true),
 		onResult: ({ result }) => {
 			isSubmitting = false
+			dialogOpen = false
 			if (result.type === 'success') {
 				toast.success(`Successfully watered ${data.plant.name}!`)
 			}
@@ -33,11 +34,11 @@
 	const formId = 'waterForm' + data.plant.id
 </script>
 
-<Dialog.Root>
+<Dialog.Root bind:open={dialogOpen}>
 	<Dialog.Trigger class={`w-full ${buttonVariants({ variant: 'default' })}`}>
 		💧Water
 	</Dialog.Trigger>
-	<Dialog.Content class="sm:max-w-[425px]">
+	<Dialog.Content class="max-h-full overflow-scroll sm:max-w-[425px]">
 		<Dialog.Header>
 			<Dialog.Title>Water Event</Dialog.Title>
 			<!-- <Dialog.Description>
@@ -52,6 +53,7 @@
 			class="flex flex-col gap-8"
 			use:enhance
 		>
+			<!-- <SuperDebug data={$form} /> -->
 			<div class="self-start">
 				<Label for="image"
 					>Image <span class="text-xs text-muted-foreground"> (optional)</span></Label

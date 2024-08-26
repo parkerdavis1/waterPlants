@@ -23,8 +23,8 @@ export const plant = sqliteTable('plant', {
 export const watering_event = sqliteTable('watering_event', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
 	notes: text('notes'),
-	watered: integer('fertilized', { mode: 'boolean' }).default(true),
-	fertilized: integer('fertilized', { mode: 'boolean' }).default(false),
+	watered: integer('watered', { mode: 'boolean' }),
+	fertilized: integer('fertilized', { mode: 'boolean' }),
 	image_url: text('image_url'),
 	plant_id: integer('plant_id')
 		.references(() => plant.id, { onDelete: 'cascade' })

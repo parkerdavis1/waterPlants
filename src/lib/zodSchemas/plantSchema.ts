@@ -31,3 +31,8 @@ export const editPlantSchema = z.object({
 	water_schedule: z.number().positive().min(1).default(7),
 	oldImageUrl: z.string().url().optional(),
 })
+
+export const deleteEventSchema = z.object({
+	id: z.string(),
+	plantId: z.string()
+})

@@ -2,14 +2,14 @@ import env from 'src/lib/env'
 import db from 'src/db'
 import { eq, desc } from 'drizzle-orm'
 import { plant, room, watering_event } from 'src/db/schema.js'
-import { editPlantSchema, plantEventSchema } from 'src/lib/zodSchemas/plantSchema'
+import { deleteEventSchema, editPlantSchema, plantEventSchema } from 'src/lib/zodSchemas/plantSchema'
 import { fail, message, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
 import s3Client from 'src/lib/s3Client'
 import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
 
-import { redirect } from '@sveltejs/kit'
+import { json, redirect } from '@sveltejs/kit'
 
 export async function load({ params }) {
 	const { plantId } = params
@@ -32,6 +32,7 @@ export async function load({ params }) {
 		wateringEvents,
 		editForm: await superValidate(plantData, zod(editPlantSchema)),
 		waterForm: await superValidate(zod(plantEventSchema)),
+		deleteEvent: await superValidate(zod(deleteEventSchema)),
 		rooms,
 	}
 }
@@ -39,7 +40,7 @@ export async function load({ params }) {
 export const actions = {
 	water: async ({ request }) => {
 		const form = await superValidate(request, zod(plantEventSchema))
-		console.log('form', form)
+		console.log('form from server action', form)
 
 		if (!form.valid) return fail(400, { form })
 
@@ -76,8 +77,8 @@ export const actions = {
 				return fail(500, { form })
 			}
 		}
-		// return message(form, 'Success...');
-		return redirect(302, '/')
+		return message(form, 'Success...')
+		// return redirect(302, '/')
 	},
 
 	editPlant: async ({ request }) => {
@@ -151,7 +152,7 @@ export const actions = {
 
 	deletePlant: async ({ request }) => {
 		const data = await request.formData()
-		const id = data.get('id')
+		const id = data.get('id') as string
 		console.log('id', id)
 
 		if (!id) {
@@ -166,5 +167,32 @@ export const actions = {
 		await db.delete(plant).where(eq(plant.id, plantId))
 
 		return redirect(302, '/')
+	},
+
+	deleteEvent: async ({ request }) => {
+		const form = await superValidate(request, zod(deleteEventSchema))
+		if (!form.valid) return fail(400, { form })
+			console.log('form', form)
+
+		// const data = await request.formData()
+		// const id = data.get('id') as string
+		// const plantId = data.get('plantId') as string
+
+		// if (!id || !plantId) {
+		// 	console.log('Error deleting watering event')
+		// 	return fail(420, { message: 'not id' })
+		// }
+
+		const wateringId = form.data.id
+		const plantId = form.data.plantId
+		console.log('wateringId', wateringId)
+		console.log('plantId', plantId)
+
+		const result = await db.delete(watering_event).where(eq(watering_event.id, wateringId))
+		console.log('db result', result)
+
+		return { deleteEvent: form }
+
+		return redirect(302, `/${plantId}`)
 	},
 }

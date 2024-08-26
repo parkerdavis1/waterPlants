@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8a0d98b6-91b1-41a1-babd-076702092fe1",
+  "id": "66922b55-df41-44b4-9d32-419793b11078",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -270,8 +270,8 @@
       "compositePrimaryKeys": {
         "user_to_house_user_id_house_id_pk": {
           "columns": [
-            "house_id",
-            "user_id"
+            "user_id",
+            "house_id"
           ],
           "name": "user_to_house_user_id_house_id_pk"
         }
@@ -295,13 +295,19 @@
           "notNull": false,
           "autoincrement": false
         },
+        "watered": {
+          "name": "watered",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "fertilized": {
           "name": "fertilized",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": false
+          "autoincrement": false
         },
         "image_url": {
           "name": "image_url",

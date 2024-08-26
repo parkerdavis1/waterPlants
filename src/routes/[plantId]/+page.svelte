@@ -12,6 +12,7 @@
 	import { Checkbox } from 'src/lib/components/ui/checkbox/'
 	import WaterButtonDialog from 'src/lib/components/WaterButtonDialog.svelte'
 	import EditButtonDialog from 'src/lib/components/EditButtonDialog.svelte'
+	import WaterEventCard from 'src/lib/components/WaterEventCard.svelte'
 
 	export let data
 
@@ -50,12 +51,13 @@
 	</div>
 	<Separator />
 	<h2 class="text-xl font-bold">Past Watering Events</h2>
-	<div class="flex flex-wrap">
+	<div class="grid gap-4 sm:grid-cols-3">
 		{#each data.wateringEvents as wateringEvent}
-			<div>
+			<WaterEventCard {data} {wateringEvent} />
+			<!-- <div>
 				<p>{wateringEvent.timestamp}</p>
 				<pre class="break-words text-xs opacity-50">{JSON.stringify(wateringEvent, null, 2)}</pre>
-			</div>
+			</div> -->
 		{/each}
 	</div>
 </div>

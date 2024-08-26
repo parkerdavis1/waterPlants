@@ -42,7 +42,7 @@
 		house_id: number
 		name: string
 	}
-	console.log('form!!', $form)
+	// console.log('form!!', $form)
 
 	$: selectedRoom = {
 		label: data.rooms.find((obj: Room) => obj.id === $form.room_id).name,

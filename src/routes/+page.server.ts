@@ -10,6 +10,7 @@ import { superValidate, fail, message, setError } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
 import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+import { json } from '@sveltejs/kit'
 
 interface PlantData {
 	plant: {
