@@ -1,4 +1,5 @@
 <script>
+	export const ssr = false
 	import '../app.css'
 	import * as Avatar from '$lib/components/ui/avatar'
 	import * as Sheet from '$lib/components/ui/sheet'
@@ -8,6 +9,15 @@
 	import { Settings } from 'lucide-svelte'
 	import { Toaster } from 'svelte-sonner'
 	import bluegrad from 'src/lib/assets/images/bluegrad.png'
+	import UserChoice from 'src/lib/components/UserChoice.svelte'
+
+	import { users } from 'src/lib/stores/user'
+	import { browser } from '$app/environment'
+
+	export let data
+	console.log('users from layout', users)
+	console.log('userId from layout', data.userId)
+	const currentUser = users.filter((u) => data.userId == u.id)[0]
 </script>
 
 <Toaster richColors />
@@ -18,19 +28,17 @@
 			<DropdownMenu.Trigger asChild let:builder>
 				<div use:builder.action {...builder} class="cursor-pointer">
 					<Avatar.Root>
-						<Avatar.Image src={bluegrad} />
-						<Avatar.Fallback>PD</Avatar.Fallback>
+						<Avatar.Image src={currentUser.avatar_url} />
+						<Avatar.Fallback>{currentUser.name}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
-				<DropdownMenu.Label>My Account</DropdownMenu.Label>
+				<DropdownMenu.Label>Choose User</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Group>
-					<DropdownMenu.Item>
-						<Settings class="mr-2 h-4 w-4" />
-						<span on:click={() => alert("This doesn't do anything yet")}>Settings</span>
-					</DropdownMenu.Item>
+					<UserChoice name="Parker" initials="PD" id={1} />
+					<UserChoice name="Nell" initials="NS" id={2} />
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>

@@ -5,6 +5,7 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
 	import { superForm } from 'sveltekit-superforms'
 	import { toast } from 'svelte-sonner'
+	import { users } from '../stores/user'
 
 	export let wateringEvent
 	export let data
@@ -20,6 +21,8 @@
 			}
 		},
 	})
+
+	const waterer = users.filter((u) => u.id == wateringEvent.user_id)[0].name
 </script>
 
 <div>
@@ -40,6 +43,7 @@
 			{#if wateringEvent.image_url}
 				<img src={wateringEvent.image_url} />
 			{/if}
+			<p>Waterer: {waterer}</p>
 			<AlertDialog.Root>
 				<AlertDialog.Trigger>
 					<div class="close">

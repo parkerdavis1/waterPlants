@@ -1,7 +1,7 @@
 import env from 'src/lib/env.js'
 import db from 'src/db'
 import { desc, eq, and, sql, inArray } from 'drizzle-orm'
-import { plant, room, watering_event } from 'src/db/schema'
+import { plant, room, user, watering_event } from 'src/db/schema'
 
 import s3Client from 'src/lib/s3Client.js'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
@@ -34,7 +34,8 @@ interface PlantData {
 	}
 }
 
-export async function load() {
+export async function load({ cookies }) {
+	const userId = parseInt(cookies.get('userId'))
 	// TODO: add column for fertilization data
 	// TODO: group by room?
 
@@ -78,6 +79,7 @@ export async function load() {
 	return {
 		plantsWater: dueDatePlantsWater,
 		rooms,
+		userId,
 		// form: await superValidate(zod(waterPlantSchema)),
 		// newPlantForm: await superValidate(zod(waterPlantSchema))
 	}
@@ -126,45 +128,50 @@ export const actions = {
 		return { form }
 	},
 
-	water: async ({ request }) => {
-		const form = await superValidate(request, zod(waterPlantSchema))
+	// water: async ({ request, cookies }) => {
+	// 	const form = await superValidate(request, zod(waterPlantSchema))
+	// 	const userId = cookies.get('userId')
+	// 	console.log('userId from water action', userId)
 
-		if (!form.valid) return fail(400, { form })
+	// 	if (!form.valid) return fail(400, { form })
 
-		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning()
-		if (!insertedWaterEvent) return fail(400, { form })
+	// 	const [insertedWaterEvent] = await db
+	// 		.insert(watering_event)
+	// 		.values({ ...form.data, user_id: userId })
+	// 		.returning()
+	// 	if (!insertedWaterEvent) return fail(400, { form })
 
-		if (form.data.image) {
-			// Image upload
-			const image = form.data.image
+	// 	if (form.data.image) {
+	// 		// Image upload
+	// 		const image = form.data.image
 
-			const fileBuffer = await image.arrayBuffer()
-			const fileName = `${Date.now()}-${image.name}`
+	// 		const fileBuffer = await image.arrayBuffer()
+	// 		const fileName = `${Date.now()}-${image.name}`
 
-			try {
-				const command = new PutObjectCommand({
-					Bucket: env.R2_BUCKET_NAME,
-					Key: fileName,
-					Body: Buffer.from(fileBuffer),
-					ContentType: image.type,
-				})
+	// 		try {
+	// 			const command = new PutObjectCommand({
+	// 				Bucket: env.R2_BUCKET_NAME,
+	// 				Key: fileName,
+	// 				Body: Buffer.from(fileBuffer),
+	// 				ContentType: image.type,
+	// 			})
 
-				await s3Client.send(command)
+	// 			await s3Client.send(command)
 
-				const imageUrl = env.R2_BUCKET_BASE_URL + fileName
-				console.log('imageUrl', imageUrl)
-				const resultAfterUpload = await db
-					.update(watering_event)
-					.set({ image_url: imageUrl })
-					.where(eq(watering_event.id, insertedWaterEvent.id))
-					.returning()
-				console.log('Image uploaded...', resultAfterUpload)
-			} catch (error) {
-				console.error('Upload error: ', error)
-				return fail(500, { form })
-			}
-		}
-	},
+	// 			const imageUrl = env.R2_BUCKET_BASE_URL + fileName
+	// 			console.log('imageUrl', imageUrl)
+	// 			const resultAfterUpload = await db
+	// 				.update(watering_event)
+	// 				.set({ image_url: imageUrl })
+	// 				.where(eq(watering_event.id, insertedWaterEvent.id))
+	// 				.returning()
+	// 			console.log('Image uploaded...', resultAfterUpload)
+	// 		} catch (error) {
+	// 			console.error('Upload error: ', error)
+	// 			return fail(500, { form })
+	// 		}
+	// 	}
+	// },
 }
 
 function getDueDate(eventTime: number | undefined, period: number) {

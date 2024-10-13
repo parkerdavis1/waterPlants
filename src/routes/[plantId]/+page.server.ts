@@ -2,7 +2,11 @@ import env from 'src/lib/env'
 import db from 'src/db'
 import { eq, desc } from 'drizzle-orm'
 import { plant, room, watering_event } from 'src/db/schema.js'
-import { deleteEventSchema, editPlantSchema, plantEventSchema } from 'src/lib/zodSchemas/plantSchema'
+import {
+	deleteEventSchema,
+	editPlantSchema,
+	plantEventSchema,
+} from 'src/lib/zodSchemas/plantSchema'
 import { fail, message, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
@@ -38,13 +42,17 @@ export async function load({ params }) {
 }
 
 export const actions = {
-	water: async ({ request }) => {
+	water: async ({ request, cookies }) => {
 		const form = await superValidate(request, zod(plantEventSchema))
 		console.log('form from server action', form)
+		const userId = cookies.get('userId')
 
 		if (!form.valid) return fail(400, { form })
 
-		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning()
+		const [insertedWaterEvent] = await db
+			.insert(watering_event)
+			.values({ ...form.data, user_id: userId })
+			.returning()
 		if (!insertedWaterEvent) return fail(400, { form })
 
 		if (form.data.image) {
@@ -172,7 +180,7 @@ export const actions = {
 	deleteEvent: async ({ request }) => {
 		const form = await superValidate(request, zod(deleteEventSchema))
 		if (!form.valid) return fail(400, { form })
-			console.log('form', form)
+		console.log('form', form)
 
 		// const data = await request.formData()
 		// const id = data.get('id') as string

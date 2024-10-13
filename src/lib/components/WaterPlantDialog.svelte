@@ -1,44 +1,44 @@
 <script lang="ts">
-	import * as Dialog from '$lib/components/ui/dialog';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import { toast } from 'svelte-sonner';
-	import { Textarea } from 'src/lib/components/ui/textarea';
-	import { Label } from 'src/lib/components/ui/label';
-	import { fileProxy, superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema';
-	import type { SelectPlant } from 'src/db/schema';
-	import { Input } from 'src/lib/components/ui/input';
-	import { Checkbox } from 'src/lib/components/ui/checkbox';
-	import SuperDebug from 'sveltekit-superforms';
-	import { invalidateAll } from '$app/navigation';
+	import * as Dialog from '$lib/components/ui/dialog'
+	import Button from '$lib/components/ui/button/button.svelte'
+	import { toast } from 'svelte-sonner'
+	import { Textarea } from 'src/lib/components/ui/textarea'
+	import { Label } from 'src/lib/components/ui/label'
+	import { fileProxy, superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+	import type { SelectPlant } from 'src/db/schema'
+	import { Input } from 'src/lib/components/ui/input'
+	import { Checkbox } from 'src/lib/components/ui/checkbox'
+	import SuperDebug from 'sveltekit-superforms'
+	import { invalidateAll } from '$app/navigation'
 
-	const { plant, data }: { plant: SelectPlant; data: any } = $props();
-	let dialogOpen = $state(false);
+	const { plant, data }: { plant: SelectPlant; data: any } = $props()
+	let dialogOpen = $state(false)
 
 	const { form, enhance, errors, message } = superForm(data.form, {
 		validators: zodClient(waterPlantSchema),
 		invalidateAll: 'force',
 		onResult: () => handleSaveChanges(),
-		onError: ({ result }) => console.log(result)
-	});
+		onError: ({ result }) => console.log(result),
+	})
 
-	const file = fileProxy(form, 'image');
+	const file = fileProxy(form, 'image')
 
 	function handleSaveChanges() {
-		console.log('Saving changes');
+		console.log('Saving changes')
 		toast.success('Watered plant!', {
 			description: 'Did it',
 			action: {
 				label: 'Undo',
-				onClick: () => console.info('Undo')
-			}
-		});
-		dialogOpen = false;
-		invalidateAll();
+				onClick: () => console.info('Undo'),
+			},
+		})
+		dialogOpen = false
+		invalidateAll()
 	}
 
-	const formId = 'waterForm' + plant.id;
+	const formId = 'waterForm' + plant.id
 </script>
 
 <Dialog.Root bind:open={dialogOpen}>
@@ -86,7 +86,7 @@
 				>
 			</div>
 			<Input type="hidden" name="plant_id" value={plant.id} />
-			<Input type="hidden" name="user_id" value={1} />
+			<!-- <Input type="hidden" name="user_id" value={1} /> -->
 			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 			{#if $message}<p>{$message}</p>{/if}
 		</form>
