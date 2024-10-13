@@ -35,7 +35,7 @@ interface PlantData {
 }
 
 export async function load({ cookies }) {
-	const userId = parseInt(cookies.get('userId'))
+	// const userId = parseInt(cookies.get('userId'))
 	// TODO: add column for fertilization data
 	// TODO: group by room?
 
@@ -79,7 +79,7 @@ export async function load({ cookies }) {
 	return {
 		plantsWater: dueDatePlantsWater,
 		rooms,
-		userId,
+		// userId,
 		// form: await superValidate(zod(waterPlantSchema)),
 		// newPlantForm: await superValidate(zod(waterPlantSchema))
 	}

@@ -1,5 +1,4 @@
 <script>
-	export const ssr = false
 	import '../app.css'
 	import * as Avatar from '$lib/components/ui/avatar'
 	import * as Sheet from '$lib/components/ui/sheet'
@@ -13,11 +12,12 @@
 
 	import { users } from 'src/lib/stores/user'
 	import { browser } from '$app/environment'
+	import { currentUser } from 'src/lib/stores/user'
 
-	export let data
-	console.log('users from layout', users)
-	console.log('userId from layout', data.userId)
-	const currentUser = users.filter((u) => data.userId == u.id)[0]
+	// export let data
+	// console.log('users from layout', users)
+	// console.log('userId from layout', data.userId)
+	// const currentUser = users.filter((u) => data.userId == u.id)[0]
 </script>
 
 <Toaster richColors />
@@ -28,8 +28,8 @@
 			<DropdownMenu.Trigger asChild let:builder>
 				<div use:builder.action {...builder} class="cursor-pointer">
 					<Avatar.Root>
-						<Avatar.Image src={currentUser.avatar_url} />
-						<Avatar.Fallback>{currentUser.name}</Avatar.Fallback>
+						<Avatar.Image src={$currentUser.avatar_url} />
+						<Avatar.Fallback>{$currentUser.name}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
 			</DropdownMenu.Trigger>

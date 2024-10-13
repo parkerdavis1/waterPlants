@@ -14,10 +14,14 @@ export const users = [
 		default_house_id: 1,
 	},
 ]
+const initValue = localStorage.getItem('userId')
+export const currentUserId = writable(initValue ? parseInt(initValue) : 1)
 
-export const currentUserId = writable(1)
-
-export const currentUser = derived(
-	currentUserId,
-	($currentUserId) => users.filter((u) => u.id == $currentUserId)[0],
+export const currentUser = derived(currentUserId, ($currentUserId) =>
+	users.find((u) => u.id == $currentUserId),
 )
+
+currentUserId.subscribe((value) => {
+	console.log('currentUserId ChANGED', value)
+	localStorage.setItem('userId', JSON.stringify(value))
+})

@@ -5,7 +5,7 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
 	import { superForm } from 'sveltekit-superforms'
 	import { toast } from 'svelte-sonner'
-	import { users } from '../stores/user'
+	import { users, currentUserId } from '../stores/user'
 
 	export let wateringEvent
 	export let data

@@ -45,14 +45,11 @@ export const actions = {
 	water: async ({ request, cookies }) => {
 		const form = await superValidate(request, zod(plantEventSchema))
 		console.log('form from server action', form)
-		const userId = cookies.get('userId')
+		// const userId = cookies.get('userId')
 
 		if (!form.valid) return fail(400, { form })
 
-		const [insertedWaterEvent] = await db
-			.insert(watering_event)
-			.values({ ...form.data, user_id: userId })
-			.returning()
+		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning()
 		if (!insertedWaterEvent) return fail(400, { form })
 
 		if (form.data.image) {

@@ -8,17 +8,19 @@
 
 	let form: HTMLFormElement
 	async function handleClick() {
-		const response = await fetch('/api/setUser', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ userId: id }),
-		})
-		console.log('response', response)
-		if (response.ok) {
-			window.location.href = window.location.pathname
-		}
+		console.log('currentuserid', $currentUserId)
+		$currentUserId = id
+		// const response = await fetch('/api/setUser', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 	},
+		// 	body: JSON.stringify({ userId: id }),
+		// })
+		// console.log('response', response)
+		// if (response.ok) {
+		// 	window.location.href = window.location.pathname
+		// }
 	}
 </script>
 
