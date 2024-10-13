@@ -1,6 +1,6 @@
 import env from 'src/lib/env.js'
 import db from 'src/db'
-import { desc, eq, and, sql } from 'drizzle-orm'
+import { desc, eq, and, sql, inArray } from 'drizzle-orm'
 import { plant, room, watering_event } from 'src/db/schema'
 
 import s3Client from 'src/lib/s3Client.js'
@@ -36,7 +36,6 @@ interface PlantData {
 
 export async function load() {
 	// TODO: add column for fertilization data
-	// TODO: calculate watering due date and add that column, for sorting?
 	// TODO: group by room?
 
 	// Get plants with their most recent watering data
@@ -59,17 +58,25 @@ export async function load() {
 			),
 		)
 
-	const modPlantsWater = plantsWater
+	const dueDatePlantsWater = plantsWater
 		.map((obj) => ({
 			...obj,
 			dueDate: getDueDate(obj.watering_event?.timestamp, obj.plant.water_schedule),
 		}))
 		.sort((a, b) => a.dueDate - b.dueDate)
 
-	const rooms = await db.select().from(room)
+	const roomIds = (await db.selectDistinct({ room_id: plant.room_id }).from(plant)).map(
+		(r) => r.room_id,
+	)
+	// console.log('roomResult', roomResult)
+	// const roomIds = roomResult.map(r => r.room_id)
+	let rooms
+	if (roomIds.length > 0) {
+		rooms = await db.select().from(room).where(inArray(room.id, roomIds))
+	}
 
 	return {
-		plantsWater: modPlantsWater,
+		plantsWater: dueDatePlantsWater,
 		rooms,
 		// form: await superValidate(zod(waterPlantSchema)),
 		// newPlantForm: await superValidate(zod(waterPlantSchema))

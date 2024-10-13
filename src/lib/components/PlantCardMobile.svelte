@@ -10,6 +10,8 @@
 	export let context
 	export let showPlantCare
 	export let className
+
+	console.log('context in plantcardmobile:', context)
 </script>
 
 <div class={`plant-card grid w-full rounded-lg border p-4 ${className}`}>
@@ -17,10 +19,10 @@
 		<img
 			src={imageUrl ? imageUrl : bluegrad}
 			alt="placeholder"
-			class="mx-auto aspect-square min-h-16 w-full rounded-lg object-cover sm:w-32"
+			class={`mx-auto aspect-square ${context === 'list' ? 'max-h-32' : ''} min-h-16 w-full rounded-lg object-cover sm:w-32`}
 		/>
 	</div>
-	<div class="flex flex-wrap justify-between gap-4">
+	<div class="flex justify-between gap-4">
 		<div>
 			<h2 class="text-lg font-bold">{plantWater.plant.species}</h2>
 			{#if plantWater.plant.name}<p>{plantWater.plant.name}</p>{/if}
@@ -30,7 +32,7 @@
 				</p>
 			{/if}
 		</div>
-		<div class="flex justify-start gap-4">
+		<div class="flex justify-end gap-4">
 			<div class="flex flex-col items-center justify-start">
 				<p class="water-label">Water</p>
 				<WaterProgress progress={waterProgressPercent} />
@@ -60,5 +62,11 @@
 
 	.progress-ring {
 		--size: 2rem;
+	}
+
+	@media (max-width: 450px) {
+		.plant-card {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
