@@ -28,7 +28,7 @@
 			<DropdownMenu.Trigger asChild let:builder>
 				<div use:builder.action {...builder} class="cursor-pointer">
 					<Avatar.Root>
-						<Avatar.Image src={$currentUser.avatar_url} />
+						<Avatar.Image src={$currentUser.avatar_url} class="object-cover" />
 						<Avatar.Fallback>{$currentUser.name}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
@@ -37,8 +37,8 @@
 				<DropdownMenu.Label>Choose User</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Group>
-					<UserChoice name="Parker" initials="PD" id={1} />
-					<UserChoice name="Nell" initials="NS" id={2} />
+					<UserChoice id={1} />
+					<UserChoice id={2} />
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>

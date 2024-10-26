@@ -1,0 +1,540 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.28kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.8s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:865e5dd094beca432e8c0a1d5e1c465db5f998dca4e439981029b3b81fb39ed5
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/node:20.11.1
+#4 DONE 0.6s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 276B done
+#5 DONE 0.0s
+
+#6 [base 1/3] FROM docker.io/library/node:20.11.1@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5
+#6 DONE 0.0s
+
+#7 [base 2/3] WORKDIR /app
+#7 CACHED
+
+#8 [base 3/3] RUN npm install -g pnpm@9.5.0
+#8 CACHED
+
+#9 [internal] load build context
+#9 transferring context: 309.78kB 0.1s done
+#9 DONE 0.1s
+
+#10 [build 1/7] RUN apt-get update -qq &&     apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+#10 CACHED
+
+#11 [build 2/7] COPY .npmrc package.json pnpm-lock.yaml ./
+#11 DONE 0.0s
+
+#12 [build 3/7] RUN pnpm install --frozen-lockfile --prod=false
+#12 0.583 Lockfile is up to date, resolution step is skipped
+#12 0.652 Progress: resolved 1, reused 0, downloaded 0, added 0
+#12 0.730 Packages: +552
+#12 0.730 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#12 1.128 
+#12 1.128    ╭──────────────────────────────────────────────────────────────────╮
+#12 1.128    │                                                                  │
+#12 1.128    │                Update available! 9.5.0 → 9.12.2.                 │
+#12 1.128    │   Changelog: https://github.com/pnpm/pnpm/releases/tag/v9.12.2   │
+#12 1.128    │                Run "pnpm add -g pnpm" to update.                 │
+#12 1.128    │                                                                  │
+#12 1.128    │         Follow @pnpmjs for updates: https://x.com/pnpmjs         │
+#12 1.128    │                                                                  │
+#12 1.128    ╰──────────────────────────────────────────────────────────────────╯
+#12 1.128 
+#12 1.655 Progress: resolved 552, reused 0, downloaded 39, added 39
+#12 2.657 Progress: resolved 552, reused 0, downloaded 107, added 107
+#12 3.660 Progress: resolved 552, reused 0, downloaded 114, added 114
+#12 4.660 Progress: resolved 552, reused 0, downloaded 124, added 124
+#12 5.660 Progress: resolved 552, reused 0, downloaded 153, added 153
+#12 6.668 Progress: resolved 552, reused 0, downloaded 179, added 179
+#12 7.663 Progress: resolved 552, reused 0, downloaded 194, added 194
+#12 8.666 Progress: resolved 552, reused 0, downloaded 199, added 199
+#12 9.667 Progress: resolved 552, reused 0, downloaded 215, added 215
+#12 10.67 Progress: resolved 552, reused 0, downloaded 240, added 240
+#12 11.67 Progress: resolved 552, reused 0, downloaded 282, added 282
+#12 12.67 Progress: resolved 552, reused 0, downloaded 322, added 322
+#12 13.67 Progress: resolved 552, reused 0, downloaded 358, added 357
+#12 14.68 Progress: resolved 552, reused 0, downloaded 392, added 392
+#12 15.68 Progress: resolved 552, reused 0, downloaded 401, added 401
+#12 16.68 Progress: resolved 552, reused 0, downloaded 429, added 429
+#12 17.68 Progress: resolved 552, reused 0, downloaded 475, added 475
+#12 18.68 Progress: resolved 552, reused 0, downloaded 517, added 517
+#12 19.68 Progress: resolved 552, reused 0, downloaded 545, added 545
+#12 20.68 Progress: resolved 552, reused 0, downloaded 547, added 547
+#12 21.68 Progress: resolved 552, reused 0, downloaded 548, added 548
+#12 22.69 Progress: resolved 552, reused 0, downloaded 551, added 551
+#12 23.43 Progress: resolved 552, reused 0, downloaded 552, added 552, done
+#12 23.62 .../esbuild@0.24.0/node_modules/esbuild postinstall$ node install.js
+#12 23.62 .../esbuild@0.21.5/node_modules/esbuild postinstall$ node install.js
+#12 23.62 .../esbuild@0.23.1/node_modules/esbuild postinstall$ node install.js
+#12 23.62 .../esbuild@0.19.12/node_modules/esbuild postinstall$ node install.js
+#12 23.62 .../esbuild@0.18.20/node_modules/esbuild postinstall$ node install.js
+#12 23.67 .../esbuild@0.24.0/node_modules/esbuild postinstall: Done
+#12 23.68 .../esbuild@0.21.5/node_modules/esbuild postinstall: Done
+#12 23.68 .../esbuild@0.19.12/node_modules/esbuild postinstall: Done
+#12 23.69 .../esbuild@0.23.1/node_modules/esbuild postinstall: Done
+#12 23.69 .../esbuild@0.18.20/node_modules/esbuild postinstall: Done
+#12 23.72 .../node_modules/@sveltejs/kit postinstall$ node postinstall.js
+#12 23.76 .../node_modules/@sveltejs/kit postinstall: Done
+#12 24.01 
+#12 24.01 dependencies:
+#12 24.01 + @aws-sdk/client-s3 3.676.0
+#12 24.01 + @libsql/client 0.14.0
+#12 24.01 + @shoelace-style/shoelace 2.17.1
+#12 24.01 + clsx 2.1.1
+#12 24.01 + date-fns 4.1.0
+#12 24.01 + dotenv 16.4.5
+#12 24.01 + drizzle-orm 0.34.1
+#12 24.01 + embla-carousel-svelte 8.3.0
+#12 24.01 + formsnap 1.0.1
+#12 24.01 + mode-watcher 0.4.1
+#12 24.01 + svelte-sonner 0.3.28
+#12 24.01 + tailwind-merge 2.5.4
+#12 24.01 + tailwind-variants 0.2.1
+#12 24.01 + tsx 4.19.1
+#12 24.01 + ulid 2.3.0
+#12 24.01 + vaul-svelte 0.3.2
+#12 24.01 
+#12 24.01 devDependencies:
+#12 24.01 + @faker-js/faker 9.0.3
+#12 24.01 + @flydotio/dockerfile 0.5.9
+#12 24.01 + @playwright/test 1.48.1
+#12 24.01 + @sveltejs/adapter-auto 3.2.5
+#12 24.01 + @sveltejs/adapter-node 5.2.8
+#12 24.01 + @sveltejs/kit 2.7.2
+#12 24.01 + @sveltejs/vite-plugin-svelte 4.0.0
+#12 24.01 + @tailwindcss/typography 0.5.15
+#12 24.01 + @types/eslint 9.6.1
+#12 24.01 + autoprefixer 10.4.20
+#12 24.01 + bits-ui 0.21.16
+#12 24.01 + cross-env 7.0.3
+#12 24.01 + daisyui 4.12.13
+#12 24.01 + drizzle-kit 0.25.0
+#12 24.01 + eslint 9.13.0
+#12 24.01 + eslint-config-prettier 9.1.0
+#12 24.01 + eslint-plugin-svelte 2.46.0
+#12 24.01 + globals 15.11.0
+#12 24.01 + lucide-svelte 0.453.0
+#12 24.01 + postcss 8.4.47
+#12 24.01 + prettier 3.3.3
+#12 24.01 + prettier-plugin-svelte 3.2.7
+#12 24.01 + prettier-plugin-tailwindcss 0.6.8
+#12 24.01 + svelte 5.0.5
+#12 24.01 + svelte-check 4.0.5
+#12 24.01 + sveltekit-superforms 2.20.0
+#12 24.01 + tailwindcss 3.4.14
+#12 24.01 + tslib 2.8.0
+#12 24.01 + typescript 5.6.3
+#12 24.01 + typescript-eslint 8.11.0
+#12 24.01 + vite 5.4.9
+#12 24.01 + vitest 2.1.3
+#12 24.01 + zod 3.23.8
+#12 24.01 
+#12 24.06 Done in 23.9s
+#12 DONE 24.5s
+
+#13 [build 4/7] RUN pnpm svelte-kit sync
+#13 0.503 Missing /app/svelte.config.js — skipping
+#13 DONE 0.5s
+
+#14 [build 5/7] COPY . .
+#14 DONE 0.3s
+
+#15 [build 6/7] RUN pnpm run build:docker
+#15 0.450 
+#15 0.450 > waterplants@0.0.1 build:docker /app
+#15 0.450 > vite build --debug
+#15 0.450 
+#15 0.578 ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+#15 0.578 
+#15 0.578     tsconfig.json:2:12:
+#15 0.578       2 │   "extends": "./.svelte-kit/tsconfig.json",
+#15 0.578         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#15 0.578 
+#15 0.992 2024-10-22T14:00:51.405Z vite:config bundled config file loaded in 423.43ms
+#15 1.131 2024-10-22T14:00:51.544Z vite:config using resolved config: {
+#15 1.131   plugins: [
+#15 1.131     'vite:build-metadata',
+#15 1.131     'vite:watch-package-data',
+#15 1.131     'vite:pre-alias',
+#15 1.131     'alias',
+#15 1.131     'vite-plugin-svelte',
+#15 1.131     'vite:modulepreload-polyfill',
+#15 1.131     'vite:resolve',
+#15 1.131     'vite:html-inline-proxy',
+#15 1.131     'vite:css',
+#15 1.131     'vite:esbuild',
+#15 1.131     'vite:json',
+#15 1.131     'vite:wasm-helper',
+#15 1.131     'vite:worker',
+#15 1.131     'vite:asset',
+#15 1.131     'vite-plugin-sveltekit-setup',
+#15 1.131     'vite-plugin-sveltekit-virtual-modules',
+#15 1.131     'vite-plugin-sveltekit-guard',
+#15 1.131     'vite-plugin-sveltekit-compile',
+#15 1.131     'vite:wasm-fallback',
+#15 1.131     'vite:define',
+#15 1.131     'vite:css-post',
+#15 1.131     'vite:build-html',
+#15 1.131     'vite:worker-import-meta-url',
+#15 1.131     'vite:asset-import-meta-url',
+#15 1.131     'vite:force-systemjs-wrap-complete',
+#15 1.131     'commonjs',
+#15 1.131     'vite:data-uri',
+#15 1.131     'vite:dynamic-import-vars',
+#15 1.131     'vite:import-glob',
+#15 1.131     'vite-plugin-svelte-module',
+#15 1.131     'vite:build-import-analysis',
+#15 1.131     'vite:esbuild-transpile',
+#15 1.131     'vite:manifest',
+#15 1.131     'vite:reporter',
+#15 1.131     'vite:load-fallback'
+#15 1.131   ],
+#15 1.131   test: { include: [ 'src/**/*.{test,spec}.{js,ts}' ] },
+#15 1.131   build: {
+#15 1.131     target: 'node18.13',
+#15 1.131     cssTarget: 'node18.13',
+#15 1.131     outDir: '/app/.svelte-kit/output/server',
+#15 1.131     assetsDir: 'assets',
+#15 1.131     assetsInlineLimit: 4096,
+#15 1.131     cssCodeSplit: true,
+#15 1.131     sourcemap: false,
+#15 1.131     rollupOptions: {
+#15 1.131       input: [Object],
+#15 1.131       output: [Object],
+#15 1.131       preserveEntrySignatures: 'strict'
+#15 1.131     },
+#15 1.131     minify: false,
+#15 1.131     terserOptions: {},
+#15 1.131     write: true,
+#15 1.131     emptyOutDir: null,
+#15 1.131     copyPublicDir: false,
+#15 1.131     manifest: '.vite/manifest.json',
+#15 1.131     lib: false,
+#15 1.131     ssr: true,
+#15 1.131     ssrManifest: false,
+#15 1.131     ssrEmitAssets: true,
+#15 1.131     reportCompressedSize: true,
+#15 1.131     chunkSizeWarningLimit: 500,
+#15 1.131     watch: null,
+#15 1.131     cssMinify: true,
+#15 1.131     commonjsOptions: { include: [Array], extensions: [Array] },
+#15 1.131     dynamicImportVarsOptions: { warnOnError: true, exclude: [Array] },
+#15 1.131     modulePreload: { polyfill: true }
+#15 1.131   },
+#15 1.131   resolve: {
+#15 1.131     mainFields: [ 'svelte', 'browser', 'module', 'jsnext:main', 'jsnext' ],
+#15 1.131     conditions: [ 'svelte' ],
+#15 1.131     extensions: [
+#15 1.131       '.mjs',  '.js',
+#15 1.131       '.mts',  '.ts',
+#15 1.131       '.jsx',  '.tsx',
+#15 1.131       '.json'
+#15 1.131     ],
+#15 1.131     dedupe: [
+#15 1.131       'svelte',
+#15 1.131       'svelte/animate',
+#15 1.131       'svelte/easing',
+#15 1.131       'svelte/internal',
+#15 1.131       'svelte/internal/client',
+#15 1.131       'svelte/internal/disclose-version',
+#15 1.131       'svelte/internal/server',
+#15 1.131       'svelte/legacy',
+#15 1.131       'svelte/motion',
+#15 1.131       'svelte/reactivity',
+#15 1.131       'svelte/server',
+#15 1.131       'svelte/store',
+#15 1.131       'svelte/transition',
+#15 1.131       'svelte/events'
+#15 1.131     ],
+#15 1.131     preserveSymlinks: false,
+#15 1.131     alias: [ [Object], [Object], [Object], [Object], [Object], [Object] ]
+#15 1.131   },
+#15 1.131   optimizeDeps: {
+#15 1.131     holdUntilCrawlEnd: true,
+#15 1.131     include: [
+#15 1.131       'svelte',
+#15 1.131       'svelte/animate',
+#15 1.131       'svelte/easing',
+#15 1.131       'svelte/internal',
+#15 1.131       'svelte/internal/client',
+#15 1.131       'svelte/internal/disclose-version',
+#15 1.131       'svelte/legacy',
+#15 1.131       'svelte/motion',
+#15 1.131       'svelte/reactivity',
+#15 1.131       'svelte/store',
+#15 1.131       'svelte/transition',
+#15 1.131       'svelte/events',
+#15 1.131       'sveltekit-superforms > memoize-weak'
+#15 1.131     ],
+#15 1.131     exclude: [
+#15 1.131       'formsnap',
+#15 1.131       'mode-watcher',
+#15 1.131       'svelte-sonner',
+#15 1.131       'vaul-svelte',
+#15 1.131       'bits-ui',
+#15 1.131       'sveltekit-superforms',
+#15 1.131       'lucide-svelte',
+#15 1.131       '@melt-ui/svelte',
+#15 1.131       '@sveltejs/kit',
+#15 1.131       '$app',
+#15 1.131       '$env'
+#15 1.131     ],
+#15 1.131     entries: [
+#15 1.131       '/app/src/routes/**/+*.{svelte,js,ts}',
+#15 1.131       '!/app/src/routes/**/+*server.*'
+#15 1.131     ],
+#15 1.131     esbuildOptions: { preserveSymlinks: false }
+#15 1.131   },
+#15 1.131   ssr: {
+#15 1.131     target: 'node',
+#15 1.131     external: [],
+#15 1.131     noExternal: [
+#15 1.131       'svelte',
+#15 1.131       /^svelte\//,
+#15 1.131       'formsnap',
+#15 1.131       'embla-carousel-svelte',
+#15 1.131       'mode-watcher',
+#15 1.131       'svelte-sonner',
+#15 1.131       'vaul-svelte',
+#15 1.131       'bits-ui',
+#15 1.131       'sveltekit-superforms',
+#15 1.131       'lucide-svelte',
+#15 1.131       '@melt-ui/svelte',
+#15 1.131       'esm-env',
+#15 1.131       '@sveltejs/kit'
+#15 1.131     ],
+#15 1.131     optimizeDeps: { noDiscovery: true, esbuildOptions: [Object] }
+#15 1.131   },
+#15 1.131   experimental: { importGlobRestoreExtension: false, hmrPartialAccept: true },
+#15 1.131   root: '/app',
+#15 1.131   server: {
+#15 1.131     preTransformRequests: true,
+#15 1.131     cors: { preflightContinue: true },
+#15 1.131     fs: {
+#15 1.131       strict: true,
+#15 1.131       allow: [Array],
+#15 1.131       deny: [Array],
+#15 1.131       cachedChecks: undefined
+#15 1.131     },
+#15 1.131     sourcemapIgnoreList: [Function: sourcemapIgnoreList],
+#15 1.131     watch: { ignored: [Array] },
+#15 1.131     middlewareMode: false
+#15 1.131   },
+#15 1.131   preview: {
+#15 1.131     port: undefined,
+#15 1.131     strictPort: undefined,
+#15 1.131     host: undefined,
+#15 1.131     https: undefined,
+#15 1.131     open: undefined,
+#15 1.131     proxy: undefined,
+#15 1.131     cors: { preflightContinue: true },
+#15 1.131     headers: undefined
+#15 1.131   },
+#15 1.131   define: {
+#15 1.131     __SVELTEKIT_ADAPTER_NAME__: '"@sveltejs/adapter-node"',
+#15 1.131     __SVELTEKIT_APP_VERSION_FILE__: '"_app/version.json"',
+#15 1.131     __SVELTEKIT_APP_VERSION_POLL_INTERVAL__: '0',
+#15 1.131     __SVELTEKIT_DEV__: 'false',
+#15 1.131     __SVELTEKIT_EMBEDDED__: 'false'
+#15 1.131   },
+#15 1.131   base: '/',
+#15 1.131   publicDir: '/app/static',
+#15 1.131   worker: {
+#15 1.131     format: 'iife',
+#15 1.131     plugins: '() => plugins',
+#15 1.131     rollupOptions: { output: [Object] }
+#15 1.131   },
+#15 1.131   configFile: '/app/vite.config.ts',
+#15 1.131   configFileDependencies: [ '/app/vite.config.ts' ],
+#15 1.131   inlineConfig: {
+#15 1.131     root: undefined,
+#15 1.131     base: undefined,
+#15 1.131     mode: undefined,
+#15 1.131     configFile: undefined,
+#15 1.131     logLevel: undefined,
+#15 1.131     clearScreen: undefined,
+#15 1.131     build: {}
+#15 1.131   },
+#15 1.131   decodedBase: '/',
+#15 1.131   rawBase: '/',
+#15 1.131   cacheDir: '/app/node_modules/.vite',
+#15 1.131   command: 'build',
+#15 1.131   mode: 'production',
+#15 1.131   isWorker: false,
+#15 1.131   mainConfig: null,
+#15 1.131   bundleChain: [],
+#15 1.131   isProduction: true,
+#15 1.131   css: { lightningcss: undefined },
+#15 1.131   esbuild: { jsxDev: false },
+#15 1.131   envDir: '/app',
+#15 1.131   env: { BASE_URL: '/', MODE: 'production', DEV: false, PROD: true },
+#15 1.131   assetsInclude: [Function: assetsInclude],
+#15 1.131   logger: {
+#15 1.131     hasWarned: false,
+#15 1.131     info: [Function: info],
+#15 1.131     warn: [Function: warn],
+#15 1.131     warnOnce: [Function: warnOnce],
+#15 1.131     error: [Function: error],
+#15 1.131     clearScreen: [Function: clearScreen],
+#15 1.131     hasErrorLogged: [Function: hasErrorLogged]
+#15 1.131   },
+#15 1.131   packageCache: Map(1) {
+#15 1.131     'fnpd_/app' => {
+#15 1.131       dir: '/app',
+#15 1.131       data: [Object],
+#15 1.131       hasSideEffects: [Function: hasSideEffects],
+#15 1.131       webResolvedImports: {},
+#15 1.131       nodeResolvedImports: {},
+#15 1.131       setResolvedCache: [Function: setResolvedCache],
+#15 1.131       getResolvedCache: [Function: getResolvedCache]
+#15 1.131     },
+#15 1.131     set: [Function (anonymous)]
+#15 1.131   },
+#15 1.131   createResolver: [Function: createResolver],
+#15 1.131   appType: 'spa',
+#15 1.131   getSortedPlugins: [Function: getSortedPlugins],
+#15 1.131   getSortedPluginHooks: [Function: getSortedPluginHooks]
+#15 1.131 }
+#15 1.131 vite v5.4.9 building SSR bundle for production...
+#15 1.148 transforming...
+#15 1.366 2:00:51 PM [vite-plugin-svelte] src/lib/components/Toolbar/Toolbar.svelte:6:12 Component has unused export property 'data'. If it is for external reference only, please consider using `export const data`
+#15 1.366 4:   import AddNewPlant from './AddNewPlant.svelte';
+#15 1.366 5: 
+#15 1.366 6:   export let data;
+#15 1.366                     ^
+#15 1.366 7: </script>
+#15 1.366 8: 
+#15 1.418 2:00:51 PM [vite-plugin-svelte] src/lib/components/EditButtonDialog.svelte:71:3 `<img>` element should have an alt attribute
+#15 1.418 69:     </Dialog.Header>
+#15 1.418 70:     {#if data.plant.image_url}
+#15 1.418 71:       <img
+#15 1.418             ^
+#15 1.418 72:         src={data.plant.image_url}
+#15 1.418 73:         class="mx-auto aspect-square min-h-16 w-full max-w-60 rounded-lg object-cover"
+#15 2.275 2:00:52 PM [vite-plugin-svelte] src/lib/components/PlantCard.svelte:10:12 Component has unused export property 'data'. If it is for external reference only, please consider using `export const data`
+#15 2.275  8:   import PlantCardMobile from './PlantCardMobile.svelte'
+#15 2.275  9: 
+#15 2.275 10:   export let data
+#15 2.275                      ^
+#15 2.275 11:   export let plantWater
+#15 2.275 12:   export let context = 'default'
+#15 2.275 2:00:52 PM [vite-plugin-svelte] src/lib/components/PlantCard.svelte:109:1 Unused CSS selector ".progress-ring"
+#15 2.275 107:   }
+#15 2.275 108: 
+#15 2.275 109:   .progress-ring {
+#15 2.275                      ^
+#15 2.275 110:     --size: 2rem;
+#15 2.275 111:   }
+#15 2.275 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:94:3 Screenreaders already announce `<img>` elements as an image
+#15 2.275 92:   {#if previewImage}
+#15 2.275 93:     <div class="w-full">
+#15 2.275 94:       <img
+#15 2.275             ^
+#15 2.275 95:         src={previewImage}
+#15 2.275 96:         alt="Selected image preview"
+#15 2.275 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:121:1 Unused CSS selector ".select-image-button"
+#15 2.275 119: 
+#15 2.275 120: <style>
+#15 2.275 121:   .select-image-button {
+#15 2.275                            ^
+#15 2.275 122:     display: flex;
+#15 2.275 123:     align-items: center;
+#15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:135:1 Unused CSS selector ".select-image-button:hover"
+#15 2.276 133:   }
+#15 2.276 134: 
+#15 2.276 135:   .select-image-button:hover,
+#15 2.276                                  ^
+#15 2.276 136:   .select-image-button:focus {
+#15 2.276 137:     background-color: #0056b3;
+#15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:136:1 Unused CSS selector ".select-image-button:focus"
+#15 2.276 134: 
+#15 2.276 135:   .select-image-button:hover,
+#15 2.276 136:   .select-image-button:focus {
+#15 2.276                                  ^
+#15 2.276 137:     background-color: #0056b3;
+#15 2.276 138:   }
+#15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:140:1 Unused CSS selector ".visually-hidden"
+#15 2.276 138:   }
+#15 2.276 139: 
+#15 2.276 140:   .visually-hidden {
+#15 2.276                        ^
+#15 2.276 141:     position: absolute;
+#15 2.276 142:     width: 1px;
+#15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:151:1 Unused CSS selector ".long-content"
+#15 2.276 149:     border: 0;
+#15 2.276 150:   }
+#15 2.276 151:   .long-content {
+#15 2.276                     ^
+#15 2.276 152:     white-space: nowrap;
+#15 2.276 153:     overflow: hidden;
+#15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/WaterEventCard.svelte:42:4 `<img>` element should have an alt attribute
+#15 2.276 40:       {/if}
+#15 2.276 41:       {#if wateringEvent.image_url}
+#15 2.276 42:         <img src={wateringEvent.image_url} />
+#15 2.276                                                  ^
+#15 2.276 43:       {/if}
+#15 2.276 44:       <p>Waterer: {waterer}</p>
+#15 5.658 2:00:56 PM [vite-plugin-svelte] src/lib/components/PlantCardMobile.svelte:11:12 Component has unused export property 'showPlantCare'. If it is for external reference only, please consider using `export const showPlantCare`
+#15 5.658  9:   export let imageUrl
+#15 5.658 10:   export let context
+#15 5.658 11:   export let showPlantCare
+#15 5.658                               ^
+#15 5.658 12:   export let className
+#15 5.658 13: 
+#15 9.778 ✓ 3933 modules transformed.
+#15 9.822 Generated an empty chunk: "entries/endpoints/api/plant/_plantId_/_server.ts".
+#15 9.935 Generated an empty chunk: "entries/endpoints/api/setUser/_server.ts".
+#15 9.956 rendering chunks...
+#15 10.64 
+#15 10.64 node:internal/event_target:1100
+#15 10.64   process.nextTick(() => { throw err; });
+#15 10.64                            ^
+#15 10.64 
+#15 10.64 Emitted 'error' event on Worker instance at:
+#15 10.64     at [kOnErrorMessage] (node:internal/worker:326:10)
+#15 10.64     at [kOnMessage] (node:internal/worker:337:37)
+#15 10.64     at MessagePort.<anonymous> (node:internal/worker:232:57)
+#15 10.64     at [nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)
+#15 10.64     at exports.emitMessage (node:internal/per_context/messageport:23:28)
+#15 10.64 
+#15 10.64 Node.js v20.11.1
+#15 10.68  ELIFECYCLE  Command failed with exit code 1.
+#15 ERROR: process "/bin/sh -c pnpm run build:docker" did not complete successfully: exit code: 1
+------
+ > [build 6/7] RUN pnpm run build:docker:
+10.64 
+10.64 Emitted 'error' event on Worker instance at:
+10.64     at [kOnErrorMessage] (node:internal/worker:326:10)
+10.64     at [kOnMessage] (node:internal/worker:337:37)
+10.64     at MessagePort.<anonymous> (node:internal/worker:232:57)
+10.64     at [nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)
+10.64     at exports.emitMessage (node:internal/per_context/messageport:23:28)
+10.64 
+10.64 Node.js v20.11.1
+10.68  ELIFECYCLE  Command failed with exit code 1.
+------
+
+ [33m2 warnings found (use --debug to expand):
+[0m - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 5)
+ - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 21)
+Dockerfile:38
+--------------------
+  36 |     
+  37 |     # Build application
+  38 | >>> RUN pnpm run build:docker
+  39 |     
+  40 |     # Remove development dependencies
+--------------------
+ERROR: failed to solve: process "/bin/sh -c pnpm run build:docker" did not complete successfully: exit code: 1

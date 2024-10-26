@@ -3,7 +3,7 @@ import { ZodError, z } from 'zod';
 
 const stringBoolean = z.coerce
 	.string()
-	.transform((val) => val === 'true')
+	.transform((val) => val.toLowerCase() === 'true')
 	.default('false');
 
 const EnvSchema = z.object({

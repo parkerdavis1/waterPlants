@@ -1,6 +1,5 @@
 <script lang="ts">
 	import bluegrad from '$lib/assets/images/bluegrad.png'
-	import '@shoelace-style/shoelace/dist/themes/light.css'
 	import RadialProgress from './RadialProgress.svelte'
 	import WaterProgress from './WaterProgress.svelte'
 	import * as Accordion from '$lib/components/ui/accordion'

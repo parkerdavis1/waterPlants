@@ -110,8 +110,5 @@
 				{/if}
 			</Button>
 		</form>
-		<!-- <Dialog.Footer>
-			<Button type="submit">Water</Button>
-		</Dialog.Footer> -->
 	</Dialog.Content>
 </Dialog.Root>

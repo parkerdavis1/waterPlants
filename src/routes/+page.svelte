@@ -5,25 +5,6 @@
 	import { Separator } from 'src/lib/components/ui/separator'
 
 	export let data
-	console.log('rooms', data.rooms)
-	// function groupByRoomId(array) {
-	// 	const groupMap = new Map()
-
-	// 	for (const obj of array) {
-	// 		const roomId = obj.plant.room_id
-	// 		if (!groupMap.has(roomId)) {
-	// 			groupMap.set(roomId, [roomId, []])
-	// 		}
-	// 		groupMap.get(roomId)[1].push(obj)
-	// 	}
-
-	// 	return Array.from(groupMap.values())
-	// }
-
-	// const grouped = groupByRoomId(data.plantsWater)
-	// console.log('grouped', grouped)
-
-	// finish up grouping by rooms logic
 </script>
 
 <Toolbar {data} />
@@ -35,9 +16,12 @@
 				<Accordion.Content>
 					{#each data.plantsWater as plantWater}
 						{#if plantWater.plant.room_id == room.id}
-							<a href={`${plantWater.plant.id}`} class="w-full">
-								<PlantCard {plantWater} {data} context="list" />
-							</a>
+							<div class="flex gap-2">
+								<input type="checkbox" name={plantWater.plant.id} id={plantWater.plant.id} />
+								<a href={`${plantWater.plant.id}`} class="w-full">
+									<PlantCard {plantWater} {data} context="list" />
+								</a>
+							</div>
 						{/if}
 					{/each}
 				</Accordion.Content>

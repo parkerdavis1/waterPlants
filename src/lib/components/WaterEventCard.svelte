@@ -22,14 +22,13 @@
 		},
 	})
 
-	const waterer = users.filter((u) => u.id == wateringEvent.user_id)[0].name
+	const waterer = users.find((u) => u.id == wateringEvent.user_id)?.name
 </script>
 
 <div>
 	<Card.Root class="relative h-full">
 		<Card.Header>
 			<Card.Title>{format(new Date(wateringEvent.timestamp), 'PPP p')}</Card.Title>
-			<!-- <Card.Description>{format(new Date(wateringEvent.timestamp), 'PPPP')}</Card.Description> -->
 		</Card.Header>
 		<Card.Content>
 			{#if wateringEvent.notes}
@@ -39,7 +38,6 @@
 			{#if wateringEvent.fertilized}
 				<p>Fertilized: ✅</p>
 			{/if}
-			<!-- <p>Watered by User: {wateringEvent.user_id}</p> -->
 			{#if wateringEvent.image_url}
 				<img src={wateringEvent.image_url} />
 			{/if}
