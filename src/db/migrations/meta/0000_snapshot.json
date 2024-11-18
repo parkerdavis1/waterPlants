@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "48893c63-5adb-4bc9-8afd-de5204feefb9",
+  "id": "9276766a-cc9d-40bc-9e2c-3399108cf4dc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -33,7 +33,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "plant": {
       "name": "plant",
@@ -134,7 +135,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "room": {
       "name": "room",
@@ -186,7 +188,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "user": {
       "name": "user",
@@ -245,7 +248,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "user_to_house": {
       "name": "user_to_house",
@@ -276,7 +280,8 @@
           "name": "user_to_house_user_id_house_id_pk"
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "watering_event": {
       "name": "watering_event",
@@ -369,9 +374,11 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
+  "views": {},
   "enums": {},
   "_meta": {
     "schemas": {},

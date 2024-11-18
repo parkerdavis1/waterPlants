@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
-export const wateringFormSchema = z.object({
+export const multiWateringFormSchema = z.object({
+	userId: z.coerce.number(),
 	plantIds: z.array(z.number()),
 })

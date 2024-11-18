@@ -11,6 +11,7 @@ import { zod } from 'sveltekit-superforms/adapters'
 
 import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
 import { json } from '@sveltejs/kit'
+import { multiWateringFormSchema } from 'src/lib/zodSchemas/waterManyForm.js'
 
 interface PlantData {
 	plant: {
@@ -35,10 +36,6 @@ interface PlantData {
 }
 
 export async function load({ cookies }) {
-	// const userId = parseInt(cookies.get('userId'))
-	// TODO: add column for fertilization data
-	// TODO: group by room?
-
 	// Get plants with their most recent watering data
 	const plantsWater = await db
 		.select()
@@ -80,7 +77,7 @@ export async function load({ cookies }) {
 		plantsWater: dueDatePlantsWater,
 		rooms,
 		// userId,
-		// form: await superValidate(zod(waterPlantSchema)),
+		form: await superValidate(zod(multiWateringFormSchema)),
 		// newPlantForm: await superValidate(zod(waterPlantSchema))
 	}
 }
@@ -128,50 +125,31 @@ export const actions = {
 		return { form }
 	},
 
-	// water: async ({ request, cookies }) => {
-	// 	const form = await superValidate(request, zod(waterPlantSchema))
-	// 	const userId = cookies.get('userId')
-	// 	console.log('userId from water action', userId)
+	waterPlants: async ({ request }) => {
+		console.log('watering plants!')
+		const form = await superValidate(request, zod(multiWateringFormSchema))
+		console.log('form', form)
+		if (!form.valid) {
+			return fail(400, { form })
+		}
+		console.log('watering plants!')
 
-	// 	if (!form.valid) return fail(400, { form })
-
-	// 	const [insertedWaterEvent] = await db
-	// 		.insert(watering_event)
-	// 		.values({ ...form.data, user_id: userId })
-	// 		.returning()
-	// 	if (!insertedWaterEvent) return fail(400, { form })
-
-	// 	if (form.data.image) {
-	// 		// Image upload
-	// 		const image = form.data.image
-
-	// 		const fileBuffer = await image.arrayBuffer()
-	// 		const fileName = `${Date.now()}-${image.name}`
-
-	// 		try {
-	// 			const command = new PutObjectCommand({
-	// 				Bucket: env.R2_BUCKET_NAME,
-	// 				Key: fileName,
-	// 				Body: Buffer.from(fileBuffer),
-	// 				ContentType: image.type,
-	// 			})
-
-	// 			await s3Client.send(command)
-
-	// 			const imageUrl = env.R2_BUCKET_BASE_URL + fileName
-	// 			console.log('imageUrl', imageUrl)
-	// 			const resultAfterUpload = await db
-	// 				.update(watering_event)
-	// 				.set({ image_url: imageUrl })
-	// 				.where(eq(watering_event.id, insertedWaterEvent.id))
-	// 				.returning()
-	// 			console.log('Image uploaded...', resultAfterUpload)
-	// 		} catch (error) {
-	// 			console.error('Upload error: ', error)
-	// 			return fail(500, { form })
-	// 		}
-	// 	}
-	// },
+		try {
+			await Promise.all(
+				form.data.plantIds.map((plantId) =>
+					db.insert(watering_event).values({
+						plant_id: plantId,
+						user_id: form.data.userId,
+						watered: true,
+					}),
+				),
+			)
+			return { form }
+		} catch (error) {
+			console.log('e', error)
+			return fail(500, { form, error: 'Failed to create watering events' })
+		}
+	},
 }
 
 function getDueDate(eventTime: number | undefined, period: number) {
@@ -179,22 +157,3 @@ function getDueDate(eventTime: number | undefined, period: number) {
 	const unixPeriod = period * 1000 * 60 * 60 * 24
 	return eventTime + unixPeriod
 }
-
-// async function groupPlantDataByRoomId(
-// 	plantDataArray: PlantData[]
-// ): Promise<Record<string, PlantData[]>> {
-// 	const groupedData: Record<string, PlantData[]> = {};
-// 	const rooms = await db.select({ id: room.id, name: room.name }).from(room);
-// 	for (const plantData of plantDataArray) {
-// 		const roomId = plantData.plant.room_id;
-// 		const room = rooms.find((obj) => obj.id === roomId);
-// 		if (!room) throw new Error('Cant find room');
-// 		const roomName = room.name as string;
-
-// 		if (!groupedData[roomName]) {
-// 			groupedData[roomName] = [];
-// 		}
-// 		groupedData[roomName].push(plantData);
-// 	}
-// 	return groupedData;
-// }

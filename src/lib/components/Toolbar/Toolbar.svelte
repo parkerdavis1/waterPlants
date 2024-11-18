@@ -1,9 +1,9 @@
 <script>
-	import Button from '../ui/button/button.svelte';
-	import * as Select from '../ui/select';
-	import AddNewPlant from './AddNewPlant.svelte';
+	import Button from '../ui/button/button.svelte'
+	import * as Select from '../ui/select'
+	import AddNewPlant from './AddNewPlant.svelte'
 
-	export let data;
+	export let data
 </script>
 
 <div class="my-4 flex gap-2">

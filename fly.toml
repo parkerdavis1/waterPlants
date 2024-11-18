@@ -1,24 +1,20 @@
-# fly.toml app configuration file generated for happyplants on 2024-10-26T13:26:08-07:00
+# fly.toml app configuration file generated for waterplants on 2024-11-17T17:08:35-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'happyplants'
+app = 'waterplants'
 primary_region = 'phx'
 
 [build]
 
 [http_service]
-internal_port = 3000
-force_https = true
-auto_stop_machines = 'stop'
-auto_start_machines = true
-min_machines_running = 0
-processes = ['app']
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[vm]]
-size = 'shared-cpu-1x'
-
-[[mounts]]
-source = "happy_plants"
-destination = "/app/data"
+  size = 'shared-cpu-1x'
