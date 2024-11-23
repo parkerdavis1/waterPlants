@@ -30,6 +30,8 @@
 		},
 	})
 
+	console.log('errors from water dialog', $errors)
+
 	const file = fileProxy(form, 'image')
 
 	const formId = 'waterForm' + data.plant.id

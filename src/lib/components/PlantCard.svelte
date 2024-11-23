@@ -2,6 +2,7 @@
 	import bluegrad from '$lib/assets/images/bluegrad.png'
 	import RadialProgress from './RadialProgress.svelte'
 	import WaterProgress from './WaterProgress.svelte'
+	import WaterProgress2 from './WaterProgress2.svelte'
 	import * as Accordion from '$lib/components/ui/accordion'
 	import { Button } from './ui/button'
 	import PlantCardMobile from './PlantCardMobile.svelte'
@@ -88,7 +89,8 @@
 				<!-- <RadialProgress progress={waterProgressPercent} /> -->
 				<!-- <div class="hidden sm:inline"> -->
 				<a href={`${plantWater.plant.id}`}>
-					<WaterProgress progress={waterProgressPercent} />
+					<!-- <WaterProgress progress={waterProgressPercent} /> -->
+					<WaterProgress2 fillPercentage={waterProgressPercent} />
 					<!-- </div> -->
 				</a>
 			</div>

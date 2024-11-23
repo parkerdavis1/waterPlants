@@ -12,13 +12,15 @@
 	import { superForm } from 'sveltekit-superforms'
 	import * as AlertDialog from 'src/lib/components/ui/alert-dialog'
 	import { goto } from '$app/navigation'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { editPlantSchema } from '../zodSchemas/plantSchema'
 
 	export let data
 
 	let isSubmitting = false
 
 	const { form, enhance, constraints, errors } = superForm(data.editForm, {
-		id: 'edit-plant',
+		// id: 'edit-plant',
 		invalidateAll: 'force',
 		onSubmit: () => {
 			// Could upload files from here
@@ -35,6 +37,8 @@
 			}
 		},
 	})
+	console.log('constraints', $constraints)
+	console.log('errors', $errors)
 
 	interface Room {
 		id: number
@@ -42,7 +46,6 @@
 		house_id: number
 		name: string
 	}
-	// console.log('form!!', $form)
 
 	$: selectedRoom = {
 		label: data.rooms.find((obj: Room) => obj.id === $form.room_id).name,
@@ -80,13 +83,11 @@
 			action="?/editPlant"
 			enctype="multipart/form-data"
 		>
-			<!-- TODO: add client image resizing -->
-
 			<Label for="image">New Image</Label>
 			<div class="self-start">
 				<ImageUploader {form} />
 			</div>
-			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
+			<!-- {#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if} -->
 
 			<Label for="species">Species</Label>
 			<Input
@@ -96,7 +97,7 @@
 				bind:value={$form.species}
 				{...$constraints.species}
 			/>
-			{#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if}
+			<!-- {#if $errors.species}<p class="text-red-500">{$errors.species}</p>{/if} -->
 
 			<Label for="name">Name</Label>
 			<Input
@@ -106,7 +107,7 @@
 				bind:value={$form.name}
 				{...$constraints.name}
 			/>
-			{#if $errors.name}<p class="text-red-500">{$errors.name}</p>{/if}
+			<!-- {#if $errors.name}<p class="text-red-500">{$errors.name}</p>{/if} -->
 
 			<!-- TODO: Add Care notes textarea field -->
 
@@ -118,7 +119,7 @@
 				bind:value={$form.notes}
 				{...$constraints.notes}
 			/>
-			{#if $errors.notes}<p class="text-red-500">{$errors.notes}</p>{/if}
+			<!-- {#if $errors.notes}<p class="text-red-500">{$errors.notes}</p>{/if} -->
 
 			<!-- TODO: Add new room option to side of select -->
 			<Label for="room">Room</Label>
@@ -133,7 +134,7 @@
 				</Select.Content>
 				<Select.Input name="room_id" bind:value={$form.room_id} />
 			</Select.Root>
-			{#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if}
+			<!-- {#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if} -->
 
 			<Label for="water_schedule">Watering Schedule (Every __ days)</Label>
 			<Input

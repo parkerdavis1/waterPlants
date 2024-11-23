@@ -24,7 +24,7 @@ export const editPlantSchema = z.object({
 	id: z.number(),
 	species: z.string(),
 	name: z.string().optional(),
-	notes: z.string(),
+	notes: z.string().optional(),
 	image: imageSchema,
 	room_id: z.number(),
 	house_id: z.number().default(1),
@@ -34,5 +34,5 @@ export const editPlantSchema = z.object({
 
 export const deleteEventSchema = z.object({
 	id: z.string(),
-	plantId: z.string()
+	plantId: z.string(),
 })

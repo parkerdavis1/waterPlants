@@ -4,6 +4,7 @@
 	import WaterProgress from './WaterProgress.svelte'
 	import { checkedObj } from '../stores/selectedPlants.svelte'
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
+	import WaterProgress2 from './WaterProgress2.svelte'
 
 	export let plantWater
 	export let daysSinceLastWatered
@@ -50,7 +51,8 @@
 			<div class="flex flex-col items-center justify-start">
 				<p class="water-label">Water</p>
 				<a href={`${plantWater.plant.id}`}>
-					<WaterProgress progress={waterProgressPercent} />
+					<!-- <WaterProgress progress={waterProgressPercent} /> -->
+					<WaterProgress2 fillPercentage={waterProgressPercent} />
 				</a>
 			</div>
 		</div>

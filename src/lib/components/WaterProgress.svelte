@@ -20,6 +20,7 @@
 				cy="50"
 				r={radius}
 				fill="white"
+				clip-path="url({randomIdHash})"
 				stroke={progress > 0 ? 'var(--dry-fill)' : 'rgb(253 186 116)'}
 				stroke-width="6"
 			/>
@@ -29,7 +30,7 @@
 			<path d="M0 5 Q 5 0, 10 5 T 20 5" fill="none" stroke="var(--fill)" stroke-width="2" />
 		</pattern>
 	</defs>
-	<circle
+	<!-- <circle
 		cx="50"
 		cy="50"
 		r={radius}
@@ -37,7 +38,7 @@
 		stroke={progress > 0 ? 'var(--dry-fill)' : 'rgb(253 186 116)'}
 		clip-path="url({randomIdHash})"
 		stroke-width="6"
-	/>
+	/> -->
 	<rect x="0" y={waveHeight} width="100" height="100" fill="var(--fill)" id={clipId}
 		>#0284c5
 		<!-- fill="url(#wave-pattern)" -->
