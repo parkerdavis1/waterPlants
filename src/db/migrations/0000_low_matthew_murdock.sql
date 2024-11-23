@@ -26,12 +26,20 @@ CREATE TABLE `room` (
 	FOREIGN KEY (`house_id`) REFERENCES `house`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE TABLE `session` (
+	`id` text PRIMARY KEY NOT NULL,
+	`user_id` integer NOT NULL,
+	`expires_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `user` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`name` text,
+	`name` text NOT NULL,
 	`avatar_url` text,
 	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	`default_house_id` integer,
+	`password_hash` text NOT NULL,
 	FOREIGN KEY (`default_house_id`) REFERENCES `house`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

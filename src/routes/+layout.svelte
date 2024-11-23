@@ -8,11 +8,15 @@
 	import { Settings } from 'lucide-svelte'
 	import { Toaster } from 'svelte-sonner'
 	import bluegrad from 'src/lib/assets/images/bluegrad.png'
-	import UserChoice from 'src/lib/components/UserChoice.svelte'
+	import LogOut from 'lucide-svelte/icons/log-out'
 
-	import { users } from 'src/lib/stores/user'
+	// import { users } from 'src/lib/stores/user'
 	import { browser } from '$app/environment'
-	import { currentUser } from 'src/lib/stores/user'
+	// import { currentUser } from 'src/lib/stores/user'
+
+	const { data } = $props()
+	const { loggedIn } = data
+	console.log('data layout', data)
 
 	// export let data
 	// console.log('users from layout', users)
@@ -26,20 +30,22 @@
 		<h1 class="text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
-				<div use:builder.action {...builder} class="cursor-pointer">
-					<Avatar.Root>
-						<Avatar.Image src={$currentUser.avatar_url} class="object-cover" />
-						<Avatar.Fallback>{$currentUser.name}</Avatar.Fallback>
-					</Avatar.Root>
-				</div>
+				{#if loggedIn === true}
+					<div use:builder.action {...builder} class="cursor-pointer">
+						<Avatar.Root>
+							<Avatar.Image src={data.user.avatar_url} class="object-cover" />
+							<Avatar.Fallback>{data.user.name}</Avatar.Fallback>
+						</Avatar.Root>
+					</div>
+				{/if}
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
-				<DropdownMenu.Label>Choose User</DropdownMenu.Label>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Group>
-					<UserChoice id={1} />
-					<UserChoice id={2} />
-				</DropdownMenu.Group>
+				<DropdownMenu.Item>
+					<LogOut class="mr-2 h-4 w-4" />
+					<form action="?/logout" method="POST">
+						<button>Log out</button>
+					</form>
+				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</header>

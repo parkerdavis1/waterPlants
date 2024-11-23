@@ -1,5 +1,11 @@
-import { sql } from 'drizzle-orm'
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core'
+import { SQL, sql } from 'drizzle-orm'
+import {
+	sqliteTable,
+	text,
+	integer,
+	primaryKey,
+	type AnySQLiteColumn,
+} from 'drizzle-orm/sqlite-core'
 import { type InferSelectModel } from 'drizzle-orm'
 
 export const plant = sqliteTable('plant', {
@@ -56,12 +62,13 @@ export const room = sqliteTable('room', {
 
 export const user = sqliteTable('user', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
-	name: text('name'),
+	name: text('name').notNull(),
 	avatar_url: text('avatar_url'),
 	created_at: integer('created_at', { mode: 'number' })
 		.notNull()
 		.default(sql`(unixepoch() * 1000)`),
 	default_house_id: integer('default_house_id').references(() => house.id),
+	passwordHash: text('password_hash').notNull(),
 })
 
 export const user_to_house = sqliteTable(
@@ -77,11 +84,26 @@ export const user_to_house = sqliteTable(
 	},
 )
 
+export const session = sqliteTable('session', {
+	id: text('id').primaryKey(),
+	userId: integer('user_id')
+		.notNull()
+		.references(() => user.id),
+	expiresAt: integer('expires_at', {
+		mode: 'timestamp',
+	}).notNull(),
+})
+
+export function lower(email: AnySQLiteColumn): SQL {
+	return sql`lower(${email})`
+}
+
 export type SelectUser = InferSelectModel<typeof user>
 export type SelectRoom = InferSelectModel<typeof room>
 export type SelectHouse = InferSelectModel<typeof house>
 export type SelectWateringEvent = InferSelectModel<typeof watering_event>
 export type SelectPlant = InferSelectModel<typeof plant>
+export type Session = InferSelectModel<typeof session>
 
 export type PlantWateringEventJoin = {
 	plant: SelectPlant

@@ -6,11 +6,11 @@
 	import { Button } from 'src/lib/components/ui/button/'
 	import { superForm } from 'sveltekit-superforms'
 	import SuperDebug from 'sveltekit-superforms'
-	import { currentUser, currentUserId } from 'src/lib/stores/user'
+	// import { currentUser, currentUserId } from 'src/lib/stores/user'
 	import { checkedObj } from 'src/lib/stores/selectedPlants.svelte.js'
 	import { toast } from 'svelte-sonner'
 
-	console.log('currentUserid', $currentUserId)
+	// console.log('currentUserid', $currentUserId)
 
 	let { data } = $props()
 
@@ -18,7 +18,7 @@
 		dataType: 'json',
 		invalidateAll: true,
 		onSubmit: ({ jsonData }) => {
-			$form.userId = $currentUserId
+			$form.userId = data.user.id
 		},
 		onResult: ({ result }) => {
 			if (result.type === 'success') {
@@ -68,7 +68,7 @@
 <!-- <SuperDebug data={$form} /> -->
 <div class="flex flex-col flex-wrap gap-4">
 	<form method="POST" action="?/waterPlants" use:enhance id="multiplantwater">
-		<input type="hidden" name="userId" bind:value={$form.userId} />
+		<input type="hidden" name="userId" bind:value={data.user.id} />
 		<input type="hidden" name="plantIds" bind:value={$form.plantIds} />
 		<Button type="submit" form="multiplantwater" disabled={waterDisabled}
 			>Water Selected Plants</Button

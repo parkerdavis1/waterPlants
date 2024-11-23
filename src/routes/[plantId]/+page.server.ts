@@ -1,7 +1,7 @@
 import env from 'src/lib/env'
 import db from 'src/db'
 import { eq, desc } from 'drizzle-orm'
-import { plant, room, watering_event } from 'src/db/schema.js'
+import { plant, room, user, watering_event } from 'src/db/schema.js'
 import {
 	deleteEventSchema,
 	editPlantSchema,
@@ -30,6 +30,7 @@ export async function load({ params }) {
 		.orderBy(desc(watering_event.timestamp))
 
 	const rooms = await db.select().from(room)
+	const users = await db.select().from(user)
 
 	return {
 		plant: plantData,
@@ -38,6 +39,7 @@ export async function load({ params }) {
 		waterForm: await superValidate(zod(plantEventSchema)),
 		deleteEvent: await superValidate(zod(deleteEventSchema)),
 		rooms,
+		users,
 	}
 }
 

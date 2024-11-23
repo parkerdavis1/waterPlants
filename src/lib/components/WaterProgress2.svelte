@@ -26,7 +26,7 @@
 	/>
 
 	<!-- Blue rectangle that's clipped to the circle -->
-	<rect x="10" {y} width="100" height="100" fill="#0066cc" clip-path="url(#circleClip)" />
+	<rect x="0" {y} width="100" height="100" fill="#0066cc" clip-path="url(#circleClip)" />
 </svg>
 
 <style>

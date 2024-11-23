@@ -12,7 +12,7 @@
 	import Spinner from 'src/lib/components/Spinner.svelte'
 	import Separator from 'src/lib/components/ui/separator/separator.svelte'
 	import { Checkbox } from 'src/lib/components/ui/checkbox/'
-	import { currentUserId } from '../stores/user'
+	// import { currentUserId } from '../stores/user'
 
 	export let data
 
@@ -104,7 +104,7 @@
 				{#if $errors.fertilized}<p class="text-red-500">{$errors.fertilized}</p>{/if}
 			</div>
 			<Input type="hidden" name="plant_id" value={data.plant.id} />
-			<Input type="hidden" name="user_id" value={$currentUserId} />
+			<Input type="hidden" name="user_id" value={data.user.id} />
 			<Button form={formId} type="submit" bind:disabled={isSubmitting}
 				>Water
 				{#if isSubmitting}

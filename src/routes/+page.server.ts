@@ -2,6 +2,7 @@ import env from 'src/lib/env.js'
 import db from 'src/db'
 import { desc, eq, and, sql, inArray } from 'drizzle-orm'
 import { plant, room, user, watering_event } from 'src/db/schema'
+import * as auth from '$lib/server/auth'
 
 import s3Client from 'src/lib/s3Client.js'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
@@ -10,7 +11,7 @@ import { superValidate, fail, message, setError } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
 import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
-import { json } from '@sveltejs/kit'
+import { json, redirect } from '@sveltejs/kit'
 import { multiWateringFormSchema } from 'src/lib/zodSchemas/waterManyForm.js'
 
 interface PlantData {
@@ -35,7 +36,11 @@ interface PlantData {
 	}
 }
 
-export async function load({ cookies }) {
+export async function load({ cookies, locals }) {
+	if (!locals.user) {
+		return redirect(302, '/login')
+	}
+	// return { user: locals.user }
 	// Get plants with their most recent watering data
 	const plantsWater = await db
 		.select()
@@ -79,6 +84,7 @@ export async function load({ cookies }) {
 		// userId,
 		form: await superValidate(zod(multiWateringFormSchema)),
 		// newPlantForm: await superValidate(zod(waterPlantSchema))
+		user: locals.user,
 	}
 }
 
@@ -149,6 +155,15 @@ export const actions = {
 			console.log('e', error)
 			return fail(500, { form, error: 'Failed to create watering events' })
 		}
+	},
+	logout: async (event) => {
+		if (!event.locals.session) {
+			return fail(401)
+		}
+		await auth.invalidateSession(event.locals.session.id)
+		auth.deleteSessionTokenCookie(event)
+
+		return redirect(302, '/login')
 	},
 }
 

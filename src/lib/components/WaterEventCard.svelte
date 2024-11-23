@@ -5,7 +5,7 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
 	import { superForm } from 'sveltekit-superforms'
 	import { toast } from 'svelte-sonner'
-	import { users, currentUserId } from '../stores/user'
+	// import { users, currentUserId } from '../stores/user'
 
 	export let wateringEvent
 	export let data
@@ -22,7 +22,7 @@
 		},
 	})
 
-	const waterer = users.find((u) => u.id == wateringEvent.user_id)?.name
+	const waterer = data.users.find((u) => u.id == wateringEvent.user_id)?.name
 </script>
 
 <div>
