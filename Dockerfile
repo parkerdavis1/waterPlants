@@ -22,7 +22,9 @@ FROM base as build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3 ca-certificates
+
+RUN update-ca-certificates
 
 # Install node modules
 COPY .npmrc package.json pnpm-lock.yaml ./
