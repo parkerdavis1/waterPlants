@@ -10,9 +10,10 @@ if (env.LOCAL_DEV) {
 	})
 } else {
 	client = createClient({
-		url: 'file:./local.db',
+		url: 'file:/app/data/local.db',
 		syncUrl: env.TURSO_DATABASE_URL,
 		authToken: env.TURSO_AUTH_TOKEN,
+		syncInterval: 60,
 	})
 }
 

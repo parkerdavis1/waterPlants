@@ -22,9 +22,8 @@ FROM base as build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3 ca-certificates
-
-RUN update-ca-certificates
+    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3 ca-certificates && \
+    update-ca-certificates
 
 # Install node modules
 COPY .npmrc package.json pnpm-lock.yaml ./
@@ -47,6 +46,7 @@ FROM base
 COPY --from=build /app/build /app/build
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/package.json /app
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000

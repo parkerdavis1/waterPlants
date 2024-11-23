@@ -63,7 +63,7 @@
 	<Dialog.Trigger class={`w-full ${buttonVariants({ variant: 'outline' })}`}>
 		✍️ Edit
 	</Dialog.Trigger>
-	<Dialog.Content class="max-h-[80%] overflow-scroll sm:max-w-[425px]">
+	<Dialog.Content class="max-h-full overflow-scroll sm:max-w-[425px]">
 		<Dialog.Header>
 			<Dialog.Title>Edit {data.plant.species}</Dialog.Title>
 			<!-- <Dialog.Description>
