@@ -6,7 +6,9 @@
 	import { Button } from 'src/lib/components/ui/button/'
 	import { superForm } from 'sveltekit-superforms'
 	import SuperDebug from 'sveltekit-superforms'
-	import { currentUser, currentUserId } from 'src/lib/stores/user.js'
+	import { currentUser, currentUserId } from 'src/lib/stores/user'
+	import { checkedObj } from 'src/lib/stores/selectedPlants.svelte.js'
+	import { toast } from 'svelte-sonner'
 
 	console.log('currentUserid', $currentUserId)
 
@@ -21,29 +23,49 @@
 		onResult: ({ result }) => {
 			if (result.type === 'success') {
 				// selectedPlants = new Set()
-				alert('success')
+				console.log('result', result)
+				const numPlants = result.data.form.data.plantIds.length
+				for (const key in $checkedObj) {
+					$checkedObj[key] = false
+				}
+				toast.success(`Successfully watered ${numPlants} plant${numPlants > 1 ? 's' : ''}`)
 			} else {
-				alert('ERROR')
+				toast.error('error')
 			}
 		},
 	})
 
 	let selectedPlants = $state(new Set<number>())
 	let waterDisabled = $derived($form.plantIds.length === 0)
+	// let waterDisabled = $derived($checkedPlants.length === 0)
 
-	const togglePlant = (plantId: number) => {
-		console.log('selectedPlants', selectedPlants)
-		console.log('waterDisabled', waterDisabled)
-		if ($form.plantIds.includes(plantId)) {
-			$form.plantIds = $form.plantIds.filter((id) => id !== plantId)
-		} else {
-			$form.plantIds = [...$form.plantIds, plantId]
-		}
-	}
+	// const checkedObj = $state(
+	// 	Object.fromEntries(data.plantsWater.map((plantWater) => [plantWater.plant.id, false])),
+	// )
+
+	$checkedObj = Object.fromEntries(
+		data.plantsWater.map((plantWater) => [plantWater.plant.id, false]),
+	)
+
+	$effect(() => {
+		const stringArray = Object.keys($checkedObj).filter((key) => $checkedObj[key] === true)
+		$form.plantIds = stringArray.map((string) => Number(string))
+	})
+
+	// const togglePlant = (checkbox: HTMLInputElement, plantId: number) => {
+	// 	console.log('checkbox', checkbox)
+	// 	console.log('selectedPlants', selectedPlants)
+	// 	console.log('waterDisabled', waterDisabled)
+	// 	if ($form.plantIds.includes(plantId)) {
+	// 		$form.plantIds = $form.plantIds.filter((id) => id !== plantId)
+	// 	} else {
+	// 		$form.plantIds = [...$form.plantIds, plantId]
+	// 	}
+	// }
 </script>
 
 <Toolbar {data} />
-<SuperDebug data={$form} />
+<!-- <SuperDebug data={$form} /> -->
 <div class="flex flex-col flex-wrap gap-4">
 	<form method="POST" action="?/waterPlants" use:enhance id="multiplantwater">
 		<input type="hidden" name="userId" bind:value={$form.userId} />
@@ -59,11 +81,11 @@
 						{#each data.plantsWater as plantWater}
 							{#if plantWater.plant.room_id == room.id}
 								<div class="flex gap-2">
-									<input type="checkbox" onchange={() => togglePlant(plantWater.plant.id)} />
+									<!-- <input type="checkbox" bind:checked={$checkedObj[plantWater.plant.id]} /> -->
 									<!-- bind:checked={$form.plantIds.includes(plantWater.plant.id)} -->
-									<a href={`${plantWater.plant.id}`} class="w-full">
-										<PlantCard {plantWater} {data} context="list" />
-									</a>
+									<!-- <a href={`${plantWater.plant.id}`} class="w-full"> -->
+									<PlantCard {plantWater} {data} context="list" />
+									<!-- </a> -->
 								</div>
 							{/if}
 						{/each}

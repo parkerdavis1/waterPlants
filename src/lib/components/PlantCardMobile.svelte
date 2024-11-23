@@ -2,6 +2,8 @@
 	import Button from './ui/button/button.svelte'
 	import bluegrad from '$lib/assets/images/bluegrad.png'
 	import WaterProgress from './WaterProgress.svelte'
+	import { checkedObj } from '../stores/selectedPlants.svelte'
+	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
 
 	export let plantWater
 	export let daysSinceLastWatered
@@ -14,17 +16,29 @@
 	console.log('context in plantcardmobile:', context)
 </script>
 
-<div class={`plant-card grid w-full rounded-lg border p-4 ${className}`}>
+<div
+	class={`plant-card grid w-full rounded-lg border p-4 ${className} ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
+>
+	{#if context === 'list'}
+		<!-- <input type="checkbox" bind:checked={$checkedObj[plantWater.plant.id]} /> -->
+		<Checkbox bind:checked={$checkedObj[plantWater.plant.id]} class="self-center" />
+	{:else}
+		<span></span>
+	{/if}
 	<div class="relative">
-		<img
-			src={imageUrl ? imageUrl : bluegrad}
-			alt="placeholder"
-			class={`mx-auto aspect-square ${context === 'list' ? 'max-h-32' : ''} min-h-16 w-full rounded-lg object-cover sm:w-32`}
-		/>
+		<a href={`${plantWater.plant.id}`}>
+			<img
+				src={imageUrl ? imageUrl : bluegrad}
+				alt="placeholder"
+				class={`mx-auto aspect-square ${context === 'list' ? 'max-h-32' : ''} min-h-16 w-full rounded-lg object-cover sm:w-32`}
+			/>
+		</a>
 	</div>
 	<div class="flex justify-between gap-4">
 		<div>
-			<h2 class="text-lg font-bold">{plantWater.plant.species}</h2>
+			<a href={`${plantWater.plant.id}`}>
+				<h2 class="name-wrap text-lg font-bold">{plantWater.plant.species}</h2>
+			</a>
 			{#if plantWater.plant.name}<p>{plantWater.plant.name}</p>{/if}
 			{#if plantWater.watering_event?.timestamp}
 				<p class="text-sm opacity-60">
@@ -35,7 +49,9 @@
 		<div class="flex justify-end gap-4">
 			<div class="flex flex-col items-center justify-start">
 				<p class="water-label">Water</p>
-				<WaterProgress progress={waterProgressPercent} />
+				<a href={`${plantWater.plant.id}`}>
+					<WaterProgress progress={waterProgressPercent} />
+				</a>
 			</div>
 		</div>
 	</div>
@@ -55,7 +71,7 @@
 
 <style>
 	.plant-card {
-		grid-template-columns: 8rem minmax(0, 1fr);
+		grid-template-columns: auto 8rem minmax(0, 1fr);
 		gap: 1rem;
 		justify-content: center;
 	}
