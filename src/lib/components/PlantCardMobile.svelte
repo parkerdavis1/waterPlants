@@ -22,7 +22,7 @@
 >
 	{#if context === 'list'}
 		<!-- <input type="checkbox" bind:checked={$checkedObj[plantWater.plant.id]} /> -->
-		<Checkbox bind:checked={$checkedObj[plantWater.plant.id]} class="self-center" />
+		<Checkbox bind:checked={$checkedObj[plantWater.plant.id]} class="h-8 w-8 self-center" />
 	{:else}
 		<span></span>
 	{/if}

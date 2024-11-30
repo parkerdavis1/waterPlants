@@ -8,6 +8,11 @@ if (env.LOCAL_DEV) {
 	client = createClient({
 		url: 'file:src/db/local.db',
 	})
+} else if (env.LOCAL_SEED) {
+	client = createClient({
+		url: env.TURSO_DATABASE_URL,
+		authToken: env.TURSO_AUTH_TOKEN,
+	})
 } else {
 	client = createClient({
 		url: 'file:/app/data/local.db',

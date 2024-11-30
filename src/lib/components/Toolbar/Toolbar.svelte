@@ -2,23 +2,27 @@
 	import Button from '../ui/button/button.svelte'
 	import * as Select from '../ui/select'
 	import AddNewPlant from './AddNewPlant.svelte'
+	import { Switch } from '$lib/components/ui/switch'
+	import Label from '../ui/label/label.svelte'
 
-	export let data
+	const { data, waterDisabled } = $props()
+
+	import { waterPlantsView } from 'src/lib/stores/viewStore'
+	const checked = $state(waterPlantsView)
 </script>
 
-<div class="my-4 flex gap-2">
-	<!-- <Select.Root portal={null}>
-		<Select.Trigger class="w-[180px]">
-			<Select.Value placeholder="Inside / Outside" />
-		</Select.Trigger>
-		<Select.Content>
-			<Select.Group>
-				<Select.Item value="inside" label="Inside">Inside</Select.Item>
-				<Select.Item value="outside" label="Outside">Outside</Select.Item>
-			</Select.Group>
-		</Select.Content>
-		<Select.Input name="insideOutside" />
-	</Select.Root> -->
-	<!-- <AddNewPlant {data} /> -->
-	<a href="/new/plant"><Button>Add New Plant</Button></a>
+<div class="my-4 flex flex-wrap justify-between gap-2">
+	<div>
+		<a href="/new/plant"><Button>Add New Plant</Button></a>
+		{#if !waterDisabled}
+			<Button type="submit" form="multiplantwater" disabled={waterDisabled}
+				>Water Selected Plants</Button
+			>
+		{/if}
+	</div>
+	<div class="flex items-center gap-2">
+		<Switch id="showWaterPlants" bind:checked={$waterPlantsView} />
+		<!-- <Switch id="showWaterPlants" /> -->
+		<Label for="showWaterPlants">Only Show Thirsty Plants</Label>
+	</div>
 </div>
