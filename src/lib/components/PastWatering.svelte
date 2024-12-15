@@ -14,14 +14,14 @@
 		<Table.Row>
 			<Table.Head>Date</Table.Head>
 			<Table.Head>Notes</Table.Head>
-			<Table.Head>Watered</Table.Head>
-			<Table.Head>Fertilized</Table.Head>
-			<Table.Head>Waterer</Table.Head>
+			<Table.Head>Water</Table.Head>
+			<Table.Head>Fert.</Table.Head>
+			<Table.Head>User</Table.Head>
 			<Table.Head class="text-center">🗑️</Table.Head>
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#each data.wateringEvents as event}
+		{#each data.wateringEvents as event (event.id)}
 			<PastWateringRow wateringEvent={event} {data} />
 		{/each}
 	</Table.Body>

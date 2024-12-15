@@ -42,7 +42,7 @@
 			<DropdownMenu.Content>
 				<DropdownMenu.Item>
 					<LogOut class="mr-2 h-4 w-4" />
-					<form action="?/logout" method="POST">
+					<form action="/api?/logout" method="POST">
 						<button>Log out</button>
 					</form>
 				</DropdownMenu.Item>

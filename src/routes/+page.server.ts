@@ -155,16 +155,7 @@ export const actions = {
 			console.log('e', error)
 			return fail(500, { form, error: 'Failed to create watering events' })
 		}
-	},
-	logout: async (event) => {
-		if (!event.locals.session) {
-			return fail(401)
-		}
-		await auth.invalidateSession(event.locals.session.id)
-		auth.deleteSessionTokenCookie(event)
-
-		return redirect(302, '/login')
-	},
+	}
 }
 
 function getDueDate(eventTime: number | undefined, period: number) {

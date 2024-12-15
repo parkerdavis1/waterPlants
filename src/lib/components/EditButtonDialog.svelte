@@ -128,7 +128,7 @@
 					<Select.Value placeholder="Select a room" />
 				</Select.Trigger>
 				<Select.Content>
-					{#each data.rooms as room}
+					{#each data.rooms as room (room.id)}
 						<Select.Item value={room.id} label={room.name}>{room.name}</Select.Item>
 					{/each}
 				</Select.Content>
@@ -155,23 +155,27 @@
 						<Spinner className="w-4 h-4 ml-4" />
 					{/if}
 				</Button>
-				<AlertDialog.Root>
-					<AlertDialog.Trigger asChild let:builder>
-						<Button builders={[builder]} variant="destructive">🗑️</Button>
-					</AlertDialog.Trigger>
-					<AlertDialog.Content>
-						<AlertDialog.Header>
-							<AlertDialog.Title>Are you sure?</AlertDialog.Title>
-							<AlertDialog.Description>
-								This action cannot be undone. This will permanently delete this plant.
-							</AlertDialog.Description>
-						</AlertDialog.Header>
-						<AlertDialog.Footer>
-							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-							<AlertDialog.Action on:click={() => deleteForm.submit()}>Continue</AlertDialog.Action>
-						</AlertDialog.Footer>
-					</AlertDialog.Content>
-				</AlertDialog.Root>
+				<div>
+					<AlertDialog.Root>
+						<AlertDialog.Trigger asChild let:builder>
+							<Button builders={[builder]} variant="destructive">Delete</Button>
+						</AlertDialog.Trigger>
+						<AlertDialog.Content>
+							<AlertDialog.Header>
+								<AlertDialog.Title>Are you sure?</AlertDialog.Title>
+								<AlertDialog.Description>
+									This action cannot be undone. This will permanently delete this plant.
+								</AlertDialog.Description>
+							</AlertDialog.Header>
+							<AlertDialog.Footer>
+								<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+								<AlertDialog.Action on:click={() => deleteForm.submit()}
+									>Continue</AlertDialog.Action
+								>
+							</AlertDialog.Footer>
+						</AlertDialog.Content>
+					</AlertDialog.Root>
+				</div>
 				<!-- <Button on:click={handleDelete} type="submit" variant="destructive">Delete plant</Button> -->
 			</div>
 		</form>

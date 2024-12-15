@@ -109,7 +109,7 @@
 			<Select.Value placeholder="Select a room" />
 		</Select.Trigger>
 		<Select.Content>
-			{#each data.rooms as room}
+			{#each data.rooms as room (room.id)}
 				<Select.Item value={room.id} label={room.name}>{room.name}</Select.Item>
 			{/each}
 		</Select.Content>

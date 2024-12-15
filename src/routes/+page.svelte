@@ -70,7 +70,7 @@
 		<input type="hidden" name="userId" bind:value={data.user.id} />
 		<input type="hidden" name="plantIds" bind:value={$form.plantIds} />
 
-		{#each data.rooms as room}
+		{#each data.rooms as room (room.id)}
 			<Accordion.Root value={['item-1']} multiple={true}>
 				<Accordion.Item value="item-1">
 					<Accordion.Trigger>{room.name}</Accordion.Trigger>

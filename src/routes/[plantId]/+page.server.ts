@@ -41,7 +41,7 @@ export async function load({ params }) {
 }
 
 export const actions = {
-	water: async ({ request, cookies }) => {
+	water: async ({ request }) => {
 		const form = await superValidate(request, zod(plantEventSchema))
 		console.log('form from waer server action', form)
 
@@ -91,7 +91,6 @@ export const actions = {
 			}
 		}
 		return message(form, 'Success...')
-		// return redirect(302, '/')
 	},
 
 	editPlant: async ({ request }) => {
@@ -187,15 +186,6 @@ export const actions = {
 		if (!form.valid) return fail(400, { form })
 		console.log('form', form)
 
-		// const data = await request.formData()
-		// const id = data.get('id') as string
-		// const plantId = data.get('plantId') as string
-
-		// if (!id || !plantId) {
-		// 	console.log('Error deleting watering event')
-		// 	return fail(420, { message: 'not id' })
-		// }
-
 		const wateringId = form.data.id
 		const plantId = form.data.plantId
 		console.log('wateringId', wateringId)
@@ -205,7 +195,5 @@ export const actions = {
 		console.log('db result', result)
 
 		return { deleteEvent: form }
-
-		return redirect(302, `/${plantId}`)
 	},
 }

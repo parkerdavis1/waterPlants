@@ -22,21 +22,25 @@
 </script>
 
 <Table.Row>
-	<Table.Cell class="text-xs">{format(new Date(wateringEvent.timestamp), 'PPp')}</Table.Cell>
+	<Table.Cell class="whitespace-nowrap text-xs"
+		>{format(new Date(wateringEvent.timestamp), 'PPp')}</Table.Cell
+	>
 	<Table.Cell>
 		<div>
 			{wateringEvent.notes}
 		</div>
 		<div>
 			{#if wateringEvent.image_url}
-				<img src={wateringEvent.image_url} />
+				<a href={wateringEvent.image_url} target="_blank">
+					<img src={wateringEvent.image_url} />
+				</a>
 			{/if}
 		</div>
 	</Table.Cell>
 	<Table.Cell class="text-center">{wateringEvent.watered ? '💧' : ''}</Table.Cell>
 	<Table.Cell class="text-center">{wateringEvent.fertilized ? '✅' : ''}</Table.Cell>
 	<Table.Cell class="text-center">{waterer}</Table.Cell>
-	<Table.Cell>
+	<Table.Cell class="text-center">
 		<AlertDialog.Root>
 			<AlertDialog.Trigger>
 				<div class="close">
