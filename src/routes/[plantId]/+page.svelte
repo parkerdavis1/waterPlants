@@ -14,24 +14,15 @@
 	import EditButtonDialog from 'src/lib/components/EditButtonDialog.svelte'
 	import WaterEventCard from 'src/lib/components/WaterEventCard.svelte'
 
-	export let data
+	const { data } = $props()
 
-	// function handleSaveChanges() {
-	// 	console.log('Saving changes');
-	// 	toast.success('Watered plant!', {
-	// 		description: 'Did it',
-	// 		action: {
-	// 			label: 'Undo',
-	// 			onClick: () => console.info('Undo')
-	// 		}
-	// 	});
-	// 	invalidateAll();
-	// }
+	// last watering event that was actually water
+	const lastWater = $derived(data.wateringEvents.filter((event) => event.watered === true)[0])
 
-	$: plantCardData = {
+	const plantCardData = $derived({
 		plant: data.plant,
-		watering_event: data.wateringEvents[0],
-	}
+		watering_event: lastWater,
+	})
 </script>
 
 <div class="mt-8 flex flex-col gap-4">
