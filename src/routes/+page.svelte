@@ -9,8 +9,10 @@
 	import { checkedObj } from 'src/lib/stores/selectedPlants.svelte.js'
 	import { toast } from 'svelte-sonner'
 	import { waterPlantsView } from 'src/lib/stores/viewStore'
+	import { fade, slide } from 'svelte/transition'
 
 	let { data } = $props()
+	console.log('data', data)
 
 	const plantsThatNeedWater = data.plantsWater.filter((plantWater) => {
 		console.log('plantWater in filter function', plantWater.dueDate)
@@ -75,7 +77,7 @@
 					<Accordion.Content>
 						{#each activePlants as plantWater}
 							{#if plantWater.plant.room_id == room.id}
-								<div class="flex gap-2">
+								<div class="flex gap-2" in:slide|global>
 									<PlantCard {plantWater} {data} context="list" />
 								</div>
 							{/if}

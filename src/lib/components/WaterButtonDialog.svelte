@@ -12,15 +12,29 @@
 	import Spinner from 'src/lib/components/Spinner.svelte'
 	import Separator from 'src/lib/components/ui/separator/separator.svelte'
 	import { Checkbox } from 'src/lib/components/ui/checkbox/'
-	// import { currentUserId } from '../stores/user'
+	import * as Tabs from '$lib/components/ui/tabs/index.js'
+	import * as Select from '$lib/components/ui/select/index.js'
+	import { fade, scale } from 'svelte/transition'
 
-	export let data
+	const { data } = $props()
 
-	let isSubmitting = false
-	let dialogOpen = false
+	let isSubmitting = $state(false)
+	let dialogOpen = $state(false)
+	let selectedEventType = $state('water')
+
+	$effect(() => {
+		console.log('running effect')
+		$form.watered = selectedEventType === 'water'
+		$form.fertilized = selectedEventType === 'fertilize'
+		if (selectedEventType !== 'wait') {
+			$form.wait = null
+		}
+	})
 
 	const { form, enhance, errors, message, constraints } = superForm(data.waterForm, {
-		onSubmit: () => (isSubmitting = true),
+		onSubmit: () => {
+			isSubmitting = true
+		},
 		onResult: ({ result }) => {
 			isSubmitting = false
 			dialogOpen = false
@@ -35,6 +49,7 @@
 	const file = fileProxy(form, 'image')
 
 	const formId = 'waterForm' + data.plant.id
+	const waitFormId = 'waitWaterForm' + data.plant.id
 </script>
 
 <Dialog.Root bind:open={dialogOpen}>
@@ -43,10 +58,7 @@
 	</Dialog.Trigger>
 	<Dialog.Content class="max-h-full overflow-scroll sm:max-w-[425px]">
 		<Dialog.Header>
-			<Dialog.Title>Water Event</Dialog.Title>
-			<!-- <Dialog.Description>
-				Add images, notes, or record a watering/fetilization event
-			</Dialog.Description> -->
+			<Dialog.Title>Record Event</Dialog.Title>
 		</Dialog.Header>
 		<form
 			enctype="multipart/form-data"
@@ -62,8 +74,32 @@
 					>Image <span class="text-xs text-muted-foreground"> (optional)</span></Label
 				>
 				<ImageUploader {form} {constraints} />
-				<!-- <Input type="file" name="image" accept="image/*" bind:files={$file} {...$constraints.image} /> -->
 				{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
+			</div>
+			<div>
+				<!-- <Select.Root portal={null} bind:selected={selectedEventType}>
+							<Select.Trigger>
+								<Select.Value placeholder="Select event type" />
+							</Select.Trigger>
+							<Select.Content>
+								<Select.Item value="water" label="Water">Water</Select.Item>
+								<Select.Item value="fertilize" label="Fertilize">Fertilize</Select.Item>
+								<Select.Item value="wait" label="Wait">Wait</Select.Item>
+							</Select.Content>
+						</Select.Root> -->
+				<Tabs.Root bind:value={selectedEventType}>
+					<Tabs.List class="grid w-full grid-cols-3">
+						<Tabs.Trigger value="water">Water</Tabs.Trigger>
+						<Tabs.Trigger value="fertilize">Fertilize</Tabs.Trigger>
+						<Tabs.Trigger value="wait">Wait</Tabs.Trigger>
+					</Tabs.List>
+				</Tabs.Root>
+				{#if selectedEventType === 'wait'}
+					<div transition:fade class="pt-4">
+						<Label for="wait">Wait for __ days</Label>
+						<Input type="number" bind:value={$form.wait} name="wait" {...$constraints.wait} />
+					</div>
+				{/if}
 			</div>
 			<div>
 				<Label for="notes"
@@ -78,35 +114,44 @@
 				/>
 				{#if $errors.notes}<p class="text-red-500">{$errors.notes}</p>{/if}
 			</div>
-			<div class="flex items-center space-x-2">
-				<Checkbox id="watered" bind:checked={$form.watered} />
-				<Input type="hidden" name="watered" bind:value={$form.watered} {...$constraints.watered} />
-				<Label
-					for="watered"
-					class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-					>Watering</Label
-				>
-				{#if $errors.watered}<p class="text-red-500">{$errors.watered}</p>{/if}
-			</div>
-			<div class="flex items-center space-x-2">
-				<Checkbox id="fertilized" bind:checked={$form.fertilized} />
-				<Input
-					type="hidden"
-					name="fertilized"
-					bind:value={$form.fertilized}
-					{...$constraints.fertilized}
-				/>
-				<Label
-					for="fertilized"
-					class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-					>Fertilizing</Label
-				>
-				{#if $errors.fertilized}<p class="text-red-500">{$errors.fertilized}</p>{/if}
-			</div>
+			<!-- <div class="flex items-center space-x-2">
+						<Checkbox id="watered" bind:checked={$form.watered} />
+						<Input
+							type="hidden"
+							name="watered"
+							bind:value={$form.watered}
+							{...$constraints.watered}
+						/>
+						<Label
+							for="watered"
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							>Water</Label
+						>
+						{#if $errors.watered}<p class="text-red-500">{$errors.watered}</p>{/if}
+					</div>
+					<div class="flex items-center space-x-2">
+						<Checkbox id="fertilized" bind:checked={$form.fertilized} />
+						<Input
+							type="hidden"
+							name="fertilized"
+							bind:value={$form.fertilized}
+							{...$constraints.fertilized}
+						/>
+						<Label
+							for="fertilized"
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							>Fertilize</Label
+						>
+						{#if $errors.fertilized}<p class="text-red-500">{$errors.fertilized}</p>{/if}
+					</div> -->
+
 			<Input type="hidden" name="plant_id" value={data.plant.id} />
 			<Input type="hidden" name="user_id" value={data.user.id} />
+			<Input type="hidden" name="watered" bind:value={$form.watered} />
+			<Input type="hidden" name="fertilized" bind:value={$form.fertilized} />
+			<Input type="hidden" name="wait" bind:value={$form.wait} />
 			<Button form={formId} type="submit" bind:disabled={isSubmitting}
-				>Water
+				>Submit
 				{#if isSubmitting}
 					<Spinner className="w-4 h-4 ml-4" />
 				{/if}

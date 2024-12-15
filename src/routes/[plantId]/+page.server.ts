@@ -1,6 +1,6 @@
 import env from 'src/lib/env'
 import db from 'src/db'
-import { eq, desc } from 'drizzle-orm'
+import { eq, desc, sql } from 'drizzle-orm'
 import { plant, room, user, watering_event } from 'src/db/schema.js'
 import {
 	deleteEventSchema,
@@ -19,10 +19,7 @@ export async function load({ params }) {
 	const { plantId } = params
 	const plantIdInt = parseInt(plantId)
 	const [plantData] = await db.select().from(plant).where(eq(plant.id, plantIdInt)).limit(1)
-	// const wateringEvents = await db
-	// 	.select()
-	// 	.from(watering_event)
-	// 	.where(eq(watering_event.plant_id, plantIdInt));
+
 	const wateringEvents = await db
 		.select()
 		.from(watering_event)
@@ -46,10 +43,19 @@ export async function load({ params }) {
 export const actions = {
 	water: async ({ request, cookies }) => {
 		const form = await superValidate(request, zod(plantEventSchema))
-		console.log('form from server action', form)
-		// const userId = cookies.get('userId')
+		console.log('form from waer server action', form)
 
 		if (!form.valid) return fail(400, { form })
+
+		if (form.data.wait) {
+			// update plant and change water_schedule to whatever it is currently + wait number
+			const res = await db
+				.update(plant)
+				.set({ water_schedule:  sql`water_schedule + ${form.data.wait}` })
+				.where(eq(plant.id, form.data.plant_id))
+
+			if (!res) return fail(400, { form })
+		} 
 
 		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning()
 		if (!insertedWaterEvent) return fail(400, { form })

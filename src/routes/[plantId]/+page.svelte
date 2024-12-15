@@ -34,7 +34,7 @@
 	}
 </script>
 
-<div class="mt-8 flex max-w-4xl flex-col gap-4">
+<div class="mt-8 flex flex-col gap-4">
 	<h1 class="break-words text-3xl font-bold">{data.plant.species}</h1>
 	<!-- <SuperDebug data={form} /> -->
 	<PlantCard plantWater={plantCardData} {data} context="event" />
