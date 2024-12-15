@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.css'
 	import * as Avatar from '$lib/components/ui/avatar'
 	import * as Sheet from '$lib/components/ui/sheet'
@@ -12,13 +12,15 @@
 
 	// import { users } from 'src/lib/stores/user'
 	import { browser } from '$app/environment'
+	import { enhance } from '$app/forms'
 	// import { currentUser } from 'src/lib/stores/user'
 
-	const { data } = $props()
+	const { data, children } = $props()
+	// export let data
 	const { loggedIn } = data
 	console.log('data layout', data)
+	let logoutForm: HTMLFormElement | undefined = $state()
 
-	// export let data
 	// console.log('users from layout', users)
 	// console.log('userId from layout', data.userId)
 	// const currentUser = users.filter((u) => data.userId == u.id)[0]
@@ -29,9 +31,9 @@
 	<header class="flex justify-between">
 		<h1 class="text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild let:builder>
+			<DropdownMenu.Trigger>
 				{#if loggedIn === true}
-					<div use:builder.action {...builder} class="cursor-pointer">
+					<div class="cursor-pointer">
 						<Avatar.Root>
 							<Avatar.Image src={data.user.avatar_url} class="object-cover" />
 							<Avatar.Fallback>{data.user.name}</Avatar.Fallback>
@@ -40,10 +42,12 @@
 				{/if}
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
-				<DropdownMenu.Item>
-					<LogOut class="mr-2 h-4 w-4" />
+				<DropdownMenu.Item closeOnSelect={false}>
 					<form action="/api?/logout" method="POST">
-						<button>Log out</button>
+						<div class="flex items-center">
+							<LogOut class="mr-2 h-4 w-4" />
+							<button type="submit">Log out</button>
+						</div>
 					</form>
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
@@ -51,7 +55,8 @@
 	</header>
 	<main class="grow pb-16">
 		<div class="max-w-3xl sm:container">
-			<slot></slot>
+			<!-- <slot></slot> -->
+			{@render children()}
 		</div>
 	</main>
 	<!-- <footer class="text-xs opacity-50">&copy; Parker Davis {new Date().getFullYear()}</footer> -->

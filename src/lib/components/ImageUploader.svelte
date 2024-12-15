@@ -2,11 +2,13 @@
 	import Button from './ui/button/button.svelte'
 	import { fileProxy } from 'sveltekit-superforms'
 
-	export let form
+	// export let form
 
-	let fileInput: HTMLInputElement
-	let previewImage: string | null = null
-	let fileName: string = ''
+	let { form } = $props()
+
+	let fileInput: HTMLInputElement = $state()
+	let previewImage: string | null = $state(null)
+	let fileName: string = $state('')
 
 	const fileProx = fileProxy(form, 'image')
 
@@ -85,7 +87,7 @@
 		name="image"
 		bind:files={$fileProx}
 		bind:this={fileInput}
-		on:change={handleFileSelect}
+		onchange={handleFileSelect}
 		hidden
 	/>
 
@@ -98,7 +100,7 @@
 			/>
 		</div>
 		<div class="flex max-w-full items-center gap-4">
-			<Button on:click={triggerFileInput} variant="secondary">Select new Image</Button>
+			<Button onclick={triggerFileInput} variant="secondary">Select new Image</Button>
 			<p
 				class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-xs italic opacity-50"
 			>
@@ -106,7 +108,7 @@
 			</p>
 		</div>
 	{:else}
-		<Button on:click={triggerFileInput}>
+		<Button onclick={triggerFileInput}>
 			<svg aria-hidden="true" class="image-icon" viewBox="0 0 24 24" width="24" height="24">
 				<path
 					fill="currentColor"

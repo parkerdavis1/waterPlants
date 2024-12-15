@@ -19,7 +19,7 @@
 	import { waterPlantSchema } from '../zodSchemas/plantSchema'
 	import { zod } from 'sveltekit-superforms/adapters'
 
-	export let data
+	let { data } = $props()
 
 	// const superform = superForm(data.newPlantForm, {
 	// 	validators: zod(waterPlantSchema),
@@ -50,32 +50,36 @@
 
 	const { form, enhance, constraints, errors } = superform
 
-	let dialogOpen = false
-	let isSubmitting = false
+	let dialogOpen = $state(false)
+	let isSubmitting = $state(false)
 
 	const defaultName = faker.person.firstName()
 
 	// Selected Room Memory
-	let selectedRoomId = 1
-	$form.room_id = selectedRoomId
 
-	$: {
-		if (browser) {
-			const num = localStorage.getItem('selectedRoom')
-			if (num) selectedRoomId = parseInt(num)
-		}
-	}
+	// let selectedRoom = $derived({
+	// 	label: data.rooms.find((obj) => obj.id === selectedRoomId).name,
+	// 	value: selectedRoomId,
+	// })
 
-	$: selectedRoom = {
-		label: data.rooms.find((obj) => obj.id === selectedRoomId).name,
-		value: selectedRoomId,
+	// $effect(() => {
+	if (browser) {
+		const num = sessionStorage.getItem('selectedRoom')
+		if (num) $form.room_id = parseInt(num)
 	}
+	// })
 
-	function handleSelectedChange(v) {
-		v && ($form.room_id = v.value)
-		selectedRoomId = $form.room_id
-		localStorage.setItem('selectedRoom', $form.room_id)
-	}
+	$inspect($form.room_id, data.rooms, $form)
+
+	console.log('data.rooms', data.rooms)
+
+	const triggerContent = $derived(
+		data.rooms.find((room) => room.id === $form.room_id)?.name ?? 'Select a room',
+	)
+
+	$effect(() => {
+		sessionStorage.setItem('selectedRoom', $form.room_id)
+	})
 </script>
 
 <!-- <SuperDebug data={{ $form, $errors }} /> -->
@@ -111,16 +115,16 @@
 
 	<!-- TODO: Add new room option to side of select -->
 	<Label for="room">Room</Label>
-	<Select.Root selected={selectedRoom} onSelectedChange={handleSelectedChange}>
+	<Select.Root bind:value={$form.room_id} type="single">
 		<Select.Trigger class="w-[180px]">
-			<Select.Value placeholder="Select a room" />
+			{triggerContent}
 		</Select.Trigger>
 		<Select.Content>
-			{#each data.rooms as room}(room.id)
+			{#each data.rooms as room (room.id)}
 				<Select.Item value={room.id} label={room.name}>{room.name}</Select.Item>
 			{/each}
 		</Select.Content>
-		<Select.Input name="room_id" bind:value={$form.room_id} />
+		<input type="hidden" name="room_id" bind:value={$form.room_id} />
 	</Select.Root>
 	{#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if}
 

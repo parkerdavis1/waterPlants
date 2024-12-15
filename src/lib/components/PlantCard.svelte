@@ -73,16 +73,6 @@
 			{#if plantWater.watering_event?.timestamp}<p class="text-sm opacity-60">
 					{daysSinceLastWatered} day{daysSinceLastWatered === 1 ? '' : 's'} since last water
 				</p>{/if}
-			<!-- <Button variant="secondary" on:click={() => (showPlantCare = !showPlantCare)}
-					>Plant Care Info</Button
-				> -->
-
-			<!-- {#if context !== 'edit'}<a href={`/edit/${plantWater.plant.id}`} class="text-primary"
-						><Button>Edit Plant</Button></a
-					>{/if}
-				{#if context !== 'event'}<a href={`/event/${plantWater.plant.id}`}
-						><Button>Water Plant</Button></a
-					>{/if} -->
 		</div>
 		<div class="flex justify-start gap-4">
 			<div class="flex flex-col items-center justify-start">

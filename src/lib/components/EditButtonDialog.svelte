@@ -9,13 +9,14 @@
 	import * as Select from 'src/lib/components/ui/select'
 	import Textarea from 'src/lib/components/ui/textarea/textarea.svelte'
 	import { toast } from 'svelte-sonner'
-	import { superForm } from 'sveltekit-superforms'
+	import SuperDebug, { superForm } from 'sveltekit-superforms'
 	import * as AlertDialog from 'src/lib/components/ui/alert-dialog'
 	import { goto } from '$app/navigation'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { editPlantSchema } from '../zodSchemas/plantSchema'
 
-	export let data
+	// export let data
+	let { data } = $props()
 
 	let isSubmitting = false
 
@@ -47,14 +48,21 @@
 		name: string
 	}
 
-	$: selectedRoom = {
-		label: data.rooms.find((obj: Room) => obj.id === $form.room_id).name,
-		value: $form.room_id,
-	}
+	// let selectedRoom = $derived({
+	// 	label: data.rooms.find((obj: Room) => obj.id === $form.room_id).name,
+	// 	value: $form.room_id,
+	// })
 
-	function handleSelectedChange(v) {
-		v && ($form.room_id = v.value)
-	}
+	let selectedRoom = $state('')
+
+	// function handleSelectedChange(v) {
+	// 	v && ($form.room_id = v.value)
+	// }
+
+	console.log('data.rooms', data.rooms)
+	const triggerContent = $derived(
+		data.rooms.find((room) => room.id === $form.room_id)?.name ?? 'Select a room',
+	)
 
 	let deleteForm: HTMLFormElement
 </script>
@@ -63,12 +71,12 @@
 	<Dialog.Trigger class={`w-full ${buttonVariants({ variant: 'outline' })}`}>
 		✍️ Edit
 	</Dialog.Trigger>
-	<Dialog.Content class="max-h-full overflow-scroll sm:max-w-[425px]">
+	<Dialog.Content class="max-h-full overflow-scroll">
 		<Dialog.Header>
 			<Dialog.Title>Edit {data.plant.species}</Dialog.Title>
 			<!-- <Dialog.Description>
 				Make changes to your profile here. Click save when you're done.
-			</Dialog.Description> -->
+				</Dialog.Description> -->
 		</Dialog.Header>
 		{#if data.plant.image_url}
 			<img
@@ -83,6 +91,7 @@
 			action="?/editPlant"
 			enctype="multipart/form-data"
 		>
+			<!-- <SuperDebug data={$form} /> -->
 			<Label for="image">New Image</Label>
 			<div class="self-start">
 				<ImageUploader {form} />
@@ -123,16 +132,17 @@
 
 			<!-- TODO: Add new room option to side of select -->
 			<Label for="room">Room</Label>
-			<Select.Root selected={selectedRoom} onSelectedChange={handleSelectedChange}>
+			<Select.Root bind:value={$form.room_id} type="single">
 				<Select.Trigger class="w-[180px]">
-					<Select.Value placeholder="Select a room" />
+					{triggerContent}
+					<!-- <Select.Value placeholder="Select a room" /> -->
 				</Select.Trigger>
 				<Select.Content>
 					{#each data.rooms as room (room.id)}
 						<Select.Item value={room.id} label={room.name}>{room.name}</Select.Item>
 					{/each}
 				</Select.Content>
-				<Select.Input name="room_id" bind:value={$form.room_id} />
+				<input type="hidden" name="room_id" bind:value={$form.room_id} />
 			</Select.Root>
 			<!-- {#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if} -->
 
@@ -157,8 +167,8 @@
 				</Button>
 				<div>
 					<AlertDialog.Root>
-						<AlertDialog.Trigger asChild let:builder>
-							<Button builders={[builder]} variant="destructive">Delete</Button>
+						<AlertDialog.Trigger>
+							<Button variant="destructive">Delete</Button>
 						</AlertDialog.Trigger>
 						<AlertDialog.Content>
 							<AlertDialog.Header>
@@ -169,14 +179,12 @@
 							</AlertDialog.Header>
 							<AlertDialog.Footer>
 								<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-								<AlertDialog.Action on:click={() => deleteForm.submit()}
-									>Continue</AlertDialog.Action
+								<AlertDialog.Action onclick={() => deleteForm.submit()}>Continue</AlertDialog.Action
 								>
 							</AlertDialog.Footer>
 						</AlertDialog.Content>
 					</AlertDialog.Root>
 				</div>
-				<!-- <Button on:click={handleDelete} type="submit" variant="destructive">Delete plant</Button> -->
 			</div>
 		</form>
 

@@ -4,7 +4,7 @@ import * as auth from '$lib/server/auth'
 
 export const actions ={
     logout: async (event) => {
-		console.log('logging out...')
+		console.log('logging out...!')
 		if (!event.locals.session) {
 			return fail(401)
 		}

@@ -12,7 +12,7 @@
 <form method="POST" action="?/login">
 	<Label>
 		Username
-		<Input name="username" />
+		<Input name="username" autofocus />
 	</Label>
 	<Label>
 		Password

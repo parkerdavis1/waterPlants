@@ -64,7 +64,7 @@
 						<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 						<AlertDialog.Action
 							class={buttonVariants({ variant: 'destructive' })}
-							on:click={() => deleteEventForm.submit()}
+							onclick={() => deleteEventForm.submit()}
 						>
 							Delete
 						</AlertDialog.Action>
