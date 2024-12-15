@@ -13,6 +13,7 @@
 	import WaterButtonDialog from 'src/lib/components/WaterButtonDialog.svelte'
 	import EditButtonDialog from 'src/lib/components/EditButtonDialog.svelte'
 	import WaterEventCard from 'src/lib/components/WaterEventCard.svelte'
+	import PastWatering from 'src/lib/components/PastWatering.svelte'
 
 	const { data } = $props()
 
@@ -42,13 +43,14 @@
 	</div>
 	<Separator />
 	<h2 class="text-xl font-bold">Past Watering Events</h2>
+	<PastWatering {data} />
 	<div class="grid gap-4 sm:grid-cols-3">
-		{#each data.wateringEvents as wateringEvent}
-			<WaterEventCard {data} {wateringEvent} />
-			<!-- <div>
+		<!-- {#each data.wateringEvents as wateringEvent} -->
+		<!-- <WaterEventCard {data} {wateringEvent} /> -->
+		<!-- <div>
 				<p>{wateringEvent.timestamp}</p>
 				<pre class="break-words text-xs opacity-50">{JSON.stringify(wateringEvent, null, 2)}</pre>
 			</div> -->
-		{/each}
+		<!-- {/each} -->
 	</div>
 </div>

@@ -1,31 +1,32 @@
 <script lang="ts">
 	import bluegrad from '$lib/assets/images/bluegrad.png'
-	import RadialProgress from './RadialProgress.svelte'
-	import WaterProgress from './WaterProgress.svelte'
 	import WaterProgress2 from './WaterProgress2.svelte'
-	import * as Accordion from '$lib/components/ui/accordion'
-	import { Button } from './ui/button'
 	import PlantCardMobile from './PlantCardMobile.svelte'
 	import { checkedObj } from '../stores/selectedPlants.svelte'
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
 
-	export let data
-	export let plantWater
-	export let context = 'default'
+	// export let data
+	// export let plantWater
+	// export let context = 'default'
 
-	let showPlantCare = false
+	const { data, plantWater, context = 'default' } = $props()
 
-	$: lastWateringEventTimestamp = plantWater.watering_event?.timestamp
+	let showPlantCare = $state(false)
 
-	$: daysSinceLastWatered = Math.round(
-		(new Date().getTime() - new Date(lastWateringEventTimestamp).getTime()) / (1000 * 60 * 60 * 24),
+	let lastWateringEventTimestamp = $derived(plantWater.watering_event?.timestamp)
+
+	let daysSinceLastWatered = $derived(
+		Math.round(
+			(new Date().getTime() - new Date(lastWateringEventTimestamp).getTime()) /
+				(1000 * 60 * 60 * 24),
+		),
 	)
 
-	const waterPeriod = plantWater.plant.water_schedule
+	let waterPeriod = $derived(plantWater.plant.water_schedule)
 
-	$: waterProgressPercent = lastWateringEventTimestamp
-		? 100 - (daysSinceLastWatered / waterPeriod) * 100
-		: 0
+	let waterProgressPercent = $derived(
+		lastWateringEventTimestamp ? 100 - (daysSinceLastWatered / waterPeriod) * 100 : 0,
+	)
 
 	const url = `/event/${plantWater.plant.id}`
 	const imageUrl = plantWater.plant.image_url
