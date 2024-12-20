@@ -14,12 +14,24 @@ export const waterPlantSchema = z.object({
 export const plantEventSchema = z.object({
 	notes: z.string().optional(),
 	fertilized: z.boolean(),
-	watered: z.boolean(),
+	watered: z.boolean().default(true),
 	wait: z.number().optional(),
 	plant_id: z.number(),
 	user_id: z.number(),
 	image: imageSchema,
+}) // write some meta zod logic where it can't be wait and water/fertilized at the same time
+.transform((data) => {
+	if (data.wait) {
+		return {
+			...data,
+			watered: false,
+			fertilized: false,
+		}
+	} else {
+		return data
+	}
 })
+
 
 export const editPlantSchema = z.object({
 	id: z.number(),

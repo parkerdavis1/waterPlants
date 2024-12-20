@@ -3,6 +3,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js'
 	import { Input } from '$lib/components/ui/input/index.js'
 	import { Label } from '$lib/components/ui/label/index.js'
+	import { Switch } from '$lib/components/ui/switch/index.js'
 
 	import { Textarea } from 'src/lib/components/ui/textarea/index'
 	import { toast } from 'svelte-sonner'
@@ -15,21 +16,30 @@
 	import * as Tabs from '$lib/components/ui/tabs/index.js'
 	import * as Select from '$lib/components/ui/select/index.js'
 	import { fade, scale } from 'svelte/transition'
+	import { id } from 'date-fns/locale'
 
 	const { data } = $props()
 
 	let isSubmitting = $state(false)
 	let dialogOpen = $state(false)
-	let selectedEventType = $state('water')
+	let selectedEventType = $state('event')
+	let wateredTemp = $state(true)
+	let fertilizedTemp = $state(false)
 
-	$effect(() => {
-		console.log('running effect')
-		$form.watered = selectedEventType === 'water'
-		$form.fertilized = selectedEventType === 'fertilize'
-		if (selectedEventType !== 'wait') {
-			$form.wait = null
+	function handleTabChange() {
+		if (selectedEventType === 'wait') {
+			console.log('Wait selected')
+			wateredTemp = $form.watered
+			fertilizedTemp = $form.fertilized
+			// then...
+			$form.watered = false
+			$form.fertilized = false
+		} else if (selectedEventType === 'event') {
+			console.log('event selected')
+			$form.watered = wateredTemp
+			$form.fertilized = fertilizedTemp
 		}
-	})
+	}
 
 	const { form, enhance, errors, message, constraints } = superForm(data.waterForm, {
 		onSubmit: () => {
@@ -44,8 +54,6 @@
 		},
 	})
 
-	console.log('errors from water dialog', $errors)
-
 	const file = fileProxy(form, 'image')
 
 	const formId = 'waterForm' + data.plant.id
@@ -54,11 +62,13 @@
 
 <Dialog.Root bind:open={dialogOpen}>
 	<Dialog.Trigger class={`w-full ${buttonVariants({ variant: 'default' })}`}>
-		💧Water
+		💧Record Event
 	</Dialog.Trigger>
 	<Dialog.Content class="max-h-full overflow-scroll sm:max-w-[425px]">
 		<Dialog.Header>
-			<Dialog.Title>Record Event</Dialog.Title>
+			<Dialog.Title
+				>{#if selectedEventType === 'wait'}Wait{:else}Record Event{/if}</Dialog.Title
+			>
 		</Dialog.Header>
 		<form
 			enctype="multipart/form-data"
@@ -69,37 +79,44 @@
 			use:enhance
 		>
 			<!-- <SuperDebug data={$form} /> -->
+
+			<div>
+				<Tabs.Root bind:value={selectedEventType} onValueChange={handleTabChange}>
+					<Tabs.List class="grid w-full grid-cols-2">
+						<Tabs.Trigger value="event">Record Event</Tabs.Trigger>
+						<!-- <Tabs.Trigger value="fertilize">Fertilize</Tabs.Trigger> -->
+						<Tabs.Trigger value="wait">Wait</Tabs.Trigger>
+					</Tabs.List>
+					<Tabs.Content value="event">
+						<div>
+							<div class="flex items-center space-x-2 py-4">
+								<Switch id="water" bind:checked={$form.watered} />
+								<Label for="water">
+									Water{' '}
+									{#if $form.watered}<span transition:fade>💧</span>
+									{/if}
+								</Label>
+							</div>
+							<div class="flex items-center space-x-2 py-4">
+								<Switch id="fertilized" bind:checked={$form.fertilized} />
+								<Label for="fertilized">Fertilize</Label>
+							</div>
+						</div>
+					</Tabs.Content>
+					<Tabs.Content value="wait">
+						<div class="pt-4">
+							<Label for="wait">Wait for __ days</Label>
+							<Input type="number" bind:value={$form.wait} name="wait" {...$constraints.wait} />
+						</div>
+					</Tabs.Content>
+				</Tabs.Root>
+			</div>
 			<div class="self-start">
 				<Label for="image"
 					>Image <span class="text-xs text-muted-foreground"> (optional)</span></Label
 				>
 				<ImageUploader {form} {constraints} />
 				{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
-			</div>
-			<div>
-				<!-- <Select.Root portal={null} bind:selected={selectedEventType}>
-							<Select.Trigger>
-								<Select.Value placeholder="Select event type" />
-							</Select.Trigger>
-							<Select.Content>
-								<Select.Item value="water" label="Water">Water</Select.Item>
-								<Select.Item value="fertilize" label="Fertilize">Fertilize</Select.Item>
-								<Select.Item value="wait" label="Wait">Wait</Select.Item>
-							</Select.Content>
-						</Select.Root> -->
-				<Tabs.Root bind:value={selectedEventType}>
-					<Tabs.List class="grid w-full grid-cols-3">
-						<Tabs.Trigger value="water">Water</Tabs.Trigger>
-						<Tabs.Trigger value="fertilize">Fertilize</Tabs.Trigger>
-						<Tabs.Trigger value="wait">Wait</Tabs.Trigger>
-					</Tabs.List>
-				</Tabs.Root>
-				{#if selectedEventType === 'wait'}
-					<div transition:fade class="pt-4">
-						<Label for="wait">Wait for __ days</Label>
-						<Input type="number" bind:value={$form.wait} name="wait" {...$constraints.wait} />
-					</div>
-				{/if}
 			</div>
 			<div>
 				<Label for="notes"
@@ -114,37 +131,6 @@
 				/>
 				{#if $errors.notes}<p class="text-red-500">{$errors.notes}</p>{/if}
 			</div>
-			<!-- <div class="flex items-center space-x-2">
-						<Checkbox id="watered" bind:checked={$form.watered} />
-						<Input
-							type="hidden"
-							name="watered"
-							bind:value={$form.watered}
-							{...$constraints.watered}
-						/>
-						<Label
-							for="watered"
-							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							>Water</Label
-						>
-						{#if $errors.watered}<p class="text-red-500">{$errors.watered}</p>{/if}
-					</div>
-					<div class="flex items-center space-x-2">
-						<Checkbox id="fertilized" bind:checked={$form.fertilized} />
-						<Input
-							type="hidden"
-							name="fertilized"
-							bind:value={$form.fertilized}
-							{...$constraints.fertilized}
-						/>
-						<Label
-							for="fertilized"
-							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							>Fertilize</Label
-						>
-						{#if $errors.fertilized}<p class="text-red-500">{$errors.fertilized}</p>{/if}
-					</div> -->
-
 			<Input type="hidden" name="plant_id" value={data.plant.id} />
 			<Input type="hidden" name="user_id" value={data.user.id} />
 			<Input type="hidden" name="watered" bind:value={$form.watered} />
