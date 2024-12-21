@@ -20,6 +20,9 @@ export async function load() {
 
 export const actions = {
 	newPlant: async ({ request }) => {
+		// delay for testing
+		// await new Promise((resolve) => setTimeout(resolve, 1000))
+		
 		const formData = await request.formData()
 		console.dir(formData, { depth: 10 })
 

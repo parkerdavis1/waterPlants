@@ -20,21 +20,22 @@
 	import { zod } from 'sveltekit-superforms/adapters'
 
 	let { data } = $props()
+	let dialogOpen = $state(false)
+	let isSubmitting = $state(false)
 
 	const superform = superForm(data.newPlantForm, {
 		validators: zod(newPlantSchema),
+		onSubmit: () => (isSubmitting = true),
 		onResult: async ({ result }) => {
 			if (result.type === 'success') {
 				await goto('/')
 				toast.success('Created new plant')
+				isSubmitting = false
 			}
 		},
 	})
 
 	const { form, enhance, constraints, errors } = superform
-
-	let dialogOpen = $state(false)
-	let isSubmitting = $state(false)
 
 	const defaultName = faker.person.firstName()
 
@@ -112,4 +113,11 @@
 		{...$constraints.water_schedule}
 	/>
 	{#if $errors.water_schedule}<p class="text-red-500">{$errors.water_schedule}</p>{/if}
+
+	<Button type="submit" form="new-plant" class="mt-2" bind:disabled={isSubmitting}>
+		Submit
+		{#if isSubmitting}
+			<Spinner className="w-4 h-4 ml-4" />
+		{/if}
+	</Button>
 </form>

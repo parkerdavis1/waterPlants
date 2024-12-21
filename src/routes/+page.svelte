@@ -77,7 +77,7 @@
 					<Accordion.Content>
 						{#each activePlants as plantWater}
 							{#if plantWater.plant.room_id == room.id}
-								<div class="flex gap-2" in:slide|global>
+								<div class="flex gap-2">
 									<PlantCard {plantWater} {data} context="list" />
 								</div>
 							{/if}
