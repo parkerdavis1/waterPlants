@@ -30,7 +30,7 @@
 			<img
 				src={imageUrl ? imageUrl : bluegrad}
 				alt="placeholder"
-				class={`mx-auto sm:aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 rounded-lg object-cover sm:w-32`}
+				class={`mx-auto aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 w-32 rounded-lg object-cover`}
 			/>
 		</a>
 	</div>

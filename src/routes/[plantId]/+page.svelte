@@ -22,9 +22,14 @@
 	// last watering event that was actually water
 	const lastWater = $derived(data.wateringEvents.filter((event) => event.watered === true)[0])
 
+	const plantCardData = $derived({
+		plant: data.plant,
+		watering_event: lastWater,
+	})
+
 	let daysSinceLastWatered = $derived(
 		Math.round(
-			(new Date().getTime() - new Date(lastWater.timestamp).getTime()) / (1000 * 60 * 60 * 24),
+			(new Date().getTime() - new Date(lastWater?.timestamp).getTime()) / (1000 * 60 * 60 * 24),
 		),
 	)
 
@@ -33,11 +38,6 @@
 			? 100 - (daysSinceLastWatered / plantCardData.plant.water_schedule) * 100
 			: 0,
 	)
-
-	const plantCardData = $derived({
-		plant: data.plant,
-		watering_event: lastWater,
-	})
 </script>
 
 <div class="mt-8 flex flex-col gap-4">
@@ -73,11 +73,15 @@
 					<span class="opacity-60">Watering Schedule: </span> Every {plantCardData.plant
 						.water_schedule} days
 				</p>
-				<p>
-					<span class="opacity-60">Days since last watered:</span>
-					{daysSinceLastWatered}
-					{daysSinceLastWatered === 1 ? 'day' : 'days'}
-				</p>
+				{#if isNaN(daysSinceLastWatered)}
+					<p><span class="opacity-60">No watering events recorded</span></p>
+				{:else}
+					<p>
+						<span class="opacity-60">Days since last watered:</span>
+						{daysSinceLastWatered}
+						{daysSinceLastWatered === 1 ? 'day' : 'days'}
+					</p>
+				{/if}
 			</div>
 
 			<!-- Watering Progress -->
