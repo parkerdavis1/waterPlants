@@ -108,7 +108,7 @@
 			</p>
 		</div>
 	{:else}
-		<Button onclick={triggerFileInput}>
+		<Button onclick={triggerFileInput} variant="secondary">
 			<svg aria-hidden="true" class="image-icon" viewBox="0 0 24 24" width="24" height="24">
 				<path
 					fill="currentColor"

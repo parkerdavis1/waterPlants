@@ -115,7 +115,7 @@
 					</Tabs.Content>
 				</Tabs.Root>
 			</div>
-			<div class="self-start">
+			<div>
 				<Label for="image"
 					>Image <span class="text-xs text-muted-foreground"> (optional)</span></Label
 				>
