@@ -19,21 +19,37 @@
 	console.log('context in plantcardmobile:', context)
 </script>
 
-<div class={`my-4 flex w-full justify-between gap-4 ${className}`}>
-	{#if context === 'list'}
-		<Checkbox bind:checked={$checkedObj[plantWater.plant.id]} class="h-8 w-8 self-center" />
-	{:else}
-		<span></span>
-	{/if}
-	<div class="relative w-full">
-		<a href={`${plantWater.plant.id}`}>
-			<img
-				src={imageUrl ? imageUrl : bluegrad}
-				alt="placeholder"
-				class={`mx-auto aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 w-32 rounded-lg object-cover`}
+<div
+	class={`flex w-full justify-between gap-4 rounded-lg p-2 ${className} ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
+>
+	<div class="flex justify-between gap-4">
+		{#if context === 'list'}
+			<Checkbox
+				bind:checked={$checkedObj[plantWater.plant.id]}
+				class="size-6 self-center rounded-full"
 			/>
-		</a>
+		{:else}
+			<span></span>
+		{/if}
+		<div class="w-fullgrid relative place-content-center">
+			<a href={`${plantWater.plant.id}`}>
+				{#if imageUrl}
+					<img
+						src={imageUrl ? imageUrl : bluegrad}
+						alt="placeholder"
+						class={`mx-auto aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 w-32 rounded-lg object-cover`}
+					/>
+				{:else}
+					<p
+						class="grid h-full max-h-20 w-32 place-content-center rounded-lg bg-blue-100 text-black/60"
+					>
+						{plantWater.plant.species}
+					</p>
+				{/if}
+			</a>
+		</div>
 	</div>
+
 	<div class="flex justify-end gap-4">
 		<div class="flex flex-col items-center justify-start">
 			<a href={`${plantWater.plant.id}`}>
