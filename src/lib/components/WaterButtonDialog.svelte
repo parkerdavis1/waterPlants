@@ -66,9 +66,13 @@
 	</Dialog.Trigger>
 	<Dialog.Content class="max-h-full overflow-scroll sm:max-w-[425px]">
 		<Dialog.Header>
-			<Dialog.Title
-				>{#if selectedEventType === 'wait'}Wait{:else}Record Event{/if}</Dialog.Title
-			>
+			<Dialog.Title>
+				{#if selectedEventType === 'wait'}
+					<span>Wait</span>
+				{:else}
+					<span>Record Event</span>
+				{/if}
+			</Dialog.Title>
 		</Dialog.Header>
 		<form
 			enctype="multipart/form-data"
@@ -82,7 +86,7 @@
 
 			<div>
 				<Tabs.Root bind:value={selectedEventType} onValueChange={handleTabChange}>
-					<Tabs.List class="grid w-full grid-cols-2">
+					<Tabs.List class="grid w-full grid-cols-2 bg-gray-300">
 						<Tabs.Trigger value="event">Record Event</Tabs.Trigger>
 						<!-- <Tabs.Trigger value="fertilize">Fertilize</Tabs.Trigger> -->
 						<Tabs.Trigger value="wait">Wait</Tabs.Trigger>

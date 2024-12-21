@@ -5,4 +5,4 @@
 </script>
 
 <NewPlantForm {data} />
-<Button type="submit" form="new-plant">Submit</Button>
+<Button type="submit" form="new-plant" class="mt-2">Submit</Button>

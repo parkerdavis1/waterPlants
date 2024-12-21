@@ -10,7 +10,7 @@ import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { superValidate, fail, message, setError } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
-import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+import { newPlantSchema } from 'src/lib/zodSchemas/plantSchema'
 import { json, redirect } from '@sveltejs/kit'
 import { multiWateringFormSchema } from 'src/lib/zodSchemas/waterManyForm.js'
 
@@ -83,14 +83,14 @@ export async function load({ cookies, locals }) {
 		rooms,
 		// userId,
 		form: await superValidate(zod(multiWateringFormSchema)),
-		// newPlantForm: await superValidate(zod(waterPlantSchema))
+		// newPlantForm: await superValidate(zod(newPlantSchema))
 		user: locals.user,
 	}
 }
 
 export const actions = {
 	newPlant: async ({ request }) => {
-		const form = await superValidate(request, zod(waterPlantSchema))
+		const form = await superValidate(request, zod(newPlantSchema))
 		if (!form.valid) return fail(400, { form })
 
 		const [insertedPlant] = await db.insert(plant).values(form.data).returning()

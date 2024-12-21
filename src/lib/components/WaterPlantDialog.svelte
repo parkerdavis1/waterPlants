@@ -6,7 +6,7 @@
 	import { Label } from 'src/lib/components/ui/label'
 	import { fileProxy, superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+	import { newPlantSchema } from 'src/lib/zodSchemas/plantSchema'
 	import type { SelectPlant } from 'src/db/schema'
 	import { Input } from 'src/lib/components/ui/input'
 	import { Checkbox } from 'src/lib/components/ui/checkbox'
@@ -17,7 +17,7 @@
 	let dialogOpen = $state(false)
 
 	const { form, enhance, errors, message } = superForm(data.form, {
-		validators: zodClient(waterPlantSchema),
+		validators: zodClient(newPlantSchema),
 		invalidateAll: 'force',
 		onResult: () => handleSaveChanges(),
 		onError: ({ result }) => console.log(result),

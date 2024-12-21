@@ -6,14 +6,15 @@ import s3Client from 'src/lib/s3Client.js'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { superValidate, fail, message, setError, withFiles } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { waterPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+import { newPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+import { redirect } from '@sveltejs/kit'
 
 export async function load() {
 	const rooms = await db.select().from(room)
 
 	return {
 		rooms,
-		newPlantForm: await superValidate(zod(waterPlantSchema)),
+		newPlantForm: await superValidate(zod(newPlantSchema)),
 	}
 }
 
@@ -22,7 +23,7 @@ export const actions = {
 		const formData = await request.formData()
 		console.dir(formData, { depth: 10 })
 
-		const form = await superValidate(formData, zod(waterPlantSchema), { allowFiles: true })
+		const form = await superValidate(formData, zod(newPlantSchema), { allowFiles: true })
 		console.dir(form, { depth: 10 })
 
 		if (!form.valid) return fail(400, withFiles({ form }))
@@ -59,9 +60,9 @@ export const actions = {
 				console.error('Upload error: ', error)
 				return fail(500, withFiles({ form }))
 			}
-			return message(form, 'Image uploaded successfully')
+			// return message(form, 'Image uploaded successfully')
 		}
-		// return redirect(302, '/');
-		return message(form, 'new plant')
+		return redirect(302, '/');
+		// return message(form, 'new plant')
 	},
 }

@@ -1,12 +1,12 @@
 import { z } from 'zod'
 import { imageSchema } from './images'
 
-export const waterPlantSchema = z.object({
+export const newPlantSchema = z.object({
 	species: z.string(),
 	name: z.string().optional(),
 	notes: z.string().optional(),
 	image: imageSchema,
-	room_id: z.number(),
+	room_id: z.number().default(1),
 	house_id: z.number().default(1),
 	water_schedule: z.number().positive().min(1).default(7),
 })
@@ -19,8 +19,7 @@ export const plantEventSchema = z.object({
 	plant_id: z.number(),
 	user_id: z.number(),
 	image: imageSchema,
-}) // write some meta zod logic where it can't be wait and water/fertilized at the same time
-.transform((data) => {
+}).transform((data) => {
 	if (data.wait) {
 		return {
 			...data,

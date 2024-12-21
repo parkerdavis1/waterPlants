@@ -12,7 +12,7 @@
 </script>
 
 <div class="my-4 flex flex-wrap justify-between gap-2">
-	<div>
+	<div class="flex flex-wrap items-center gap-2">
 		<a href="/new/plant"><Button>Add New Plant</Button></a>
 		{#if !waterDisabled}
 			<Button type="submit" form="multiplantwater" disabled={waterDisabled}

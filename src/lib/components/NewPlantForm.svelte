@@ -16,30 +16,13 @@
 	import ClaudeImage from '$lib/components/ImageUploader.svelte'
 	import { goto } from '$app/navigation'
 	import Textarea from './ui/textarea/textarea.svelte'
-	import { waterPlantSchema } from '../zodSchemas/plantSchema'
+	import { newPlantSchema } from '../zodSchemas/plantSchema'
 	import { zod } from 'sveltekit-superforms/adapters'
 
 	let { data } = $props()
 
-	// const superform = superForm(data.newPlantForm, {
-	// 	validators: zod(waterPlantSchema),
-	// 	onSubmit: () => {
-	// 		isSubmitting = true
-	// 	},
-	// 	onResult: ({ result }) => {
-	// 		isSubmitting = false
-	// 		console.log('result', result)
-	// 		if (result.type === 'success') {
-	// 			toast.success('Created new plant')
-	// 			dialogOpen = false
-	// 		} else {
-	// 			toast.error('Error creating plant')
-	// 		}
-	// 		// goto('/');
-	// 	},
-	// })
 	const superform = superForm(data.newPlantForm, {
-		validators: zod(waterPlantSchema),
+		validators: zod(newPlantSchema),
 		onResult: async ({ result }) => {
 			if (result.type === 'success') {
 				await goto('/')
@@ -57,17 +40,10 @@
 
 	// Selected Room Memory
 
-	// let selectedRoom = $derived({
-	// 	label: data.rooms.find((obj) => obj.id === selectedRoomId).name,
-	// 	value: selectedRoomId,
-	// })
-
-	// $effect(() => {
 	if (browser) {
 		const num = sessionStorage.getItem('selectedRoom')
 		if (num) $form.room_id = parseInt(num)
 	}
-	// })
 
 	$inspect($form.room_id, data.rooms, $form)
 
