@@ -6,22 +6,47 @@
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
 	import WaterProgress2 from './WaterProgress2.svelte'
 
-	export let plantWater
-	export let daysSinceLastWatered
-	export let waterProgressPercent
-	export let imageUrl
-	export let context
-	export let showPlantCare
-	export let className
+	const {
+		plantWater,
+		daysSinceLastWatered,
+		waterProgressPercent,
+		imageUrl,
+		context,
+		showPlantCare,
+		className,
+	} = $props()
 
 	console.log('context in plantcardmobile:', context)
 </script>
 
-<div
+<div class={`my-4 flex w-full justify-between gap-4 ${className}`}>
+	{#if context === 'list'}
+		<Checkbox bind:checked={$checkedObj[plantWater.plant.id]} class="h-8 w-8 self-center" />
+	{:else}
+		<span></span>
+	{/if}
+	<div class="relative w-full">
+		<a href={`${plantWater.plant.id}`}>
+			<img
+				src={imageUrl ? imageUrl : bluegrad}
+				alt="placeholder"
+				class={`mx-auto sm:aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 rounded-lg object-cover sm:w-32`}
+			/>
+		</a>
+	</div>
+	<div class="flex justify-end gap-4">
+		<div class="flex flex-col items-center justify-start">
+			<a href={`${plantWater.plant.id}`}>
+				<WaterProgress2 fillPercentage={waterProgressPercent} />
+			</a>
+		</div>
+	</div>
+</div>
+
+<!-- <div
 	class={`plant-card grid w-full rounded-lg border p-4 ${className} ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
 >
 	{#if context === 'list'}
-		<!-- <input type="checkbox" bind:checked={$checkedObj[plantWater.plant.id]} /> -->
 		<Checkbox bind:checked={$checkedObj[plantWater.plant.id]} class="h-8 w-8 self-center" />
 	{:else}
 		<span></span>
@@ -51,28 +76,18 @@
 			<div class="flex flex-col items-center justify-start">
 				<p class="water-label">Water</p>
 				<a href={`${plantWater.plant.id}`}>
-					<!-- <WaterProgress progress={waterProgressPercent} /> -->
 					<WaterProgress2 fillPercentage={waterProgressPercent} />
 				</a>
 			</div>
 		</div>
 	</div>
-	<!-- <div class="flex flex-wrap flex-row items-center gap-4 col-span-2">
-        {#if context !== 'edit'}
-            <a href={`/edit/${plantWater.plant.id}`} class="text-primary">
-                <Button>Edit Plant</Button>
-            </a>
-        {/if}
-        {#if context !== 'event'}
-            <a href={`/event/${plantWater.plant.id}`}>
-                <Button>Water Plant</Button>
-            </a>
-        {/if}
-    </div> -->
 </div>
+-->
 
 <style>
 	.plant-card {
+		display: grid;
+		width: 100%;
 		grid-template-columns: auto 8rem minmax(0, 1fr);
 		gap: 1rem;
 		justify-content: center;

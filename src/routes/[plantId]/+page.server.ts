@@ -30,7 +30,10 @@ export async function load({ params }) {
 	const users = await db.select().from(user)
 
 	return {
-		plant: plantData,
+		plant: { 
+			...plantData, 
+			room_name: rooms.find(room => room.id === plantData.room_id)?.name
+		},
 		wateringEvents,
 		editForm: await superValidate(plantData, zod(editPlantSchema)),
 		waterForm: await superValidate(zod(plantEventSchema)),
