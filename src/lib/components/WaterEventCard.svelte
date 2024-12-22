@@ -17,7 +17,9 @@
 	const { form, enhance } = superForm(data.deleteEvent, {
 		onResult: ({ result }) => {
 			if (result.type === 'success') {
-				toast.success(`Successfully deleted event from ${wateringEvent.timestamp}!`)
+				toast.success(
+					`Successfully deleted event from ${new Date(wateringEvent.timestamp).toLocaleDateString()}!`,
+				)
 			}
 		},
 	})

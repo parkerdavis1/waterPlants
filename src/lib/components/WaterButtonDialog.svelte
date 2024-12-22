@@ -49,7 +49,7 @@
 			isSubmitting = false
 			dialogOpen = false
 			if (result.type === 'success') {
-				toast.success(`Successfully watered ${data.plant.name}!`)
+				toast.success(`Successfully watered ${data.plant.name ?? data.plant.species ?? 'plant'}!`)
 			}
 		},
 	})
