@@ -29,7 +29,6 @@
 		},
 		onResult: async ({ result }) => {
 			isSubmitting = false
-			console.log('result', result)
 			if (result.type === 'success') {
 				await goto('/')
 				toast.success(`Edited plant`)
@@ -38,8 +37,6 @@
 			}
 		},
 	})
-	console.log('constraints', $constraints)
-	console.log('errors', $errors)
 
 	interface Room {
 		id: number

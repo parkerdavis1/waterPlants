@@ -15,8 +15,6 @@
 		showPlantCare,
 		className,
 	} = $props()
-
-	console.log('context in plantcardmobile:', context)
 </script>
 
 <div

@@ -14,7 +14,6 @@
 	let showPlantCare = $state(false)
 
 	let lastWateringEventTimestamp = $derived(plantWater.watering_event?.timestamp)
-	console.log('lastwateringeventtimestamp', lastWateringEventTimestamp)
 
 	let daysSinceLastWatered = $derived(
 		Math.round(
@@ -22,7 +21,6 @@
 				(1000 * 60 * 60 * 24),
 		),
 	)
-	console.log('daysSinceLastWatered', daysSinceLastWatered)
 
 	let waterPeriod = $derived(plantWater.plant.water_schedule)
 

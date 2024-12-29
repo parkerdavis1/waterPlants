@@ -12,23 +12,15 @@
 	import { fade, slide } from 'svelte/transition'
 
 	let { data } = $props()
-	console.log('data', data)
 
 	const plantsThatNeedWater = data.plantsWater.filter((plantWater) => {
-		console.log('plantWater in filter function', plantWater.dueDate)
-		console.log('now', new Date().getTime())
 		return plantWater.dueDate < new Date().getTime()
 	})
-	console.log('plantsThatNeedWater', plantsThatNeedWater)
 
 	let activePlants = $state()
 	waterPlantsView.subscribe((value) => {
 		activePlants = value ? plantsThatNeedWater : data.plantsWater
 	})
-	// const activePlants = $derived(waterPlantsView ? plantsThatNeedWater : data.plantsWater)
-
-	console.log('waterPlantsView', waterPlantsView)
-	console.log('activePlants', activePlants)
 
 	const { form, enhance, isTainted } = superForm(data.form, {
 		dataType: 'json',
@@ -61,6 +53,19 @@
 		const stringArray = Object.keys($checkedObj).filter((key) => $checkedObj[key] === true)
 		$form.plantIds = stringArray.map((string) => Number(string))
 	})
+
+	$inspect('data.rooms', data.rooms)
+
+	// const roomNames = data.rooms.map((room) => room.name)
+	const openRooms =
+		// get open rooms from session storage if it exists, otherwise set to all rooms
+		JSON.parse(window.sessionStorage.getItem('accordionValue')) ??
+		data.rooms.map((room) => room.name)
+	let values = $state([...openRooms])
+
+	function handleAccordionChange(arrayOfValues) {
+		window.sessionStorage.setItem('accordionValue', JSON.stringify(arrayOfValues))
+	}
 </script>
 
 <Toolbar {data} {waterDisabled} />
@@ -70,9 +75,9 @@
 		<input type="hidden" name="userId" bind:value={data.user.id} />
 		<input type="hidden" name="plantIds" bind:value={$form.plantIds} />
 
-		{#each data.rooms as room (room.id)}
-			<Accordion.Root value={['item-1']} multiple={true}>
-				<Accordion.Item value="item-1">
+		<Accordion.Root type="multiple" value={values} onValueChange={handleAccordionChange}>
+			{#each data.rooms as room, index (room.id)}
+				<Accordion.Item value={room.name}>
 					<Accordion.Trigger>{room.name}</Accordion.Trigger>
 					<Accordion.Content>
 						{#each activePlants as plantWater}
@@ -84,7 +89,7 @@
 						{/each}
 					</Accordion.Content>
 				</Accordion.Item>
-			</Accordion.Root>
-		{/each}
+			{/each}
+		</Accordion.Root>
 	</form>
 </div>

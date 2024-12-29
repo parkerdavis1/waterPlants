@@ -18,7 +18,6 @@
 	const { data, children } = $props()
 	// export let data
 	const { loggedIn } = data
-	console.log('data layout', data)
 	let logoutForm: HTMLFormElement | undefined = $state()
 
 	// console.log('users from layout', users)

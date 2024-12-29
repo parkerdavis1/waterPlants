@@ -1,8 +1,6 @@
 <script>
 	const { fillPercentage } = $props()
-	console.log('fillPercentage', fillPercentage)
 	const y = $derived(100 - fillPercentage)
-	console.log('fillPercentage', fillPercentage)
 	// y = 0 is full
 	// y = 100 is empty
 	const customId = 'circleClip' + Math.floor(Math.random() * 100000000).toString()
