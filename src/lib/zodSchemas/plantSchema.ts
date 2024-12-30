@@ -19,12 +19,14 @@ export const plantEventSchema = z.object({
 	plant_id: z.number(),
 	user_id: z.number(),
 	image: imageSchema,
+	timestamp: z.number().optional(),
 }).transform((data) => {
 	if (data.wait) {
 		return {
 			...data,
 			watered: false,
 			fertilized: false,
+			timestamp: undefined
 		}
 	} else {
 		return data

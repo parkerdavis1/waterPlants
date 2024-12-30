@@ -17,6 +17,7 @@
 	import * as Select from '$lib/components/ui/select/index.js'
 	import { fade, scale } from 'svelte/transition'
 	import { id } from 'date-fns/locale'
+	import DatePicker from './DatePicker.svelte'
 
 	const { data } = $props()
 
@@ -38,6 +39,7 @@
 			console.log('event selected')
 			$form.watered = wateredTemp
 			$form.fertilized = fertilizedTemp
+			$form.wait = undefined
 		}
 	}
 
@@ -82,18 +84,22 @@
 			class="flex flex-col gap-8"
 			use:enhance
 		>
-			<!-- <SuperDebug data={$form} /> -->
+			<SuperDebug data={$form} />
 
 			<div>
 				<Tabs.Root bind:value={selectedEventType} onValueChange={handleTabChange}>
-					<Tabs.List class="grid w-full grid-cols-2 bg-gray-300">
+					<Tabs.List class="grid w-full grid-cols-2 bg-gray-100">
 						<Tabs.Trigger value="event">Record Event</Tabs.Trigger>
 						<!-- <Tabs.Trigger value="fertilize">Fertilize</Tabs.Trigger> -->
 						<Tabs.Trigger value="wait">Wait</Tabs.Trigger>
 					</Tabs.List>
 					<Tabs.Content value="event">
 						<div>
-							<div class="flex items-center space-x-2 py-4">
+							<div class="my-6 flex justify-stretch">
+								<DatePicker {form} />
+								<input type="hidden" name="timestamp" bind:value={$form.timestamp} />
+							</div>
+							<div class="my-6 flex items-center space-x-2">
 								<Switch id="water" bind:checked={$form.watered} />
 								<Label for="water">
 									Water{' '}
@@ -101,7 +107,7 @@
 									{/if}
 								</Label>
 							</div>
-							<div class="flex items-center space-x-2 py-4">
+							<div class="my-6 flex items-center space-x-2">
 								<Switch id="fertilized" bind:checked={$form.fertilized} />
 								<Label for="fertilized">Fertilize</Label>
 							</div>
