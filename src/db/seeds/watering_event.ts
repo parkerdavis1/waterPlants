@@ -13,6 +13,7 @@ export default async function seed(db: db) {
 			notes: faker.lorem.sentence(),
 			plant_id: plant.id,
 			user_id: user_id,
+			watered: true,
 			timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 8).getTime()
 		});
 		await wait(100);
@@ -20,6 +21,7 @@ export default async function seed(db: db) {
 			notes: faker.lorem.sentence(),
 			plant_id: plant.id,
 			user_id: user_id,
+			watered: true,
 			timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 4).getTime()
 		});
 	}

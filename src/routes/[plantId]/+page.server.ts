@@ -46,7 +46,7 @@ export async function load({ params }) {
 export const actions = {
 	water: async ({ request }) => {
 		const form = await superValidate(request, zod(plantEventSchema))
-		console.log('form from waer server action', form)
+		console.log('form from water server action', form)
 
 		if (!form.valid) return fail(400, { form })
 
