@@ -49,7 +49,7 @@
 	// console.log('y', y)
 
 	// linear
-	const y = $derived(90 - fillPercentage)
+	const y = $derived(91 - fillPercentage)
 	// exponential
 	// const y = $derived(100 - (Math.log(fillPercentage + 1) / Math.log(101)) * 100)
 	// y = 0 is full
@@ -61,7 +61,7 @@
 	<!-- Define the circular clipping path -->
 	<defs>
 		<clipPath id={customId}>
-			<circle cx="50" cy="50" r={radius + 2} />
+			<circle cx="50" cy="50" r={radius + 1} />
 		</clipPath>
 	</defs>
 
