@@ -84,7 +84,7 @@
 			class="flex flex-col gap-8"
 			use:enhance
 		>
-			<SuperDebug data={$form} />
+			<!-- <SuperDebug data={$form} /> -->
 
 			<div>
 				<Tabs.Root bind:value={selectedEventType} onValueChange={handleTabChange}>

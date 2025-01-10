@@ -1,42 +1,42 @@
 import env from 'src/lib/env.js'
 import db from 'src/db'
-import { desc, eq, and, sql, inArray } from 'drizzle-orm'
-import { plant, room, user, watering_event } from 'src/db/schema'
-import * as auth from '$lib/server/auth'
+import { desc, eq, and, inArray } from 'drizzle-orm'
+import { plant, room, watering_event } from 'src/db/schema'
+// import * as auth from '$lib/server/auth'
 
 import s3Client from 'src/lib/s3Client.js'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 
-import { superValidate, fail, message, setError } from 'sveltekit-superforms'
+import { superValidate, fail, message } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
 import { newPlantSchema } from 'src/lib/zodSchemas/plantSchema'
-import { json, redirect } from '@sveltejs/kit'
+import { redirect } from '@sveltejs/kit'
 import { multiWateringFormSchema } from 'src/lib/zodSchemas/waterManyForm.js'
 
-interface PlantData {
-	plant: {
-		id: number
-		name: string
-		species: string | null
-		water_schedule: number
-		image_url: string | null
-		house_id: number
-		room_id: number
-		created_at: number
-	}
-	watering_event: {
-		id: number
-		notes: string
-		fertilized: boolean
-		image_url: string | null
-		plant_id: number
-		user_id: number
-		timestamp: number
-	}
-}
+// interface PlantData {
+// 	plant: {
+// 		id: number
+// 		name: string
+// 		species: string | null
+// 		water_schedule: number
+// 		image_url: string | null
+// 		house_id: number
+// 		room_id: number
+// 		created_at: number
+// 	}
+// 	watering_event: {
+// 		id: number
+// 		notes: string
+// 		fertilized: boolean
+// 		image_url: string | null
+// 		plant_id: number
+// 		user_id: number
+// 		timestamp: number
+// 	}
+// }
 
-export async function load({ cookies, locals }) {
+export async function load({ locals }) {
 	if (!locals.user) {
 		return redirect(302, '/login')
 	}

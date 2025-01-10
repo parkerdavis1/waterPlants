@@ -4,6 +4,7 @@ import * as auth from '$lib/server/auth'
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName)
 	if (!sessionToken) {
+		// clear locals
 		event.locals.user = null
 		event.locals.session = null
 		return resolve(event)
@@ -16,8 +17,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 		auth.deleteSessionTokenCookie(event)
 	}
 
-	event.locals.user = user
-	event.locals.session = session
+	event.locals = { user, session }
 
 	return resolve(event)
 }
