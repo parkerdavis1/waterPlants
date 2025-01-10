@@ -15,17 +15,20 @@
 
 	let lastWateringEventTimestamp = $derived(plantWater.watering_event?.timestamp)
 
+	let millisectionsSinceLastWatered = $derived(
+		new Date().getTime() - new Date(lastWateringEventTimestamp).getTime(),
+	)
+
 	let daysSinceLastWatered = $derived(
-		Math.round(
-			(new Date().getTime() - new Date(lastWateringEventTimestamp).getTime()) /
-				(1000 * 60 * 60 * 24),
-		),
+		Math.round(millisectionsSinceLastWatered / (1000 * 60 * 60 * 24)),
 	)
 
 	let waterPeriod = $derived(plantWater.plant.water_schedule)
 
 	let waterProgressPercent = $derived(
-		lastWateringEventTimestamp ? 100 - (daysSinceLastWatered / waterPeriod) * 100 : 0,
+		lastWateringEventTimestamp
+			? 100 - (millisectionsSinceLastWatered / (waterPeriod * (1000 * 60 * 60 * 24))) * 100
+			: 0,
 	)
 
 	const url = `/event/${plantWater.plant.id}`

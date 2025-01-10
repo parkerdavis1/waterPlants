@@ -8,7 +8,7 @@
 	const { data, waterDisabled } = $props()
 
 	import { waterPlantsView } from 'src/lib/stores/viewStore'
-	const checked = $state(waterPlantsView)
+	// const checked = $state(waterPlantsView)
 </script>
 
 <div class="my-4 flex flex-wrap justify-between gap-2">

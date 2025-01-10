@@ -13,9 +13,18 @@
 
 	const plantsThatNeedWater = $derived(
 		data.plantsWater.filter((plantWater) => {
+			console.log(
+				`${plantWater.plant.species} due date`,
+				new Date(plantWater.dueDate).toLocaleString(),
+				'now',
+				new Date().toLocaleString(),
+				'pass',
+				plantWater.dueDate < new Date().getTime(),
+			)
 			return plantWater.dueDate < new Date().getTime()
 		}),
 	)
+	$inspect(plantsThatNeedWater)
 
 	let activePlants = $state(data.plantsWater)
 	// Using a store because it is updated by the toolbar component
@@ -28,7 +37,7 @@
 		data.plantsWater.map((plantWater) => [plantWater.plant.id, false]),
 	)
 
-	const { form, enhance, isTainted } = superForm(data.form, {
+	const { form, enhance } = superForm(data.form, {
 		dataType: 'json',
 		invalidateAll: true,
 		onSubmit: ({ jsonData }) => {
