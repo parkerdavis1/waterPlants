@@ -18,7 +18,7 @@
 </script>
 
 <div
-	class={`flex w-full justify-between gap-4 rounded-lg p-2 ${className} ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
+	class={`click flex w-full justify-between gap-4 rounded-lg p-2 ${className} ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
 >
 	<div class="flex justify-between gap-4">
 		{#if context === 'list'}

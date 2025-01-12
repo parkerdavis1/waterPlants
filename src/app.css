@@ -82,8 +82,10 @@
 		@apply break-all;
 	}
 
+	.click:where(:has(:active)),
 	.click:active {
-		animation: 300ms click forwards;
+		/* animation: 300ms click forwards; */
+		@apply bg-muted;
 	}
 
 	@keyframes click {
@@ -91,7 +93,7 @@
 			transform: scale(1);
 		}
 		10% {
-			transform: scale(0.9);
+			transform: scale(0.95);
 		}
 		100% {
 			transform: scale(1);
