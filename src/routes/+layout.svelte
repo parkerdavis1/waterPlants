@@ -35,7 +35,7 @@
 <Toaster richColors />
 <div class="container flex h-screen max-w-5xl flex-col pt-8 dark:bg-gray-800 dark:text-white">
 	<header class="flex justify-between">
-		<h1 class="text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
+		<h1 class="click text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				{#if loggedIn === true}

@@ -12,7 +12,7 @@
 	let { data } = $props()
 
 	const plantsThatNeedWater = $derived(
-		data.plantsWater.filter((plantWater) => {
+		data.plantsWater?.filter((plantWater) => {
 			console.log(
 				`${plantWater.plant.species} due date`,
 				new Date(plantWater.dueDate).toLocaleString(),

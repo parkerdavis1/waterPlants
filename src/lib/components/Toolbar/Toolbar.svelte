@@ -4,6 +4,7 @@
 	import AddNewPlant from './AddNewPlant.svelte'
 	import { Switch } from '$lib/components/ui/switch'
 	import Label from '../ui/label/label.svelte'
+	import { scale } from 'svelte/transition'
 
 	const { data, waterDisabled } = $props()
 
@@ -15,9 +16,11 @@
 	<div class="flex flex-wrap items-center gap-2">
 		<a href="/new/plant"><Button>Add New Plant</Button></a>
 		{#if !waterDisabled}
-			<Button type="submit" form="multiplantwater" disabled={waterDisabled}
-				>Water Selected Plants</Button
-			>
+			<div transition:scale>
+				<Button type="submit" form="multiplantwater" disabled={waterDisabled}
+					>Water Selected Plants</Button
+				>
+			</div>
 		{/if}
 	</div>
 	<div class="flex items-center gap-2">

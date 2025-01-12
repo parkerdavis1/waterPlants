@@ -15,7 +15,7 @@
 	import { Checkbox } from 'src/lib/components/ui/checkbox/'
 	import * as Tabs from '$lib/components/ui/tabs/index.js'
 	import * as Select from '$lib/components/ui/select/index.js'
-	import { fade, scale } from 'svelte/transition'
+	import { fade, scale, slide } from 'svelte/transition'
 	import { id } from 'date-fns/locale'
 	import DatePicker from './DatePicker.svelte'
 
@@ -66,7 +66,7 @@
 	<Dialog.Trigger class={`w-full ${buttonVariants({ variant: 'default' })}`}>
 		💧Record Event
 	</Dialog.Trigger>
-	<Dialog.Content class="max-h-full overflow-scroll sm:max-w-[425px]">
+	<Dialog.Content class="dialog-content max-h-full overflow-scroll sm:max-w-[425px]">
 		<Dialog.Header>
 			<Dialog.Title>
 				{#if selectedEventType === 'wait'}
@@ -85,7 +85,6 @@
 			use:enhance
 		>
 			<!-- <SuperDebug data={$form} /> -->
-
 			<div>
 				<Tabs.Root bind:value={selectedEventType} onValueChange={handleTabChange}>
 					<Tabs.List class="grid w-full grid-cols-2 bg-gray-100">

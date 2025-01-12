@@ -73,10 +73,28 @@
 	* {
 		@apply border-border;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
+
 	.name-wrap {
 		@apply break-all;
+	}
+
+	.click:active {
+		animation: 300ms click forwards;
+	}
+
+	@keyframes click {
+		0% {
+			transform: scale(1);
+		}
+		10% {
+			transform: scale(0.9);
+		}
+		100% {
+			transform: scale(1);
+		}
 	}
 }

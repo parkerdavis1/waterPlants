@@ -63,7 +63,7 @@
 			<img
 				src={imageUrl ? imageUrl : bluegrad}
 				alt="placeholder"
-				class="mx-auto aspect-square min-h-16 w-full rounded-lg object-cover sm:w-32"
+				class="click mx-auto aspect-square min-h-16 w-full rounded-lg object-cover sm:w-32"
 			/>
 		</a>
 		<!-- <div class="absolute bottom-4 right-4 sm:hidden">
@@ -72,9 +72,11 @@
 	</div>
 	<div class="flex justify-between gap-4">
 		<div>
-			<a href={`${plantWater.plant.id}`}>
-				<h2 class="name-wrap text-lg font-bold">{plantWater.plant.species}</h2>
-			</a>
+			<h2 class="name-wrap click text-lg font-bold">
+				<a href={`${plantWater.plant.id}`}>
+					{plantWater.plant.species}
+				</a>
+			</h2>
 			{#if plantWater.plant.name}<p>{plantWater.plant.name}</p>{/if}
 			{#if plantWater.watering_event?.timestamp}<p class="text-sm opacity-60">
 					{daysSinceLastWatered} day{daysSinceLastWatered === 1 ? '' : 's'} since last water
@@ -85,7 +87,7 @@
 				<p class="water-label">Water</p>
 				<!-- <RadialProgress progress={waterProgressPercent} /> -->
 				<!-- <div class="hidden sm:inline"> -->
-				<a href={`${plantWater.plant.id}`}>
+				<a href={`${plantWater.plant.id}`} class="click">
 					<!-- <WaterProgress progress={waterProgressPercent} /> -->
 					<WaterProgress2 fillPercentage={waterProgressPercent} />
 					<!-- </div> -->
