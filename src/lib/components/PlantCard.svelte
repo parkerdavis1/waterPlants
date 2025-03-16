@@ -9,7 +9,7 @@
 	// export let plantWater
 	// export let context = 'default'
 
-	const { data, plantWater, context = 'default' } = $props()
+	let { data, plantWater, context = 'default' } = $props()
 
 	let showPlantCare = $state(false)
 

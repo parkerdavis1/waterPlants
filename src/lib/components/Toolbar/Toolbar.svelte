@@ -5,10 +5,10 @@
 	import { Switch } from '$lib/components/ui/switch'
 	import Label from '../ui/label/label.svelte'
 	import { scale } from 'svelte/transition'
+	import { waterPlantsView, waterMultipleOpen } from 'src/lib/stores/viewStore.svelte'
 
 	const { data, waterDisabled } = $props()
 
-	import { waterPlantsView } from 'src/lib/stores/viewStore'
 	// const checked = $state(waterPlantsView)
 </script>
 
@@ -17,15 +17,12 @@
 		<a href="/new/plant"><Button>Add New Plant</Button></a>
 		{#if !waterDisabled}
 			<div transition:scale>
-				<Button type="submit" form="multiplantwater" disabled={waterDisabled}
-					>Water Selected Plants</Button
-				>
+				<Button onclick={() => (waterMultipleOpen.value = true)}>Water Plants</Button>
 			</div>
 		{/if}
 	</div>
 	<div class="flex items-center gap-2">
 		<Switch id="showWaterPlants" bind:checked={$waterPlantsView} />
-		<!-- <Switch id="showWaterPlants" /> -->
 		<Label for="showWaterPlants">Only Show Thirsty Plants</Label>
 	</div>
 </div>

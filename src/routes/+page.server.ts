@@ -146,6 +146,7 @@ export const actions = {
 					db.insert(watering_event).values({
 						plant_id: plantId,
 						user_id: form.data.userId,
+						notes: form.data.notes,
 						watered: true,
 					}),
 				),
