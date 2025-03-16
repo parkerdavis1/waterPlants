@@ -147,6 +147,7 @@ export const actions = {
 						plant_id: plantId,
 						user_id: form.data.userId,
 						notes: form.data.notes,
+						timestamp: form.data.timestamp,
 						watered: true,
 					}),
 				),

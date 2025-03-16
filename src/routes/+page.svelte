@@ -13,6 +13,7 @@
 	import { Label } from 'src/lib/components/ui/label/index.js'
 	import { Textarea } from 'src/lib/components/ui/textarea/index.js'
 	import { Button } from 'src/lib/components/ui/button/index.js'
+	import DatePicker from 'src/lib/components/DatePicker.svelte'
 	import { invalidate, invalidateAll } from '$app/navigation'
 
 	let { data } = $props()
@@ -107,20 +108,23 @@
 </div>
 
 <!-- hidden -->
-
 <form method="POST" action="?/waterPlants" use:enhance id="multiplantwater">
 	<input type="hidden" name="userId" bind:value={data.user.id} />
 	<input type="hidden" name="plantIds" bind:value={$form.plantIds} />
 	<input type="hidden" name="notes" bind:value={$form.notes} />
+	<input type="hidden" name="timestamp" bind:value={$form.timestamp} />
 </form>
 
 <Dialog.Root bind:open={waterMultipleOpen.value}>
 	<!-- <Dialog.Trigger>💧Record Event</Dialog.Trigger> -->
 	<Dialog.Content class="max-h-screen overflow-auto">
 		<Dialog.Title>Water Plants</Dialog.Title>
+		<!-- <SuperDebug data={$form} /> -->
 		<Dialog.Description>
 			Watering {$form.plantIds.length} plant{$form.plantIds.length > 1 ? 's' : ''}
 		</Dialog.Description>
+		<!-- <Label for="timestamp">Date</Label> -->
+		<DatePicker {form} />
 		<Label for="notes">Notes</Label>
 		<Textarea id="notes" bind:value={$form.notes} />
 		<Button type="submit" form="multiplantwater">Water Plants</Button>

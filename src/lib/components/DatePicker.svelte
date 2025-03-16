@@ -1,6 +1,12 @@
 <script lang="ts">
 	import CalendarIcon from 'lucide-svelte/icons/calendar'
-	import { type DateValue, DateFormatter, getLocalTimeZone, today } from '@internationalized/date'
+	import {
+		type DateValue,
+		DateFormatter,
+		getLocalTimeZone,
+		today,
+		now,
+	} from '@internationalized/date'
 	import { cn } from '$lib/utils.js'
 	import { Button } from '$lib/components/ui/button/index.js'
 	import { Calendar } from '$lib/components/ui/calendar/index.js'
@@ -12,6 +18,7 @@
 
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long',
+		// timeStyle: 'short',
 	})
 
 	let value = $state<DateValue>(today(getLocalTimeZone()))
@@ -28,9 +35,11 @@
 	})
 
 	$inspect(time)
+
+	let datePickerOpen = $state(false)
 </script>
 
-<Popover.Root>
+<Popover.Root bind:open={datePickerOpen}>
 	<Popover.Trigger>
 		{#snippet child({ props })}
 			<Button
@@ -43,11 +52,17 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content class="w-auto p-0">
+	<Popover.Content class="w-auto p-0" onOpenAutoFocus={(e) => e.preventDefault()}>
 		<div class="p-3">
 			<Label for="time">Time</Label>
 			<Input type="time" id="time" bind:value={time} />
 		</div>
-		<Calendar bind:value type="single" initialFocus />
+		<Calendar
+			bind:value
+			type="single"
+			initialFocus
+			onValueChange={(value) => (value ? (datePickerOpen = false) : null)}
+			preventDeselect={true}
+		/>
 	</Popover.Content>
 </Popover.Root>
