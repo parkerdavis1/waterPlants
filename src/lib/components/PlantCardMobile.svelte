@@ -20,7 +20,7 @@
 <div
 	class={`click flex w-full justify-between gap-4 rounded-lg p-2 ${className} ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
 >
-	<div class="flex justify-between gap-4">
+	<div class="flex justify-between gap-2">
 		{#if context === 'list'}
 			<Checkbox
 				bind:checked={$checkedObj[plantWater.plant.id]}
@@ -32,16 +32,33 @@
 		<div class="w-fullgrid relative place-content-center">
 			<a href={`${plantWater.plant.id}`}>
 				{#if imageUrl}
-					<img
-						src={imageUrl ? imageUrl : bluegrad}
-						alt="placeholder"
-						class={`mx-auto aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 w-32 rounded-lg object-cover`}
-					/>
+					<div
+						class="grid h-full max-h-20 w-32 place-content-center rounded-lg bg-blue-100 text-black/60"
+					>
+						<img
+							src={imageUrl ? imageUrl : bluegrad}
+							alt="placeholder"
+							class={`mx-auto aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 w-32 rounded-lg object-cover`}
+						/>
+						<p
+							class="z-10 h-fit overflow-hidden text-ellipsis whitespace-nowrap bg-white/80 text-center"
+						>
+							{#if plantWater.plant.name}
+								{plantWater.plant.name} - {plantWater.plant.species}
+							{:else}
+								{plantWater.plant.species}
+							{/if}
+						</p>
+					</div>
 				{:else}
 					<p
 						class="grid h-full max-h-20 w-32 place-content-center rounded-lg bg-blue-100 text-black/60"
 					>
-						{plantWater.plant.species}
+						{#if plantWater.plant.name}
+							{plantWater.plant.name} - {plantWater.plant.species}
+						{:else}
+							{plantWater.plant.species}
+						{/if}
 					</p>
 				{/if}
 			</a>

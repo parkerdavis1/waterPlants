@@ -3,8 +3,9 @@ import { ZodError, z } from 'zod'
 
 const stringBoolean = z.coerce
 	.string()
-	.transform((val) => val.toLowerCase() === 'true')
 	.default('false')
+	.transform((val) => val.toLowerCase() === 'true')
+	.pipe(z.boolean())
 
 const EnvSchema = z.object({
 	TURSO_DATABASE_URL: z.string(),
