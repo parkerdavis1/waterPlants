@@ -38,6 +38,7 @@ export const actions: Actions = {
 			outputLen: 32,
 			parallelism: 1,
 		})
+
 		if (!validPassword) {
 			return fail(400, { message: 'Incorrect username or password' })
 		}
@@ -45,7 +46,7 @@ export const actions: Actions = {
 		const sessionToken = auth.generateSessionToken()
 		const session = await auth.createSession(sessionToken, existingUser.id)
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt)
-
+		
 		return redirect(302, '/')
 	},
 	register: async (event) => {
@@ -79,9 +80,9 @@ export const actions: Actions = {
 	},
 }
 
-function generateUserId() {
-	// ID with 120 bits of entropy, or about the same as UUID v4.
-	const bytes = crypto.getRandomValues(new Uint8Array(15))
-	const id = encodeBase32LowerCase(bytes)
-	return id
-}
+// function generateUserId() {
+// 	// ID with 120 bits of entropy, or about the same as UUID v4.
+// 	const bytes = crypto.getRandomValues(new Uint8Array(15))
+// 	const id = encodeBase32LowerCase(bytes)
+// 	return id
+// }

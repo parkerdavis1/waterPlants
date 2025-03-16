@@ -62,6 +62,11 @@
 	)
 
 	let deleteForm: HTMLFormElement
+	let deleteOpen = $state(false)
+
+	function handleDelete() {
+		deleteOpen = true
+	}
 </script>
 
 <Dialog.Root>
@@ -115,8 +120,6 @@
 			/>
 			<!-- {#if $errors.name}<p class="text-red-500">{$errors.name}</p>{/if} -->
 
-			<!-- TODO: Add Care notes textarea field -->
-
 			<Label for="notes">Notes</Label>
 			<Textarea
 				name="notes"
@@ -163,29 +166,12 @@
 					{/if}
 				</Button>
 				<div>
-					<AlertDialog.Root>
-						<AlertDialog.Trigger>
-							<Button variant="destructive">Delete</Button>
-						</AlertDialog.Trigger>
-						<AlertDialog.Content>
-							<AlertDialog.Header>
-								<AlertDialog.Title>Are you sure?</AlertDialog.Title>
-								<AlertDialog.Description>
-									This action cannot be undone. This will permanently delete this plant.
-								</AlertDialog.Description>
-							</AlertDialog.Header>
-							<AlertDialog.Footer>
-								<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-								<AlertDialog.Action onclick={() => deleteForm.submit()}>Continue</AlertDialog.Action
-								>
-							</AlertDialog.Footer>
-						</AlertDialog.Content>
-					</AlertDialog.Root>
+					<Button variant="destructive" onclick={handleDelete}>Delete</Button>
 				</div>
 			</div>
 		</form>
 
-		<form id="delete-plant" method="post" action="?/deletePlant" bind:this={deleteForm}>
+		<form id="delete-plant" method="post" action="?/deletePlant" bind:this={deleteForm} use:enhance>
 			<input type="hidden" value={data.plant.id} name="id" />
 		</form>
 		<!-- <Dialog.Footer>
@@ -193,3 +179,18 @@
 		</Dialog.Footer> -->
 	</Dialog.Content>
 </Dialog.Root>
+
+<AlertDialog.Root bind:open={deleteOpen}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>Are you sure?</AlertDialog.Title>
+			<AlertDialog.Description>
+				This action cannot be undone. This will permanently delete this plant.
+			</AlertDialog.Description>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+			<AlertDialog.Action onclick={() => deleteForm.submit()}>Continue</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
