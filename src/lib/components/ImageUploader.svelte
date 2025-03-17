@@ -48,23 +48,23 @@
 				console.log('img', img)
 				img.onload = () => {
 					console.log('image on load')
-					const canvas = document.createElement('canvas')
 
 					// Calculate new dimensions
 					let width = img.width
 					let height = img.height
 
-					if (width > height) {
-						if (width > maxWidth) {
+					if (width > maxWidth || height > maxHeight) {
+						if (width > height) {
 							height *= maxWidth / width
 							width = maxWidth
-						}
-					} else {
-						if (height > maxHeight) {
+						} else {
 							width *= maxHeight / height
 							height = maxHeight
 						}
 					}
+
+					// Resize image
+					const canvas = document.createElement('canvas')
 					canvas.width = width
 					canvas.height = height
 
