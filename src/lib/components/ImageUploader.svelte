@@ -22,9 +22,10 @@
 		console.log('previewImage', previewImage)
 
 		// Resize image
-		const resizedBlob = await resizeImage(file, 1000, 1000)
+		const resizedBlob = await resizeImage(file, 1600, 1600)
+		const newFileName = file.name.split('.').slice(0, -1).join('.') + '.webp' // incase there are multiple . in name
 		console.log('resizedBlob', resizedBlob)
-		const newImageFile = new File([resizedBlob], file.name, { type: resizedBlob.type })
+		const newImageFile = new File([resizedBlob], newFileName, { type: resizedBlob.type })
 		console.log('newImageFile', newImageFile)
 
 		// Update form data
@@ -48,6 +49,8 @@
 				img.onload = () => {
 					console.log('image on load')
 					const canvas = document.createElement('canvas')
+
+					// Calculate new dimensions
 					let width = img.width
 					let height = img.height
 
@@ -62,16 +65,21 @@
 							height = maxHeight
 						}
 					}
-
 					canvas.width = width
 					canvas.height = height
+
+					// Draw image to canvas
 					const ctx = canvas.getContext('2d')
 					ctx?.drawImage(img, 0, 0, width, height)
-					console.log('pre-resolve blob')
-					canvas.toBlob((blob) => {
-						resolve(blob as Blob)
-					}, file.type)
-					console.log('post resolve blob')
+
+					// Convert canvas to blob
+					canvas.toBlob(
+						(blob) => {
+							resolve(blob as Blob)
+						}, // Callback
+						'image/webp', // MIME type
+						0.98, // Quality
+					)
 				}
 				img.src = e.target?.result as string
 			}

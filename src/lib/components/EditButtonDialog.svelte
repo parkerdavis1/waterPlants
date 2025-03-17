@@ -190,7 +190,12 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action onclick={() => deleteForm.submit()}>Continue</AlertDialog.Action>
+			<AlertDialog.Action
+				onclick={() => deleteForm.submit()}
+				class={buttonVariants({ variant: 'destructive' })}
+			>
+				Delete Plant
+			</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>
