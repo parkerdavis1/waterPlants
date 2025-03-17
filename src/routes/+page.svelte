@@ -33,10 +33,7 @@
 	)
 	$inspect(plantsThatNeedWater)
 
-	// Using a store because it is updated by the toolbar component
-	waterPlantsView.subscribe((value) => {
-		data.plantsWater = value ? plantsThatNeedWater : data.plantsWater
-	})
+	let activePlants = $derived($waterPlantsView ? plantsThatNeedWater : data.plantsWater)
 
 	// State used in many places, so it is stored in a store
 	$checkedObj = Object.fromEntries(
@@ -93,7 +90,7 @@
 				<Accordion.Item value={room.name}>
 					<Accordion.Trigger>{room.name}</Accordion.Trigger>
 					<Accordion.Content>
-						{#each data.plantsWater as plantWater}
+						{#each activePlants as plantWater}
 							{#if plantWater.plant.room_id == room.id}
 								<div class="flex gap-2">
 									<PlantCard {plantWater} {data} context="list" />
