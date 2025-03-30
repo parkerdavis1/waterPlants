@@ -20,7 +20,10 @@
 		validators: zodClient(newPlantSchema),
 		invalidateAll: 'force',
 		onResult: () => handleSaveChanges(),
-		onError: ({ result }) => console.log(result),
+		onError: ({ result }) => {
+			toast.error('There was an error')
+			console.error(result.error)
+		},
 	})
 
 	const file = fileProxy(form, 'image')
