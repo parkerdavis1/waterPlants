@@ -22,8 +22,8 @@
 		console.log('previewImage', previewImage)
 
 		// Resize image
-		const resizedBlob = await resizeImage(file, 1600, 1600)
-		const newFileName = file.name.split('.').slice(0, -1).join('.') + '.webp' // incase there are multiple . in name
+		const resizedBlob = await resizeImage(file, 1200, 1200)
+		const newFileName = file.name.split('.').slice(0, -1).join('.') + '.jpeg' // incase there are multiple . in name
 		console.log('resizedBlob', resizedBlob)
 		const newImageFile = new File([resizedBlob], newFileName, { type: resizedBlob.type })
 		console.log('newImageFile', newImageFile)
@@ -77,8 +77,8 @@
 						(blob) => {
 							resolve(blob as Blob)
 						}, // Callback
-						'image/webp', // MIME type
-						0.96, // Quality
+						'image/jpeg', // MIME type
+						0.9, // Quality
 					)
 				}
 				img.src = e.target?.result as string
