@@ -78,7 +78,7 @@
 							resolve(blob as Blob)
 						}, // Callback
 						'image/webp', // MIME type
-						0.98, // Quality
+						0.96, // Quality
 					)
 				}
 				img.src = e.target?.result as string
