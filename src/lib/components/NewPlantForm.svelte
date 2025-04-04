@@ -27,9 +27,15 @@
 		validators: zod(newPlantSchema),
 		onSubmit: () => (isSubmitting = true),
 		onResult: async ({ result }) => {
+			console.log('result', result)
 			if (result.type === 'success') {
 				await goto('/')
 				toast.success('Created new plant')
+				isSubmitting = false
+			}
+			if (result.type === 'failure') {
+				console.log('result', result)
+				toast.error('Error creating plant')
 				isSubmitting = false
 			}
 		},
@@ -46,7 +52,7 @@
 		if (num) $form.room_id = parseInt(num)
 	}
 
-	$inspect($form.room_id, data.rooms, $form)
+	// $inspect($form.room_id, data.rooms, $form)
 
 	console.log('data.rooms', data.rooms)
 

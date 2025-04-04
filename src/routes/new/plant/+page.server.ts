@@ -23,19 +23,22 @@ export const actions = {
 		// delay for testing
 		// await new Promise((resolve) => setTimeout(resolve, 1000))
 		
+		// test failure
+		// return fail(400, { form: 'test' })
 		const formData = await request.formData()
 		console.dir(formData, { depth: 10 })
-
+		
 		const form = await superValidate(formData, zod(newPlantSchema), { allowFiles: true })
 		console.dir(form, { depth: 10 })
-
+		
 		if (!form.valid) return fail(400, withFiles({ form }))
-
+			
 		const [insertedPlant] = await db.insert(plant).values(form.data).returning()
 		if (!insertedPlant) return fail(400, { form })
 
 		if (form.data.image) {
 			console.log('\nStarting image upload to bucket...')
+
 			// Image upload
 			const image = form.data.image
 
@@ -60,8 +63,9 @@ export const actions = {
 					.returning()
 				console.log('Image uploaded...', resultAfterUpload)
 			} catch (error) {
-				console.error('Upload error: ', error)
+				console.error('Image upload error: ', error)
 				return fail(500, withFiles({ form }))
+				// return setError(form, 'form', 'Failed to upload image')
 			}
 			// return message(form, 'Image uploaded successfully')
 		}
