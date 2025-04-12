@@ -38,7 +38,13 @@
 			? 100 - (daysSinceLastWatered / plantCardData.plant.water_schedule) * 100
 			: 0,
 	)
+
+	const title = data.plant.name ? `${data.plant.name} (${data.plant.species}) - Happy Plants` : `${data.plant.species} - Happy Plants`
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
 
 <div class="mt-8 flex flex-col gap-4">
 	<!-- <h1 class="break-words text-3xl font-bold">{data.plant.species}</h1> -->

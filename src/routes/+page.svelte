@@ -81,6 +81,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Happy Plants</title>
+</svelte:head>
+
+
 <Toolbar {data} {waterDisabled} />
 <!-- <SuperDebug data={$form} /> -->
 <div class="flex flex-col flex-wrap gap-4">

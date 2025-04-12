@@ -19,7 +19,7 @@
 	// export let data
 	let { data } = $props()
 
-	let isSubmitting = false
+	let isSubmitting = $state(false)
 
 	const { form, enhance, constraints, errors } = superForm(data.editForm, {
 		// id: 'edit-plant',
