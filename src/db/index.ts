@@ -15,11 +15,22 @@ if (env.LOCAL_DEV) {
 	})
 } else {
 	client = createClient({
-		url: 'file:/app/data/local.db',
-		syncUrl: env.TURSO_DATABASE_URL,
+		url: env.TURSO_DATABASE_URL,
 		authToken: env.TURSO_AUTH_TOKEN,
-		syncInterval: 60,
 	})
+	
+	// Embedded  replicas are causing issues. Never felt fast anyways, so simplifying by just using Turso
+
+	// client = createClient({
+	// 	url: 'file:/app/data/local.db',
+	// 	syncUrl: env.TURSO_DATABASE_URL,
+	// 	authToken: env.TURSO_AUTH_TOKEN,
+	// 	syncInterval: 60,
+	// })
+
+	// console.log('Syncing database...')
+	// await client.sync()
+	// console.log('Database synced.')
 }
 
 const db = drizzle(client, {

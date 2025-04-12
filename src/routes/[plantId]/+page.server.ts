@@ -4,6 +4,7 @@ import { eq, desc, sql } from 'drizzle-orm'
 import { plant, room, user, watering_event } from 'src/db/schema.js'
 import {
 	deleteEventSchema,
+	deletePlantSchema,
 	editPlantSchema,
 	plantEventSchema,
 } from 'src/lib/zodSchemas/plantSchema'
@@ -38,6 +39,7 @@ export async function load({ params }) {
 		editForm: await superValidate(plantData, zod(editPlantSchema)),
 		waterForm: await superValidate(zod(plantEventSchema)),
 		deleteEvent: await superValidate(zod(deleteEventSchema)),
+		deletePlant: await superValidate(zod(deletePlantSchema)),
 		rooms,
 		users,
 	}
@@ -166,20 +168,42 @@ export const actions = {
 	},
 
 	deletePlant: async ({ request }) => {
-		const data = await request.formData()
-		const id = data.get('id') as string
-		console.log('id', id)
+		const form = await superValidate(request, zod(deletePlantSchema))
 
-		if (!id) {
-			console.log('Error deleting plant')
-			return
+		console.log('form', form)
+
+		if (!form.valid) return fail(400, { form })
+
+		// const data = await request.formData()
+		// const id = data.get('id') as string
+
+		// if (!id) {
+		// 	console.log('Error deleting plant')
+		// 	return
+		// }
+
+		// const plantId = parseInt(id)
+
+		// check if there is an image to delete
+		// const plant = await db.select().from(plant).where(eq(plant.id, plantId)).limit(1)
+
+		if (form.data.image_url) {
+			// use s3 sdk to delete image
+			const imageKey = form.data.image_url.split('/').at(-1)
+			console.log('imageKey', imageKey)
+
+			const deleteCommand = new DeleteObjectCommand({
+				Bucket: env.R2_BUCKET_NAME,
+				Key: imageKey,
+			})
+
+			const deleteResult = await s3Client.send(deleteCommand)
+			if (deleteResult.$metadata.httpStatusCode !== 204) {
+				return fail(500, { form })
+			}
 		}
 
-		const plantId = parseInt(id)
-
-		console.log('plantId', plantId)
-
-		await db.delete(plant).where(eq(plant.id, plantId))
+		await db.delete(plant).where(eq(plant.id, form.data.id))
 
 		return redirect(302, '/')
 	},

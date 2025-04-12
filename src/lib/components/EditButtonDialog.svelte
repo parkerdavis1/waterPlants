@@ -14,6 +14,7 @@
 	import { goto } from '$app/navigation'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { editPlantSchema } from '../zodSchemas/plantSchema'
+	// import { enhance as svelteEnhance } from '$app/forms'
 
 	// export let data
 	let { data } = $props()
@@ -36,6 +37,19 @@
 				toast.error('Error editing plant')
 			}
 		},
+	})
+
+	const { form: deleteForm2, enhance: deleteEnhance } = superForm(data.deletePlant, {
+		id: 'delete-plant',
+		invalidateAll: 'force',
+		onResult: async ({ result }) => {
+			if (result.type === 'success') {
+				await goto('/')
+				toast.success(`Deleted plant`)
+			} else {
+				toast.error('Error deleting plant')
+			}
+		} 
 	})
 
 	interface Room {
@@ -171,8 +185,9 @@
 			</div>
 		</form>
 
-		<form id="delete-plant" method="post" action="?/deletePlant" bind:this={deleteForm} use:enhance>
+		<form id="delete-plant" method="post" action="?/deletePlant" bind:this={deleteForm} use:deleteEnhance>
 			<input type="hidden" value={data.plant.id} name="id" />
+			<input type="hidden" value={data.plant.image_url} name="image_url" />
 		</form>
 		<!-- <Dialog.Footer>
 			<Button type="submit">Save</Button>

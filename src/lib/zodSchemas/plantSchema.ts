@@ -50,3 +50,8 @@ export const deleteEventSchema = z.object({
 	id: z.string(),
 	plantId: z.string(),
 })
+
+export const deletePlantSchema = z.object({
+	id: z.string(),
+	image_url: z.string().url().optional(),
+})
