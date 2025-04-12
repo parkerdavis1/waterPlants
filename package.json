@@ -29,6 +29,7 @@
 		"@internationalized/date": "^3.8.0",
 		"@playwright/test": "^1.51.1",
 		"@sveltejs/adapter-auto": "^6.0.0",
+		"@sveltejs/adapter-netlify": "^5.0.0",
 		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/kit": "^2.20.5",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
