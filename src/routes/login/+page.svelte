@@ -18,7 +18,14 @@
 		Password
 		<Input type="password" name="password" />
 	</Label>
+	<input type="text" name="secret_key" tabindex="-1" autocomplete="off" />
 	<Button type="submit">Login</Button>
 	<!-- <Button type="submit" formaction="?/register" variant="secondary">Register</Button> -->
 </form>
 <p style="color: red">{form?.message ?? ''}</p>
+
+<style>
+	input[name='secret_key'] {
+		display: none !important;
+	}
+</style>

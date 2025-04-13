@@ -19,17 +19,7 @@
 	let { data } = $props()
 
 	const plantsThatNeedWater = $derived(
-		data.plantsWater?.filter((plantWater) => {
-			console.log(
-				`${plantWater.plant.species} due date`,
-				new Date(plantWater.dueDate).toLocaleString(),
-				'now',
-				new Date().toLocaleString(),
-				'pass',
-				plantWater.dueDate < new Date().getTime(),
-			)
-			return plantWater.dueDate < new Date().getTime()
-		}),
+		data.plantsWater?.filter((plantWater) => plantWater.dueDate < new Date().getTime()),
 	)
 	$inspect(plantsThatNeedWater)
 
@@ -84,7 +74,6 @@
 <svelte:head>
 	<title>Happy Plants</title>
 </svelte:head>
-
 
 <Toolbar {data} {waterDisabled} />
 <!-- <SuperDebug data={$form} /> -->

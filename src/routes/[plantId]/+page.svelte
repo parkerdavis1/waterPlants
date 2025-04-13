@@ -16,30 +16,36 @@
 	import PastWatering from 'src/lib/components/PastWatering.svelte'
 	import bluegrad from '$lib/assets/images/bluegrad.png'
 	import WaterProgress2 from 'src/lib/components/WaterProgress2.svelte'
+	import { DAY_MILLISECONDS } from 'src/lib/utils/constants.js'
 
 	const { data } = $props()
 
+	// all this needs to be abstracted out to get rid of duplicate code with PlantCard.svelte, or be put into the water progress component itself....
 	// last watering event that was actually water
-	const lastWater = $derived(data.wateringEvents.filter((event) => event.watered === true)[0])
+	// const lastWater = $derived(data.wateringEvents.filter((event) => event.watered === true)[0])
 
 	const plantCardData = $derived({
 		plant: data.plant,
-		watering_event: lastWater,
+		watering_event: data.wateringEvents.filter((event) => event.watered === true)[0],
 	})
 
-	let daysSinceLastWatered = $derived(
-		Math.round(
-			(new Date().getTime() - new Date(lastWater?.timestamp).getTime()) / (1000 * 60 * 60 * 24),
-		),
-	)
+	let lastWatered = $derived.by(() => {
+		const milliseconds =
+			new Date().getTime() - new Date(plantCardData.watering_event?.timestamp).getTime()
+		const days = Math.round(milliseconds / DAY_MILLISECONDS)
+		return { milliseconds, days }
+	})
 
 	let waterProgressPercent = $derived(
 		plantCardData.watering_event?.timestamp
-			? 100 - (daysSinceLastWatered / plantCardData.plant.water_schedule) * 100
+			? 100 -
+					(lastWatered.milliseconds / (plantCardData.plant.water_schedule * DAY_MILLISECONDS)) * 100
 			: 0,
 	)
 
-	const title = data.plant.name ? `${data.plant.name} (${data.plant.species}) - Happy Plants` : `${data.plant.species} - Happy Plants`
+	const title = data.plant.name
+		? `${data.plant.name} (${data.plant.species}) - Happy Plants`
+		: `${data.plant.species} - Happy Plants`
 </script>
 
 <svelte:head>
@@ -79,13 +85,13 @@
 					<span class="opacity-60">Watering Schedule: </span> Every {plantCardData.plant
 						.water_schedule} days
 				</p>
-				{#if isNaN(daysSinceLastWatered)}
+				{#if isNaN(lastWatered.days)}
 					<p><span class="opacity-60">No watering events recorded</span></p>
 				{:else}
 					<p>
 						<span class="opacity-60">Days since last watered:</span>
-						{daysSinceLastWatered}
-						{daysSinceLastWatered === 1 ? 'day' : 'days'}
+						{lastWatered.days}
+						{lastWatered.days === 1 ? 'day' : 'days'}
 					</p>
 				{/if}
 			</div>
@@ -110,13 +116,5 @@
 	<Separator />
 	<h2 class="text-xl font-bold">Past Watering Events</h2>
 	<PastWatering {data} />
-	<div class="grid gap-4 sm:grid-cols-3">
-		<!-- {#each data.wateringEvents as wateringEvent} -->
-		<!-- <WaterEventCard {data} {wateringEvent} /> -->
-		<!-- <div>
-				<p>{wateringEvent.timestamp}</p>
-				<pre class="break-words text-xs opacity-50">{JSON.stringify(wateringEvent, null, 2)}</pre>
-			</div> -->
-		<!-- {/each} -->
-	</div>
+	<div class="grid gap-4 sm:grid-cols-3"></div>
 </div>

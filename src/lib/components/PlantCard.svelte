@@ -4,6 +4,7 @@
 	import PlantCardMobile from './PlantCardMobile.svelte'
 	import { checkedObj } from '../stores/selectedPlants.svelte'
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
+	import { DAY_MILLISECONDS } from '../utils/constants'
 
 	// export let data
 	// export let plantWater
@@ -19,15 +20,13 @@
 		new Date().getTime() - new Date(lastWateringEventTimestamp).getTime(),
 	)
 
-	let daysSinceLastWatered = $derived(
-		Math.round(millisectionsSinceLastWatered / (1000 * 60 * 60 * 24)),
-	)
+	let daysSinceLastWatered = $derived(Math.round(millisectionsSinceLastWatered / DAY_MILLISECONDS))
 
 	let waterPeriod = $derived(plantWater.plant.water_schedule)
 
 	let waterProgressPercent = $derived(
 		lastWateringEventTimestamp
-			? 100 - (millisectionsSinceLastWatered / (waterPeriod * (1000 * 60 * 60 * 24))) * 100
+			? 100 - (millisectionsSinceLastWatered / (waterPeriod * DAY_MILLISECONDS)) * 100
 			: 0,
 	)
 

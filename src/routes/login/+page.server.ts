@@ -22,6 +22,11 @@ export const actions: Actions = {
 		const username = formData.get('username')
 		const password = formData.get('password')
 
+		// Honeypot
+		if (formData.get('secret_key')) {
+			return fail(400, { message: 'Incorrect username or password' })
+		}
+
 		const results = await db
 			.select()
 			.from(table.user)
