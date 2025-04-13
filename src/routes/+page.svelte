@@ -19,15 +19,15 @@
 	let { data } = $props()
 
 	const plantsThatNeedWater = $derived(
-		data.plantsWater?.filter((plantWater) => plantWater.dueDate < new Date().getTime()),
+		data.plantsWater.plantsWater?.filter((plantWater) => plantWater.dueDate < new Date().getTime()),
 	)
 	$inspect(plantsThatNeedWater)
 
-	let activePlants = $derived($waterPlantsView ? plantsThatNeedWater : data.plantsWater)
+	let activePlants = $derived($waterPlantsView ? plantsThatNeedWater : data.plantsWater.plantsWater)
 
 	// State used in many places, so it is stored in a store
 	$checkedObj = Object.fromEntries(
-		data.plantsWater.map((plantWater) => [plantWater.plant.id, false]),
+		data.plantsWater.plantsWater.map((plantWater) => [plantWater.plant.id, false]),
 	)
 
 	const { form, enhance } = superForm(data.form, {
@@ -74,7 +74,6 @@
 <svelte:head>
 	<title>Happy Plants</title>
 </svelte:head>
-
 <Toolbar {data} {waterDisabled} />
 <!-- <SuperDebug data={$form} /> -->
 <div class="flex flex-col flex-wrap gap-4">
