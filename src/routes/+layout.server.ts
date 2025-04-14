@@ -10,8 +10,9 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 			user: locals.user,
 			loggedIn: true,
 		}
-	} else
+	} else {
 		return {
 			loggedIn: false,
 		}
+	}
 }

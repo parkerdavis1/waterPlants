@@ -13,6 +13,9 @@
 	// import { users } from 'src/lib/stores/user'
 	import { browser } from '$app/environment'
 	import { enhance } from '$app/forms'
+	import { navigating } from '$app/state'
+	import { slide } from 'svelte/transition'
+	import { expoOut } from 'svelte/easing'
 	// import { currentUser } from 'src/lib/stores/user'
 
 	const { data, children } = $props()
@@ -32,6 +35,13 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
 	<link rel="manifest" href="/site.webmanifest" />
 </svelte:head>
+
+{#if navigating.to}
+	<div
+		class="navigation-loader"
+		in:slide={{ delay: 0, duration: 12000, axis: 'x', easing: expoOut }}
+	></div>
+{/if}
 
 <Toaster richColors />
 <div class="container flex h-screen max-w-5xl flex-col pt-8 dark:bg-gray-800 dark:text-white">
@@ -68,3 +78,15 @@
 	</main>
 	<!-- <footer class="text-xs opacity-50">&copy; Parker Davis {new Date().getFullYear()}</footer> -->
 </div>
+
+<style lang="css">
+	.navigation-loader {
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
+		height: 4px;
+		z-index: 50;
+		background-color: #0284c5;
+	}
+</style>
