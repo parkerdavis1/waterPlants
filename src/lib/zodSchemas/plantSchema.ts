@@ -37,8 +37,8 @@ export const plantEventSchema = z.object({
 export const editPlantSchema = z.object({
 	id: z.number(),
 	species: z.string(),
-	name: z.string().optional(),
-	notes: z.string().optional(),
+	name: z.string().default(''),
+	notes: z.string().default(''),
 	image: imageSchema,
 	room_id: z.number(),
 	house_id: z.number().default(1),

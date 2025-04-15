@@ -65,9 +65,6 @@
 				class="click mx-auto aspect-square min-h-16 w-full rounded-lg object-cover sm:w-32"
 			/>
 		</a>
-		<!-- <div class="absolute bottom-4 right-4 sm:hidden">
-				<WaterProgress progress={waterProgressPercent} />
-			</div> -->
 	</div>
 	<div class="flex justify-between gap-4">
 		<div>
@@ -84,18 +81,10 @@
 		<div class="flex justify-start gap-4">
 			<div class="flex flex-col items-center justify-start">
 				<p class="water-label">Water</p>
-				<!-- <RadialProgress progress={waterProgressPercent} /> -->
-				<!-- <div class="hidden sm:inline"> -->
 				<a href={`${plantWater.plant.id}`} class="click">
-					<!-- <WaterProgress progress={waterProgressPercent} /> -->
 					<WaterProgress2 fillPercentage={waterProgressPercent} />
-					<!-- </div> -->
 				</a>
 			</div>
-			<!-- <div class="flex flex-col items-center justify-start">
-					<p>Fertilized</p>
-					<RadialProgress progress={waterProgressPercent} />
-				</div> -->
 		</div>
 	</div>
 	{#if showPlantCare}

@@ -1,0 +1,1 @@
+ALTER TABLE `room` ADD `active` boolean DEFAULT true;

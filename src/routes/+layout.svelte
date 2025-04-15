@@ -10,22 +10,13 @@
 	import bluegrad from 'src/lib/assets/images/bluegrad.png'
 	import LogOut from 'lucide-svelte/icons/log-out'
 
-	// import { users } from 'src/lib/stores/user'
-	import { browser } from '$app/environment'
-	import { enhance } from '$app/forms'
 	import { navigating } from '$app/state'
-	import { slide } from 'svelte/transition'
+	import { fade, slide } from 'svelte/transition'
 	import { expoOut } from 'svelte/easing'
-	// import { currentUser } from 'src/lib/stores/user'
 
 	const { data, children } = $props()
-	// export let data
 	const { loggedIn } = data
 	let logoutForm: HTMLFormElement | undefined = $state()
-
-	// console.log('users from layout', users)
-	// console.log('userId from layout', data.userId)
-	// const currentUser = users.filter((u) => data.userId == u.id)[0]
 </script>
 
 <svelte:head>

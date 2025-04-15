@@ -8,6 +8,13 @@
       "when": 1744484498708,
       "tag": "0000_curly_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1744729095118,
+      "tag": "0001_lonely_charles_xavier",
+      "breakpoints": true
     }
   ]
 }

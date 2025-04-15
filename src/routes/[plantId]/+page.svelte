@@ -16,32 +16,11 @@
 	import PastWatering from 'src/lib/components/PastWatering.svelte'
 	import bluegrad from '$lib/assets/images/bluegrad.png'
 	import WaterProgress2 from 'src/lib/components/WaterProgress2.svelte'
-	import { DAY_MILLISECONDS } from 'src/lib/utils/constants.js'
 
 	const { data } = $props()
 
-	// all this needs to be abstracted out to get rid of duplicate code with PlantCard.svelte, or be put into the water progress component itself....
-	// last watering event that was actually water
-	// const lastWater = $derived(data.wateringEvents.filter((event) => event.watered === true)[0])
-
-	const plantCardData = $derived({
-		plant: data.plant,
-		watering_event: data.wateringEvents.filter((event) => event.watered === true)[0],
-	})
-
-	let lastWatered = $derived.by(() => {
-		const milliseconds =
-			new Date().getTime() - new Date(plantCardData.watering_event?.timestamp).getTime()
-		const days = Math.round(milliseconds / DAY_MILLISECONDS)
-		return { milliseconds, days }
-	})
-
-	let waterProgressPercent = $derived(
-		plantCardData.watering_event?.timestamp
-			? 100 -
-					(lastWatered.milliseconds / (plantCardData.plant.water_schedule * DAY_MILLISECONDS)) * 100
-			: 0,
-	)
+	const room_name = data.rooms.find((room) => room.id === data.plant.room_id).name
+	console.log('room_name', room_name)
 
 	const title = data.plant.name
 		? `${data.plant.name} (${data.plant.species}) - Happy Plants`
@@ -53,52 +32,48 @@
 </svelte:head>
 
 <div class="mt-8 flex flex-col gap-4">
-	<!-- <h1 class="break-words text-3xl font-bold">{data.plant.species}</h1> -->
 	<div class="sm:grid sm:grid-cols-2 sm:justify-items-center sm:gap-4">
-		<!-- {#if plantCardData.plant.image_url} -->
 		<!-- Image -->
 		<div class="relative">
-			<a href={`${plantCardData.plant.id}`}>
+			<a href={`${data.plant.id}`}>
 				<img
-					src={plantCardData.plant.image_url ? plantCardData.plant.image_url : bluegrad}
+					src={data.plant.image_url ? data.plant.image_url : bluegrad}
 					alt="placeholder"
 					class="mx-auto aspect-square min-h-16 w-full max-w-80 rounded-lg object-cover"
 				/>
 			</a>
 		</div>
-		<!-- {/if} -->
 		<div class="mx-auto flex w-full items-center justify-evenly gap-4 sm:flex-col">
 			<div class="sm:order-2">
 				<!-- Species -->
-				<h1 class="name-wrap text-xl font-bold">{plantCardData.plant.species}</h1>
+				<h1 class="name-wrap text-xl font-bold">{data.plant.species}</h1>
 
 				<!-- Name -->
-				{#if plantCardData.plant.name}
-					<p><span class="opacity-60">Name:</span> {plantCardData.plant.name}</p>
+				{#if data.plant.name}
+					<p><span class="opacity-60">Name:</span> {data.plant.name}</p>
 				{/if}
 
 				<!-- Room -->
-				<p><span class="opacity-60">Location:</span> {plantCardData.plant.room_name}</p>
+				<p><span class="opacity-60">Location:</span> {room_name}</p>
 
 				<!-- Watering Schedule -->
 				<p>
-					<span class="opacity-60">Watering Schedule: </span> Every {plantCardData.plant
-						.water_schedule} days
+					<span class="opacity-60">Watering Schedule: </span> Every {data.plant.water_schedule} days
 				</p>
-				{#if isNaN(lastWatered.days)}
+				{#if isNaN(data.plant?.daysSinceLastWatered)}
 					<p><span class="opacity-60">No watering events recorded</span></p>
 				{:else}
 					<p>
 						<span class="opacity-60">Days since last watered:</span>
-						{lastWatered.days}
-						{lastWatered.days === 1 ? 'day' : 'days'}
+						{data.plant?.daysSinceLastWatered}
+						{data.plant?.daysSinceLastWatered === 1 ? 'day' : 'days'}
 					</p>
 				{/if}
 			</div>
 
 			<!-- Watering Progress -->
 			<div class="sm:order-1">
-				<WaterProgress2 fillPercentage={waterProgressPercent} />
+				<WaterProgress2 fillPercentage={data.plant?.waterProgressPercent} />
 			</div>
 		</div>
 	</div>

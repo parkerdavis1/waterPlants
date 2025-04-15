@@ -31,7 +31,7 @@
 		onResult: async ({ result }) => {
 			isSubmitting = false
 			if (result.type === 'success') {
-				await goto('/')
+				dialogOpen = false
 				toast.success(`Edited plant`)
 			} else {
 				toast.error('Error editing plant')
@@ -49,7 +49,7 @@
 			} else {
 				toast.error('Error deleting plant')
 			}
-		} 
+		},
 	})
 
 	interface Room {
@@ -81,9 +81,11 @@
 	function handleDelete() {
 		deleteOpen = true
 	}
+
+	let dialogOpen = $state(false)
 </script>
 
-<Dialog.Root>
+<Dialog.Root bind:open={dialogOpen}>
 	<Dialog.Trigger class={`w-full ${buttonVariants({ variant: 'outline' })}`}>
 		✍️ Edit
 	</Dialog.Trigger>
@@ -185,7 +187,13 @@
 			</div>
 		</form>
 
-		<form id="delete-plant" method="post" action="?/deletePlant" bind:this={deleteForm} use:deleteEnhance>
+		<form
+			id="delete-plant"
+			method="post"
+			action="?/deletePlant"
+			bind:this={deleteForm}
+			use:deleteEnhance
+		>
 			<input type="hidden" value={data.plant.id} name="id" />
 			<input type="hidden" value={data.plant.image_url} name="image_url" />
 		</form>

@@ -19,15 +19,15 @@
 	let { data } = $props()
 
 	const plantsThatNeedWater = $derived(
-		data.plantsWater.plantsWater?.filter((plantWater) => plantWater.dueDate < new Date().getTime()),
+		data.plantsWater?.filter((plantWater) => plantWater.plant.dueDate < new Date().getTime()),
 	)
 	$inspect(plantsThatNeedWater)
 
-	let activePlants = $derived($waterPlantsView ? plantsThatNeedWater : data.plantsWater.plantsWater)
+	let activePlants = $derived($waterPlantsView ? plantsThatNeedWater : data.plantsWater)
 
 	// State used in many places, so it is stored in a store
 	$checkedObj = Object.fromEntries(
-		data.plantsWater.plantsWater.map((plantWater) => [plantWater.plant.id, false]),
+		data.plantsWater.map((plantWater) => [plantWater.plant.id, false]),
 	)
 
 	const { form, enhance } = superForm(data.form, {

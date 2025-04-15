@@ -44,6 +44,7 @@
 	}
 
 	const { form, enhance, errors, message, constraints } = superForm(data.waterForm, {
+		invalidateAll: 'force',
 		onSubmit: () => {
 			isSubmitting = true
 		},
