@@ -66,11 +66,12 @@
 	</defs>
 
 	<!-- White circle background -->
+	<!-- fill="hsla(36.867, 95.402%, 82.941%)" -->
 	<circle
 		cx="50"
 		cy="50"
 		r={radius}
-		fill="white"
+		fill="hsl(var(--background)"
 		stroke={fillPercentage > 0 ? 'var(--circle)' : 'var(--dry-fill)'}
 		stroke-width="8"
 		paint-order="stroke"
@@ -88,8 +89,8 @@
 		--size: 5rem;
 		--circle: #0284c5;
 		/* --dry-fill: #e0e0e0; */
-		--dry-fill: rgb(253 186 116);
-		--dry-fill: #ffddaa;
+		--dry-fill: rgb(190, 129, 64);
+		--dry-fill: hsla(36 95.4% 65%);
 		width: var(--size);
 		height: var(--size);
 	}

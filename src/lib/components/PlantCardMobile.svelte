@@ -41,7 +41,7 @@
 							class={`mx-auto aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 w-32 rounded-lg object-cover`}
 						/>
 						<p
-							class="z-10 h-fit overflow-hidden text-ellipsis whitespace-nowrap bg-white/80 text-center"
+							class="z-10 h-fit overflow-hidden text-ellipsis whitespace-nowrap bg-background/80 text-center"
 						>
 							{#if plantWater.plant.name}
 								{plantWater.plant.name} - {plantWater.plant.species}

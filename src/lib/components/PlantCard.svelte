@@ -45,7 +45,7 @@
 />
 
 <div
-	class={`plant-card hidden w-fit rounded-lg border p-4 sm:block sm:w-full ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
+	class={`plant-card hidden w-fit rounded-lg  p-4 sm:block sm:w-full ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
 >
 	{#if context === 'list'}
 		<!-- <input type="checkbox" bind:checked={$checkedObj[plantWater.plant.id]} /> -->
