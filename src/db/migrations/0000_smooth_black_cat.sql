@@ -23,6 +23,7 @@ CREATE TABLE `room` (
 	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	`house_id` integer,
 	`name` text NOT NULL,
+	`active` boolean DEFAULT true,
 	FOREIGN KEY (`house_id`) REFERENCES `house`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

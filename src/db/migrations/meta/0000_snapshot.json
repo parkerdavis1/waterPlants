@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "db868acf-e043-47ab-8bec-02dab410f035",
+  "id": "69ac006f-e0e1-48d7-8aa5-e48afabf91d1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "house": {
@@ -169,6 +169,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": true
         }
       },
       "indexes": {},

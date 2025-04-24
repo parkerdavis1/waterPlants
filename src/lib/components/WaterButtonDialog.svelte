@@ -18,6 +18,7 @@
 	import { fade, scale, slide } from 'svelte/transition'
 	import { id } from 'date-fns/locale'
 	import DatePicker from './DatePicker.svelte'
+	import { createJoyfulFuzzyGurgle } from '$lib/utils/fizzy-bubble'
 
 	const { data } = $props()
 
@@ -53,6 +54,7 @@
 			dialogOpen = false
 			if (result.type === 'success') {
 				toast.success(`Successfully watered ${data.plant.name ?? data.plant.species ?? 'plant'}!`)
+				createJoyfulFuzzyGurgle()
 			}
 		},
 	})

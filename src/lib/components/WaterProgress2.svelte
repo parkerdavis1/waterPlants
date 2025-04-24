@@ -75,10 +75,19 @@
 		stroke={fillPercentage > 0 ? 'var(--circle)' : 'var(--dry-fill)'}
 		stroke-width="8"
 		paint-order="stroke"
+		class="circle-stroke"
 	/>
 
 	<!-- Blue rectangle that's clipped to the circle -->
-	<rect x="0" {y} width="100" height="100" fill="var(--fill)" clip-path={`url(#${customId})`} />
+	<rect
+		x="0"
+		{y}
+		width="100"
+		height="100"
+		fill="var(--fill)"
+		clip-path={`url(#${customId})`}
+		class="fill-rect"
+	/>
 </svg>
 
 <style>
@@ -93,5 +102,13 @@
 		--dry-fill: hsla(36 95.4% 65%);
 		width: var(--size);
 		height: var(--size);
+	}
+
+	.fill-rect {
+		transition: y 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.circle-stroke {
+		transition: stroke 0.4s ease-in-out;
 	}
 </style>
