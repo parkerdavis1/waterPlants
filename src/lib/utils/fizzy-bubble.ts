@@ -1,8 +1,7 @@
 console.log("Starting bubbles!");
 
 // Joyful Fuzzy Gurgle Sound with Web Audio API
-const audioContext = new (window.AudioContext ||
-    window.webkitAudioContext)();
+const audioContext = new AudioContext();
 
 // Function to create a single bubble sound with randomized parameters
 function createBubbleSound(startTime, duration, baseFreq) {
@@ -135,12 +134,14 @@ function createFuzzyNoise(startTime, duration, filterFreq) {
 
 // Function to create a joyful gurgle sound (multiple bubbles with fuzzy noise)
 export function createJoyfulFuzzyGurgle() {
+    if (typeof audioContext === "undefined") {
+        const audioContext = new AudioContext();
+    }
     if (audioContext.state === "suspended") {
         audioContext.resume();
     }
 
     const now = audioContext.currentTime;
-    const totalDuration = 2.5;
 
     // Create multiple higher-pitched bubbles for joyful effect
     for (let i = 0; i < 20; i++) {
