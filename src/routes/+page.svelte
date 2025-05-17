@@ -76,20 +76,23 @@
 </svelte:head>
 <Toolbar {data} {waterDisabled} />
 <!-- <SuperDebug data={$form} /> -->
-<div class="flex flex-col flex-wrap gap-4">
+<!-- <div class="flex flex-col flex-wrap gap-4"> -->
+<div class=" gap-4">
 	<Accordion.Root type="multiple" value={values} onValueChange={handleAccordionChange}>
 		{#if data.rooms}
 			{#each data.rooms as room, index (room.id)}
 				<Accordion.Item value={room.name}>
 					<Accordion.Trigger>{room.name}</Accordion.Trigger>
 					<Accordion.Content>
-						{#each activePlants as plantWater}
-							{#if plantWater.plant.room_id == room.id}
-								<div class="flex gap-2">
-									<PlantCard {plantWater} {data} context="list" />
-								</div>
-							{/if}
-						{/each}
+						<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+							{#each activePlants as plantWater}
+								{#if plantWater.plant.room_id == room.id}
+									<div class="flex gap-2 rounded-xl lg:border lg:border-border">
+										<PlantCard {plantWater} {data} context="list" />
+									</div>
+								{/if}
+							{/each}
+						</div>
 					</Accordion.Content>
 				</Accordion.Item>
 			{/each}

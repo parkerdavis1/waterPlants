@@ -35,7 +35,7 @@
 {/if}
 
 <Toaster richColors />
-<div class="container flex h-screen max-w-5xl flex-col pt-8 dark:bg-gray-800 dark:text-white">
+<div class="container flex h-screen max-w-6xl flex-col pt-8 dark:bg-gray-800 dark:text-white">
 	<header class="flex justify-between">
 		<h1 class="click text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
 		<DropdownMenu.Root>
@@ -62,7 +62,7 @@
 		</DropdownMenu.Root>
 	</header>
 	<main class="grow pb-16">
-		<div class="max-w-3xl sm:container">
+		<div class="mx-auto max-w-3xl lg:max-w-6xl">
 			<!-- <slot></slot> -->
 			{@render children()}
 		</div>
