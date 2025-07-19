@@ -1,0 +1,10 @@
+services: 
+  waterplants:
+    build: .
+    networks: 
+      - app-network
+    volumes:
+      - /root/data:/data
+networks:
+  app-network:
+    external: true
