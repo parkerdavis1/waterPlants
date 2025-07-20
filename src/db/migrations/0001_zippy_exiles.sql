@@ -1,0 +1,1 @@
+ALTER TABLE `plant` ADD `alive` boolean DEFAULT true NOT NULL;

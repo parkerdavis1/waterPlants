@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { imageSchema } from './images'
+import { z } from "zod";
+import { imageSchema } from "./images";
 
 export const newPlantSchema = z.object({
 	species: z.string(),
@@ -9,7 +9,7 @@ export const newPlantSchema = z.object({
 	room_id: z.number().default(1),
 	house_id: z.number().default(1),
 	water_schedule: z.number().positive().min(1).default(7),
-})
+});
 
 export const plantEventSchema = z.object({
 	notes: z.string().optional(),
@@ -26,32 +26,32 @@ export const plantEventSchema = z.object({
 			...data,
 			watered: false,
 			fertilized: false,
-			timestamp: undefined
-		}
+			timestamp: undefined,
+		};
 	} else {
-		return data
+		return data;
 	}
-})
-
+});
 
 export const editPlantSchema = z.object({
 	id: z.number(),
 	species: z.string(),
-	name: z.string().default(''),
-	notes: z.string().default(''),
+	name: z.string().default(""),
+	notes: z.string().default(""),
 	image: imageSchema,
 	room_id: z.number(),
 	house_id: z.number().default(1),
 	water_schedule: z.number().positive().min(1).default(7),
 	oldImageUrl: z.string().url().optional(),
-})
+	alive: z.coerce.boolean().default(true),
+});
 
 export const deleteEventSchema = z.object({
 	id: z.string(),
 	plantId: z.string(),
-})
+});
 
 export const deletePlantSchema = z.object({
 	id: z.string(),
 	image_url: z.string().url().optional(),
-})
+});

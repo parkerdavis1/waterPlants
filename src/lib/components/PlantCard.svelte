@@ -73,17 +73,25 @@
 					{plantWater.plant.species}
 				</a>
 			</h2>
-			{#if plantWater.plant.name}<p>{plantWater.plant.name}</p>{/if}
-			{#if plantWater.watering_event?.timestamp}<p class="text-sm opacity-60">
+			{#if plantWater.plant.name}
+				<p>{plantWater.plant.name}</p>
+			{/if}
+			{#if plantWater.watering_event?.timestamp}
+				<p class="text-sm opacity-60">
 					{daysSinceLastWatered} day{daysSinceLastWatered === 1 ? '' : 's'} since last water
-				</p>{/if}
+				</p>
+			{/if}
 		</div>
 		<div class="flex justify-start gap-4">
 			<div class="flex flex-col items-center justify-start">
-				<p class="water-label">Water</p>
-				<a href={`${plantWater.plant.id}`} class="click">
-					<WaterProgress2 fillPercentage={waterProgressPercent} />
-				</a>
+				{#if !plantWater.plant.alive}
+					<p class="text-sm opacity-60">Dead</p>
+				{:else}
+					<p class="water-label">Water</p>
+					<a href={`${plantWater.plant.id}`} class="click">
+						<WaterProgress2 fillPercentage={waterProgressPercent} />
+					</a>
+				{/if}
 			</div>
 		</div>
 	</div>

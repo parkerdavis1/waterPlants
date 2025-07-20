@@ -8,6 +8,13 @@
       "when": 1745507107511,
       "tag": "0000_smooth_black_cat",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1753033750620,
+      "tag": "0001_zippy_exiles",
+      "breakpoints": true
     }
   ]
 }

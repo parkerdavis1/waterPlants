@@ -73,7 +73,11 @@
 
 			<!-- Watering Progress -->
 			<div class="sm:order-1">
-				<WaterProgress2 fillPercentage={data.plant?.waterProgressPercent} />
+				{#if data.plant.alive}
+					<WaterProgress2 fillPercentage={data.plant?.waterProgressPercent} />
+				{:else}
+					<p class="text-sm opacity-60">Dead</p>
+				{/if}
 			</div>
 		</div>
 	</div>

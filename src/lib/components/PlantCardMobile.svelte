@@ -67,9 +67,13 @@
 
 	<div class="flex justify-end gap-4">
 		<div class="flex flex-col items-center justify-start">
-			<a href={`${plantWater.plant.id}`}>
-				<WaterProgress2 fillPercentage={waterProgressPercent} />
-			</a>
+			{#if plantWater.plant.alive}
+				<a href={`${plantWater.plant.id}`}>
+					<WaterProgress2 fillPercentage={waterProgressPercent} />
+				</a>
+			{:else}
+				<p class="text-sm opacity-60">Dead</p>
+			{/if}
 		</div>
 	</div>
 </div>

@@ -14,7 +14,7 @@
 	import { goto } from '$app/navigation'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { editPlantSchema } from '../zodSchemas/plantSchema'
-	// import { enhance as svelteEnhance } from '$app/forms'
+	import Switch from './ui/switch/switch.svelte'
 
 	// export let data
 	let { data } = $props()
@@ -170,6 +170,12 @@
 				{...$constraints.water_schedule}
 			/>
 			{#if $errors.water_schedule}<p class="text-red-500">{$errors.water_schedule}</p>{/if}
+
+			<div class="mb-8 mt-2 flex items-center gap-2">
+				<Switch bind:checked={$form.alive} name="alive" />
+				<Label for="alive">Alive</Label>
+				{#if $errors.alive}<p class="text-red-500">{$errors.alive}</p>{/if}
+			</div>
 
 			<Input type="hidden" value={data.plant.id} name="id" />
 			<Input type="hidden" value={data.plant.image_url} name="oldImageUrl" />

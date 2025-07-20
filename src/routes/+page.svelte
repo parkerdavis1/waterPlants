@@ -23,7 +23,11 @@
 	)
 	$inspect(plantsThatNeedWater)
 
-	let activePlants = $derived($waterPlantsView ? plantsThatNeedWater : data.plantsWater)
+	let activePlants = $derived(
+		$waterPlantsView
+			? plantsThatNeedWater
+			: data.plantsWater?.filter((plantWater) => plantWater.plant.alive),
+	)
 
 	// State used in many places, so it is stored in a store
 	$checkedObj = Object.fromEntries(
@@ -97,6 +101,18 @@
 				</Accordion.Item>
 			{/each}
 		{/if}
+		<Accordion.Item value="dead">
+			<Accordion.Trigger>Dead</Accordion.Trigger>
+			<Accordion.Content>
+				<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+					{#each data.plantsWater?.filter((plantWater) => !plantWater.plant.alive) as plantWater}
+						<div class="flex gap-2 rounded-xl lg:border lg:border-border">
+							<PlantCard {plantWater} {data} context="list" />
+						</div>
+					{/each}
+				</div>
+			</Accordion.Content>
+		</Accordion.Item>
 	</Accordion.Root>
 </div>
 

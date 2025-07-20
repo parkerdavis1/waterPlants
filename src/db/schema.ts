@@ -22,6 +22,7 @@ export const plant = sqliteTable("plant", {
 	room_id: integer("room_id")
 		.references(() => room.id)
 		.notNull(),
+	alive: boolean("alive").notNull().default(true),
 	created_at: integer("created_at", { mode: "number" })
 		.notNull()
 		.default(sql`(unixepoch() * 1000)`),
