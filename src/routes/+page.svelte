@@ -18,16 +18,14 @@
 
 	let { data } = $props()
 
+	const alivePlants = $derived(data.plantsWater?.filter((plantWater) => plantWater.plant.alive))
+
 	const plantsThatNeedWater = $derived(
-		data.plantsWater?.filter((plantWater) => plantWater.plant.dueDate < new Date().getTime()),
+		alivePlants.filter((plantWater) => plantWater.plant.dueDate < new Date().getTime()),
 	)
 	$inspect(plantsThatNeedWater)
 
-	let activePlants = $derived(
-		$waterPlantsView
-			? plantsThatNeedWater
-			: data.plantsWater?.filter((plantWater) => plantWater.plant.alive),
-	)
+	let activePlants = $derived($waterPlantsView ? plantsThatNeedWater : alivePlants)
 
 	// State used in many places, so it is stored in a store
 	$checkedObj = Object.fromEntries(
