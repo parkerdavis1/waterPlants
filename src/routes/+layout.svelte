@@ -11,12 +11,24 @@
 	import LogOut from 'lucide-svelte/icons/log-out'
 
 	import { navigating } from '$app/state'
+	import { onNavigate } from '$app/navigation'
 	import { fade, slide } from 'svelte/transition'
 	import { expoOut } from 'svelte/easing'
 
 	const { data, children } = $props()
 	const { loggedIn } = data
 	let logoutForm: HTMLFormElement | undefined = $state()
+
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve()
+				await navigation.complete
+			})
+		})
+	})
 </script>
 
 <svelte:head>
