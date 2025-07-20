@@ -7,6 +7,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"build:docker": "vite build --debug",
+		"build:droplet": "vite build && rsync -a ./build droplet:/root/waterPlants/",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
