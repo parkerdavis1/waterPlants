@@ -22,10 +22,10 @@
 </script>
 
 <Table.Row>
-	<Table.Cell class="whitespace-nowrap text-xs">
+	<Table.Cell class="min-w-32 text-xs">
 		{format(new Date(wateringEvent.timestamp), 'PPp')}
 	</Table.Cell>
-	<Table.Cell>
+	<Table.Cell class="min-w-48">
 		<div>
 			{wateringEvent.notes}
 		</div>

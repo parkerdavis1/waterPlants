@@ -12,8 +12,8 @@
 	<!-- <Table.Caption>Recent Watering Events</Table.Caption> -->
 	<Table.Header>
 		<Table.Row>
-			<Table.Head>Date</Table.Head>
-			<Table.Head>Notes</Table.Head>
+			<Table.Head class="min-w-32">Date</Table.Head>
+			<Table.Head class="min-w-48">Notes</Table.Head>
 			<Table.Head>Water</Table.Head>
 			<Table.Head>Fert.</Table.Head>
 			<Table.Head>User</Table.Head>
