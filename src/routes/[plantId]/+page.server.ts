@@ -74,22 +74,24 @@ export async function load({ params, parent }) {
 
 export const actions = {
 	water: async ({ request }) => {
+		console.log("\nrequest", request);
+		// console.log("\nform pre-validation", await request.formData());
 		const form = await superValidate(request, zod(plantEventSchema));
-		console.log("form from water server action", form);
+		console.log("\nform from water server action", form);
 
 		if (!form.valid) return fail(400, { form });
 
-		if (form.data.wait) {
-			// update plant and change water_schedule to whatever it is currently + wait number
-			const res = await db
-				.update(plant)
-				.set({
-					water_schedule: sql`water_schedule + ${form.data.wait}`,
-				})
-				.where(eq(plant.id, form.data.plant_id));
+		// 	// update plant and change water_schedule to whatever it is currently + wait number
+		// if (form.data.wait) {
+		// 	const res = await db
+		// 		.update(plant)
+		// 		.set({
+		// 			water_schedule: sql`water_schedule + ${form.data.wait}`,
+		// 		})
+		// 		.where(eq(plant.id, form.data.plant_id));
 
-			if (!res) return fail(400, { form });
-		}
+		// 	if (!res) return fail(400, { form });
+		// }
 
 		const [insertedWaterEvent] = await db.insert(watering_event).values(
 			form.data,
@@ -97,6 +99,7 @@ export const actions = {
 		if (!insertedWaterEvent) return fail(400, { form });
 
 		if (form.data.image) {
+			console.log("Image found! will upload to R2...");
 			// Image upload
 			const image = form.data.image;
 

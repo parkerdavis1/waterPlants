@@ -21,7 +21,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#each data.wateringEvents as event (event.id)}
+		{#each data.wateringEvents.sort((a, b) => b.timestamp - a.timestamp) as event (event.id)}
 			<PastWateringRow wateringEvent={event} {data} />
 		{/each}
 	</Table.Body>

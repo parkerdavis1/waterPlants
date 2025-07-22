@@ -103,7 +103,7 @@
 		<div class="w-full">
 			<img
 				src={previewImage}
-				alt="Selected image preview"
+				alt="Preview of uploaded image"
 				class="aspect-square w-full max-w-[200px] rounded-lg object-cover"
 			/>
 		</div>

@@ -48,6 +48,9 @@
 		invalidateAll: 'force',
 		onSubmit: () => {
 			isSubmitting = true
+			console.log('submitting')
+			console.log('form', $form)
+			console.log('errors', $errors)
 		},
 		onResult: ({ result }) => {
 			isSubmitting = false
@@ -55,6 +58,9 @@
 			if (result.type === 'success') {
 				toast.success(`Successfully watered ${data.plant.name ?? data.plant.species ?? 'plant'}!`)
 				createJoyfulFuzzyGurgle()
+			} else {
+				console.log('result', result)
+				toast.error('There was an error.')
 			}
 		},
 	})

@@ -1,6 +1,8 @@
 services: 
   waterplants:
-    build: .
+    build: 
+      context: .
+      target: production  
     networks: 
       - app-network
     volumes:

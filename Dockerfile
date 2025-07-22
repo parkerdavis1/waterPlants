@@ -19,9 +19,15 @@ COPY .npmrc package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod=true
 
 
+FROM base AS development
+COPY build /app/build
+COPY .env.localdocker /app/.env
+# Start the server by default, this can be overwritten at runtime
+CMD [ "pnpm", "run", "start" ]
+
+FROM base AS production
 # Copy built application
 COPY build /app/build
 COPY .env.prod /app/.env
-
 # Start the server by default, this can be overwritten at runtime
 CMD [ "pnpm", "run", "start" ]
