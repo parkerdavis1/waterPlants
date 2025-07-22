@@ -91,5 +91,6 @@
 		height: 4px;
 		z-index: 50;
 		background-color: #0284c5;
+		view-transition-name: 'navigation-loader';
 	}
 </style>
