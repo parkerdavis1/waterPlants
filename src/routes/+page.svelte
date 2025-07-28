@@ -25,7 +25,7 @@
 	)
 	$inspect(plantsThatNeedWater)
 
-	let activePlants = $derived(waterPlantsView ? plantsThatNeedWater : alivePlants)
+	let activePlants = $derived(waterPlantsView.value ? plantsThatNeedWater : alivePlants)
 
 	// State used in many places, so it is stored in a store
 	$checkedObj = Object.fromEntries(
