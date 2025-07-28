@@ -81,7 +81,7 @@ export const actions = {
 
 		if (!form.valid) return fail(400, { form });
 
-		// 	// update plant and change water_schedule to whatever it is currently + wait number
+		// // update plant and change water_schedule to whatever it is currently + wait number
 		// if (form.data.wait) {
 		// 	const res = await db
 		// 		.update(plant)

@@ -5,6 +5,7 @@
 	"scripts": {
 		"start": "node --env-file=.env build",
 		"dev": "vite dev",
+		"dev:docker": "docker compose -f docker-compose.local.yml up --build",
 		"build": "vite build",
 		"build:docker": "vite build && docker compose -f docker-compose.local.yml up --build",
 		"build:droplet": "./droplet.sh",

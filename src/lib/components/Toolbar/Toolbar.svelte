@@ -22,7 +22,7 @@
 		{/if}
 	</div>
 	<div class="flex items-center gap-2">
-		<Switch id="showWaterPlants" bind:checked={$waterPlantsView} />
+		<Switch id="showWaterPlants" bind:checked={waterPlantsView.value} />
 		<Label for="showWaterPlants">Only Show Thirsty Plants</Label>
 	</div>
 </div>
