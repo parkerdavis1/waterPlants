@@ -6,6 +6,7 @@
 	import { toast } from 'svelte-sonner'
 	import { superForm } from 'sveltekit-superforms'
 	import { buttonVariants } from './ui/button'
+	import Lightbox from './Lightbox.svelte'
 
 	let { data, wateringEvent } = $props()
 	const waterer = data.users.find((u) => u.id == wateringEvent.user_id)?.name
@@ -31,9 +32,10 @@
 		</div>
 		<div>
 			{#if wateringEvent.image_url}
-				<a href={wateringEvent.image_url} target="_blank">
-					<img src={wateringEvent.image_url} />
-				</a>
+				<Lightbox url={wateringEvent.image_url} />
+				<!-- <a href={wateringEvent.image_url} target="_blank"> -->
+				<!-- <img src={wateringEvent.image_url} /> -->
+				<!-- </a> -->
 			{/if}
 		</div>
 	</Table.Cell>

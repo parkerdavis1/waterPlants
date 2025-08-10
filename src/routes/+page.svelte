@@ -123,14 +123,11 @@
 </form>
 
 <Dialog.Root bind:open={waterMultipleOpen.value}>
-	<!-- <Dialog.Trigger>💧Record Event</Dialog.Trigger> -->
 	<Dialog.Content class="max-h-screen overflow-auto">
 		<Dialog.Title>Water Plants</Dialog.Title>
-		<!-- <SuperDebug data={$form} /> -->
 		<Dialog.Description>
 			Watering {$form.plantIds.length} plant{$form.plantIds.length > 1 ? 's' : ''}
 		</Dialog.Description>
-		<!-- <Label for="timestamp">Date</Label> -->
 		<DatePicker {form} />
 		<Label for="notes">Notes</Label>
 		<Textarea id="notes" bind:value={$form.notes} />

@@ -16,6 +16,7 @@
 	import PastWatering from 'src/lib/components/PastWatering.svelte'
 	import bluegrad from '$lib/assets/images/bluegrad.png'
 	import WaterProgress2 from 'src/lib/components/WaterProgress2.svelte'
+	import Lightbox from 'src/lib/components/Lightbox.svelte'
 
 	const { data } = $props()
 
@@ -35,13 +36,17 @@
 	<div class="sm:grid sm:grid-cols-2 sm:justify-items-center sm:gap-4">
 		<!-- Image -->
 		<div class="relative">
-			<a href={`${data.plant.id}`}>
+			<Lightbox
+				url={data.plant.image_url ? data.plant.image_url : bluegrad}
+				className="mx-auto aspect-square min-h-16 w-full max-w-80 rounded-lg object-cover"
+			/>
+			<!-- <a href={`${data.plant.id}`}>
 				<img
 					src={data.plant.image_url ? data.plant.image_url : bluegrad}
 					alt="placeholder"
 					class="mx-auto aspect-square min-h-16 w-full max-w-80 rounded-lg object-cover"
 				/>
-			</a>
+			</a> -->
 		</div>
 		<div class="mx-auto flex w-full items-center justify-evenly gap-4 sm:flex-col">
 			<div class="sm:order-2">
