@@ -102,4 +102,8 @@
 			transform: scale(1);
 		}
 	}
+
+	body:has(dialog[open]) {
+		overflow: hidden;
+	}
 }

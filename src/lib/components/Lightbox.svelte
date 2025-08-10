@@ -38,6 +38,7 @@
 
 	dialog::backdrop {
 		background: rgb(0 0 0 / 0.75);
+		backdrop-filter: blur(2px);
 	}
 
 	button {
