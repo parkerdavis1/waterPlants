@@ -82,15 +82,15 @@
 <div class=" gap-4">
 	<Accordion.Root type="multiple" value={values} onValueChange={handleAccordionChange}>
 		{#if data.rooms}
-			{#each data.rooms as room, index (room.id)}
+			{#each data.rooms as room (room.id)}
 				<Accordion.Item value={room.name}>
 					<Accordion.Trigger>{room.name}</Accordion.Trigger>
 					<Accordion.Content>
 						<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-							{#each activePlants as plantWater}
+							{#each activePlants as plantWater (plantWater.plant.id)}
 								{#if plantWater.plant.room_id == room.id}
 									<div class="flex gap-2 rounded-xl lg:border lg:border-border">
-										<PlantCard {plantWater} {data} context="list" />
+										<PlantCard {plantWater} context="list" />
 									</div>
 								{/if}
 							{/each}
