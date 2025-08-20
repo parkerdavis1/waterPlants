@@ -138,10 +138,14 @@
 				>
 				<ImageUploader {form} {constraints} />
 				<p class="text-center text-xs text-muted-foreground">
-					<span>
-						{data.plant.daysSinceLastPhoto} day{data.plant.daysSinceLastPhoto === 1 ? '' : 's'} since
-						last photo
-					</span>
+					{#if data.plant.daysSinceLastPhoto === Infinity}
+						<span>Never taken a photo!</span>
+					{:else}
+						<span>
+							{data.plant.daysSinceLastPhoto} day{data.plant.daysSinceLastPhoto === 1 ? '' : 's'} since
+							last photo
+						</span>
+					{/if}
 					{#if suggestPicture}
 						<span>(Snap a pic! 📸)</span>
 					{/if}
