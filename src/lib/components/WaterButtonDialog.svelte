@@ -139,7 +139,7 @@
 				<ImageUploader {form} {constraints} />
 				<p class="text-center text-xs text-muted-foreground">
 					<span>
-						{data.plant.daysSinceLastWatered} day{data.plant.daysSinceLastWatered === 1 ? '' : 's'} since
+						{data.plant.daysSinceLastPhoto} day{data.plant.daysSinceLastPhoto === 1 ? '' : 's'} since
 						last photo
 					</span>
 					{#if suggestPicture}
