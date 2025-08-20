@@ -69,6 +69,9 @@
 
 	const formId = 'waterForm' + data.plant.id
 	const waitFormId = 'waitWaterForm' + data.plant.id
+
+	// Picture Timer
+	const suggestPicture = data.plant.daysSinceLastPhoto > 30 // 30 days
 </script>
 
 <Dialog.Root bind:open={dialogOpen}>
@@ -134,6 +137,15 @@
 					>Image <span class="text-xs text-muted-foreground"> (optional)</span></Label
 				>
 				<ImageUploader {form} {constraints} />
+				<p class="text-center text-xs text-muted-foreground">
+					<span>
+						{data.plant.daysSinceLastWatered} day{data.plant.daysSinceLastWatered === 1 ? '' : 's'} since
+						last photo
+					</span>
+					{#if suggestPicture}
+						<span>(Snap a pic! 📸)</span>
+					{/if}
+				</p>
 				{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 			</div>
 			<div>

@@ -43,12 +43,15 @@ export async function load({ params, parent }) {
 		});
 	}
 	const plantData = plantDataResolved[0];
+
+	// Last Watering Event
 	const lastWateringEvent =
 		wateringEventsResolved.filter((event) => event.watered === true)[0];
 	const milliseconds = new Date().getTime() -
 		new Date(lastWateringEvent?.timestamp).getTime();
 	const days = Math.round(milliseconds / DAY_MILLISECONDS);
 
+	// Water Progress Percent
 	const waterProgressPercent = lastWateringEvent?.timestamp
 		? 100 -
 			(milliseconds / (plantData.water_schedule *
@@ -56,11 +59,23 @@ export async function load({ params, parent }) {
 				100
 		: 0;
 
+	// Last Photo Event
+	const lastPhotoEvent =
+		wateringEventsResolved.filter((event) => event.image_url)[0];
+	const daysSinceLastPhoto = lastPhotoEvent
+		? Math.round(
+			(new Date().getTime() -
+				new Date(lastPhotoEvent.timestamp).getTime()) /
+				DAY_MILLISECONDS,
+		)
+		: Infinity;
+
 	return {
 		plant: {
 			...plantData,
 			daysSinceLastWatered: days,
 			waterProgressPercent,
+			daysSinceLastPhoto,
 			// room_name: rooms.find((room) => room.id === plantData.room_id)
 			// 	?.name,
 		},

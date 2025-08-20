@@ -78,7 +78,6 @@
 </svelte:head>
 <Toolbar {data} {waterDisabled} />
 <!-- <SuperDebug data={$form} /> -->
-<!-- <div class="flex flex-col flex-wrap gap-4"> -->
 <div class=" gap-4">
 	<Accordion.Root type="multiple" value={values} onValueChange={handleAccordionChange}>
 		{#if data.rooms}
