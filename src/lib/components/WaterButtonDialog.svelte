@@ -137,19 +137,21 @@
 					>Image <span class="text-xs text-muted-foreground"> (optional)</span></Label
 				>
 				<ImageUploader {form} {constraints} />
-				<p class="text-center text-xs text-muted-foreground">
-					{#if data.plant.daysSinceLastPhoto === Infinity}
-						<span>Never taken a photo!</span>
-					{:else}
-						<span>
-							{data.plant.daysSinceLastPhoto} day{data.plant.daysSinceLastPhoto === 1 ? '' : 's'} since
-							last photo
-						</span>
-					{/if}
-					{#if suggestPicture}
-						<span>(Snap a pic! 📸)</span>
-					{/if}
-				</p>
+				{#if !$form.image}
+					<p class="text-center text-xs text-muted-foreground">
+						{#if data.plant.daysSinceLastPhoto === Infinity}
+							<span>Never taken a photo!</span>
+						{:else}
+							<span>
+								{data.plant.daysSinceLastPhoto} day{data.plant.daysSinceLastPhoto === 1 ? '' : 's'} since
+								last photo
+							</span>
+						{/if}
+						{#if suggestPicture}
+							<span>(Snap a pic! 📸)</span>
+						{/if}
+					</p>
+				{/if}
 				{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 			</div>
 			<div>
