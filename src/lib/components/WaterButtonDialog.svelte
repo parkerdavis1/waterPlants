@@ -71,7 +71,7 @@
 	const waitFormId = 'waitWaterForm' + data.plant.id
 
 	// Picture Timer
-	const suggestPicture = data.plant.daysSinceLastPhoto > 30 // 30 days
+	const suggestPicture = $derived(data.plant.daysSinceLastPhoto > 30) // 30 days
 </script>
 
 <Dialog.Root bind:open={dialogOpen}>
