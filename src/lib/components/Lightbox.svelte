@@ -5,7 +5,6 @@
 	let dialog: HTMLDialogElement
 
 	function handleClick() {
-		console.log('Clicked!')
 		dialog.showModal()
 	}
 </script>

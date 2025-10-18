@@ -89,7 +89,6 @@
 				>
 			</div>
 			<Input type="hidden" name="plant_id" value={plant.id} />
-			<!-- <Input type="hidden" name="user_id" value={1} /> -->
 			{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 			{#if $message}<p>{$message}</p>{/if}
 		</form>

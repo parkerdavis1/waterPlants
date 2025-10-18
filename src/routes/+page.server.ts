@@ -25,48 +25,59 @@ export async function load({ locals }) {
 }
 
 export const actions = {
-	newPlant: async ({ request }) => {
-		const form = await superValidate(request, zod(newPlantSchema));
-		if (!form.valid) return fail(400, { form });
+	// newPlant: async ({ request, locals }) => {
+	// 	const form = await superValidate(request, zod(newPlantSchema));
+	// 	if (!form.valid) return fail(400, { form });
 
-		const [insertedPlant] = await db.insert(plant).values(form.data)
-			.returning();
-		if (!insertedPlant) return fail(400, { form });
+	// 	const [insertedPlant] = await db.insert(plant).values(form.data)
+	// 		.returning();
+	// 	if (!insertedPlant) return fail(400, { form });
 
-		if (form.data.image) {
-			// Image upload
-			const image = form.data.image;
+	// 	if (form.data.image) {
+	// 		// Image upload
+	// 		const image = form.data.image;
 
-			const fileBuffer = await image.arrayBuffer();
-			const fileName = `${Date.now()}-${image.name}`;
+	// 		const fileBuffer = await image.arrayBuffer();
+	// 		const fileName = `${Date.now()}-${image.name}`;
 
-			try {
-				const command = new PutObjectCommand({
-					Bucket: env.R2_BUCKET_NAME,
-					Key: fileName,
-					Body: Buffer.from(fileBuffer),
-					ContentType: image.type,
-				});
+	// 		try {
+	// 			const command = new PutObjectCommand({
+	// 				Bucket: env.R2_BUCKET_NAME,
+	// 				Key: fileName,
+	// 				Body: Buffer.from(fileBuffer),
+	// 				ContentType: image.type,
+	// 			});
 
-				await s3Client.send(command);
+	// 			await s3Client.send(command);
 
-				const imageUrl = env.R2_BUCKET_BASE_URL + fileName;
-				console.log("imageUrl", imageUrl);
-				const resultAfterUpload = await db
-					.update(plant)
-					.set({ image_url: imageUrl })
-					.where(eq(plant.id, insertedPlant.id))
-					.returning();
-				console.log("Image uploaded...", resultAfterUpload);
-			} catch (error) {
-				console.error("Upload error: ", error);
-				return fail(500, { form });
-			}
-			return message(form, "Image uploaded successfully");
-		}
+	// 			const imageUrl = env.R2_BUCKET_BASE_URL + fileName;
+	// 			console.log("imageUrl", imageUrl);
+	// 			const resultAfterUpload = await db
+	// 				.update(plant)
+	// 				.set({ image_url: imageUrl })
+	// 				.where(eq(plant.id, insertedPlant.id))
+	// 				.returning();
+	// 			console.log("Image uploaded...", resultAfterUpload);
 
-		return { form };
-	},
+	// 			console.log("HELLO!!!!!!!!!!!!", locals.user.id);
+	// 			console.log("locals.user.", locals.user);
+	// 			console.log("HELLO!!!!!!!!!!!!", locals.user.id);
+	// 			await db.insert(watering_event).values({
+	// 				plant_id: insertedPlant.id,
+	// 				user_id: locals.user.id,
+	// 				notes: "Photo uploaded",
+	// 				image_url: imageUrl,
+	// 			});
+	// 		} catch (error) {
+	// 			console.error("Upload error: ", error);
+	// 			return fail(500, { form });
+	// 		}
+
+	// 		return message(form, "Image uploaded successfully");
+	// 	}
+
+	// 	return { form };
+	// },
 
 	waterPlants: async ({ request }) => {
 		console.log("watering plants!");

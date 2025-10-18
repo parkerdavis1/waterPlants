@@ -1,7 +1,7 @@
 import env from "src/lib/env.js";
 import db from "src/db";
 import { and, desc, eq, sql } from "drizzle-orm";
-import { plant, room } from "src/db/schema";
+import { plant, room, watering_event } from "src/db/schema";
 import s3Client from "src/lib/s3Client.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import {
@@ -22,7 +22,7 @@ export async function load() {
 }
 
 export const actions = {
-	newPlant: async ({ request }) => {
+	newPlant: async ({ request, locals }) => {
 		// delay for testing
 		// await new Promise((resolve) => setTimeout(resolve, 1000))
 
@@ -69,6 +69,13 @@ export const actions = {
 					.where(eq(plant.id, insertedPlant.id))
 					.returning();
 				console.log("\nImage uploaded...", resultAfterUpload);
+
+				// Create initial watering event with photo
+				await db.insert(watering_event).values({
+					plant_id: insertedPlant.id,
+					user_id: locals.user.id,
+					image_url: imageUrl,
+				});
 			} catch (error) {
 				console.error("\nImage upload error: ", error);
 				return fail(500, withFiles({ form }));

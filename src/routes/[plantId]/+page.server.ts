@@ -90,23 +90,10 @@ export async function load({ params, parent }) {
 export const actions = {
 	water: async ({ request }) => {
 		console.log("\nrequest", request);
-		// console.log("\nform pre-validation", await request.formData());
 		const form = await superValidate(request, zod(plantEventSchema));
 		console.log("\nform from water server action", form);
 
 		if (!form.valid) return fail(400, { form });
-
-		// // update plant and change water_schedule to whatever it is currently + wait number
-		// if (form.data.wait) {
-		// 	const res = await db
-		// 		.update(plant)
-		// 		.set({
-		// 			water_schedule: sql`water_schedule + ${form.data.wait}`,
-		// 		})
-		// 		.where(eq(plant.id, form.data.plant_id));
-
-		// 	if (!res) return fail(400, { form });
-		// }
 
 		const [insertedWaterEvent] = await db.insert(watering_event).values(
 			form.data,
