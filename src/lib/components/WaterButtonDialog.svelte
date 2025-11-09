@@ -19,6 +19,7 @@
 	import { id } from 'date-fns/locale'
 	import DatePicker from './DatePicker.svelte'
 	import { createJoyfulFuzzyGurgle } from '$lib/utils/fizzy-bubble'
+	import { DAY_MILLISECONDS } from '../utils/constants'
 
 	const { data } = $props()
 
@@ -27,6 +28,20 @@
 	let selectedEventType = $state('event')
 	let wateredTemp = $state(true)
 	let fertilizedTemp = $state(false)
+	let waitDays = $state(null)
+
+	$effect(() => {
+		if (selectedEventType === 'wait' && waitDays) {
+			$form.waitUntil = calculateWaitDateTime(waitDays)
+		}
+	})
+
+	function calculateWaitDateTime(days: number | null) {
+		if (!days) return undefined
+		const currentDate = new Date()
+		const futureDate = new Date(currentDate.getTime() + days * DAY_MILLISECONDS)
+		return futureDate.getTime()
+	}
 
 	function handleTabChange() {
 		if (selectedEventType === 'wait') {
@@ -40,7 +55,7 @@
 			console.log('event selected')
 			$form.watered = wateredTemp
 			$form.fertilized = fertilizedTemp
-			$form.wait = undefined
+			$form.waitUntil = undefined
 		}
 	}
 
@@ -101,7 +116,6 @@
 				<Tabs.Root bind:value={selectedEventType} onValueChange={handleTabChange}>
 					<Tabs.List class="grid w-full grid-cols-2 bg-gray-100">
 						<Tabs.Trigger value="event">Record Event</Tabs.Trigger>
-						<!-- <Tabs.Trigger value="fertilize">Fertilize</Tabs.Trigger> -->
 						<Tabs.Trigger value="wait">Wait</Tabs.Trigger>
 					</Tabs.List>
 					<Tabs.Content value="event">
@@ -127,7 +141,7 @@
 					<Tabs.Content value="wait">
 						<div class="pt-4">
 							<Label for="wait">Wait for __ days</Label>
-							<Input type="number" bind:value={$form.wait} name="wait" {...$constraints.wait} />
+							<Input type="number" bind:value={waitDays} name="waitDays" />
 						</div>
 					</Tabs.Content>
 				</Tabs.Root>
@@ -171,7 +185,7 @@
 			<Input type="hidden" name="user_id" value={data.user.id} />
 			<Input type="hidden" name="watered" bind:value={$form.watered} />
 			<Input type="hidden" name="fertilized" bind:value={$form.fertilized} />
-			<Input type="hidden" name="wait" bind:value={$form.wait} />
+			<Input type="hidden" name="waitUntil" bind:value={$form.waitUntil} />
 			<Button form={formId} type="submit" bind:disabled={isSubmitting}
 				>Submit
 				{#if isSubmitting}

@@ -22,7 +22,7 @@
 	})
 
 	let value = $state<DateValue>(today(getLocalTimeZone()))
-	let time = $state(new Date().toTimeString().slice(0, 5))
+	let time = $state(new Date().toTimeString().slice(0, 8))
 
 	$effect(() => {
 		$form.timestamp = new Date(
@@ -31,10 +31,12 @@
 			value.day,
 			Number(time.slice(0, 2)),
 			Number(time.slice(3, 5)),
+			Number(time.slice(6, 8)),
 		).getTime()
 	})
 
 	$inspect(time)
+	$inspect($form.timestamp)
 
 	let datePickerOpen = $state(false)
 </script>

@@ -41,6 +41,13 @@
 	</Table.Cell>
 	<Table.Cell class="text-center">{wateringEvent.watered ? '💧' : ''}</Table.Cell>
 	<Table.Cell class="text-center">{wateringEvent.fertilized ? '✅' : ''}</Table.Cell>
+	{#if wateringEvent.waitUntil}
+		<Table.Cell class="whitespace-nowrap text-center text-xs"
+			>{format(new Date(wateringEvent.waitUntil), 'PP')}</Table.Cell
+		>
+	{:else}
+		<Table.Cell class="text-center"></Table.Cell>
+	{/if}
 	<Table.Cell class="text-center">{waterer}</Table.Cell>
 	<Table.Cell class="text-center">
 		<AlertDialog.Root>
