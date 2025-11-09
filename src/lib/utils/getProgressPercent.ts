@@ -3,12 +3,10 @@ import { DAY_MILLISECONDS } from './constants'
 export function getProgressPercent(lastWateringEvent, plantData) {
 	if (lastWateringEvent?.waitUntil) {
 		const milliseconds = lastWateringEvent.waitUntil - new Date().getTime()
-		console.log('milliseconds until water', milliseconds)
 		const percent =
 			milliseconds > plantData.water_schedule * DAY_MILLISECONDS
 				? 100
 				: (milliseconds / (plantData.water_schedule * DAY_MILLISECONDS)) * 100
-		console.log('percent', percent)
 		return percent
 	} else {
 		const milliseconds = new Date().getTime() - new Date(lastWateringEvent?.timestamp).getTime()

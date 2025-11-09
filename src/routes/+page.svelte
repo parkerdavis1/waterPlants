@@ -23,7 +23,6 @@
 	const plantsThatNeedWater = $derived(
 		alivePlants.filter((plantWater) => plantWater.plant.dueDate < new Date().getTime()),
 	)
-	$inspect(plantsThatNeedWater)
 
 	let activePlants = $derived(waterPlantsView.value ? plantsThatNeedWater : alivePlants)
 
@@ -40,7 +39,6 @@
 		},
 		onResult: ({ result }) => {
 			if (result.type === 'success') {
-				console.log('result', result)
 				const numPlants = result.data?.form.data.plantIds.length
 				for (const key in $checkedObj) {
 					$checkedObj[key] = false

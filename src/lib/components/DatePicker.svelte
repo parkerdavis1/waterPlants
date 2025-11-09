@@ -35,9 +35,6 @@
 		).getTime()
 	})
 
-	$inspect(time)
-	$inspect($form.timestamp)
-
 	let datePickerOpen = $state(false)
 </script>
 

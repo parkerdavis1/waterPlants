@@ -45,14 +45,12 @@
 
 	function handleTabChange() {
 		if (selectedEventType === 'wait') {
-			console.log('Wait selected')
 			wateredTemp = $form.watered
 			fertilizedTemp = $form.fertilized
 			// then...
 			$form.watered = false
 			$form.fertilized = false
 		} else if (selectedEventType === 'event') {
-			console.log('event selected')
 			$form.watered = wateredTemp
 			$form.fertilized = fertilizedTemp
 			$form.waitUntil = undefined
@@ -63,9 +61,6 @@
 		invalidateAll: 'force',
 		onSubmit: () => {
 			isSubmitting = true
-			console.log('submitting')
-			console.log('form', $form)
-			console.log('errors', $errors)
 		},
 		onResult: ({ result }) => {
 			isSubmitting = false
@@ -74,7 +69,7 @@
 				toast.success(`Successfully watered ${data.plant.name ?? data.plant.species ?? 'plant'}!`)
 				createJoyfulFuzzyGurgle()
 			} else {
-				console.log('result', result)
+				console.error('result', result)
 				toast.error('There was an error.')
 			}
 		},

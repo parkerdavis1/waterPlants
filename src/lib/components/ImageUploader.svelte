@@ -14,23 +14,18 @@
 
 	async function handleFileSelect(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0]
-		console.log('new file', file)
 		if (!file) return
 
 		// Create preview
 		previewImage = URL.createObjectURL(file)
-		console.log('previewImage', previewImage)
 
 		// Resize image
 		const resizedBlob = await resizeImage(file, 1200, 1200)
 		const newFileName = file.name.split('.').slice(0, -1).join('.') + '.jpeg' // incase there are multiple . in name
-		console.log('resizedBlob', resizedBlob)
 		const newImageFile = new File([resizedBlob], newFileName, { type: resizedBlob.type })
-		console.log('newImageFile', newImageFile)
 
 		// Update form data
 		fileProx.set(newImageFile)
-		console.log('$form.image', $form.image)
 
 		// $form.image = newImageFile
 	}
@@ -40,15 +35,11 @@
 	}
 
 	async function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<Blob> {
-		console.log('Doing new resizeImage')
 		return new Promise((resolve) => {
 			const reader = new FileReader()
 			reader.onload = (e) => {
 				const img = new Image()
-				console.log('img', img)
 				img.onload = () => {
-					console.log('image on load')
-
 					// Calculate new dimensions
 					let width = img.width
 					let height = img.height

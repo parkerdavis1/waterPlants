@@ -29,7 +29,6 @@
 	const file = fileProxy(form, 'image')
 
 	function handleSaveChanges() {
-		console.log('Saving changes')
 		toast.success('Watered plant!', {
 			description: 'Did it',
 			action: {

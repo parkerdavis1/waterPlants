@@ -8,7 +8,7 @@ import type { PlantObj } from 'src/lib/types/plantObj'
 export const ssr = false
 
 export const load: LayoutServerLoad = async ({ locals }) => {
-	console.log('\n\n\nRERUNNING LAYOUT SERVER LOAD\n\n\n')
+	console.log('\nRerunning server load...\n', new Date().toLocaleTimeString())
 	if (locals.user) {
 		return {
 			user: locals.user,
@@ -77,13 +77,6 @@ function getDueDate(plantObj: PlantObj) {
 			return 0
 		}
 		const dueDate = eventTime + plantObj.plant.water_schedule * DAY_MILLISECONDS
-		console.log(plantObj)
-		if (plantObj.plant.id === 131) {
-			console.log(plantObj)
-			console.log(new Date(eventTime))
-			console.log(new Date(dueDate))
-			console.log('\n')
-		}
 		return dueDate
 	}
 }

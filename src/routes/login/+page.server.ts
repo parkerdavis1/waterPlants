@@ -17,7 +17,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	login: async (event) => {
-		console.log('LOGGIN IN')
 		const formData = await event.request.formData()
 		const username = formData.get('username')
 		const password = formData.get('password')
@@ -51,11 +50,10 @@ export const actions: Actions = {
 		const sessionToken = auth.generateSessionToken()
 		const session = await auth.createSession(sessionToken, existingUser.id)
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt)
-		
+
 		return redirect(302, '/')
 	},
 	register: async (event) => {
-		console.log('registering!')
 		const formData = await event.request.formData()
 		const username = formData.get('username')
 		const password = formData.get('password')

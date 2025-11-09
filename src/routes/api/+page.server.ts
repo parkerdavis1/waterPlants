@@ -1,10 +1,8 @@
-import { fail, redirect } from "@sveltejs/kit"
+import { fail, redirect } from '@sveltejs/kit'
 import * as auth from '$lib/server/auth'
 
-
-export const actions ={
-    logout: async (event) => {
-		console.log('logging out...!')
+export const actions = {
+	logout: async (event) => {
 		if (!event.locals.session) {
 			return fail(401)
 		}

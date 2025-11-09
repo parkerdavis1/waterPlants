@@ -70,7 +70,6 @@
 	// 	v && ($form.room_id = v.value)
 	// }
 
-	console.log('data.rooms', data.rooms)
 	const triggerContent = $derived(
 		data.rooms.find((room) => room.id === $form.room_id)?.name ?? 'Select a room',
 	)

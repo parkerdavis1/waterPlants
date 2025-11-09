@@ -84,13 +84,10 @@ export const actions = {
 
 		if (!form.valid) return fail(400, { form })
 
-		console.log('formdata!!', form.data)
-
 		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning()
 		if (!insertedWaterEvent) return fail(400, { form })
 
 		if (form.data.image) {
-			console.log('Image found! will upload to R2...')
 			// Image upload
 			const image = form.data.image
 
@@ -108,13 +105,11 @@ export const actions = {
 				await s3Client.send(command)
 
 				const imageUrl = env.R2_BUCKET_BASE_URL + fileName
-				console.log('imageUrl', imageUrl)
 				const resultAfterUpload = await db
 					.update(watering_event)
 					.set({ image_url: imageUrl })
 					.where(eq(watering_event.id, insertedWaterEvent.id))
 					.returning()
-				console.log('Image uploaded...', resultAfterUpload)
 			} catch (error) {
 				console.error('Upload error: ', error)
 				return fail(500, { form })
@@ -128,15 +123,12 @@ export const actions = {
 
 		if (!form.valid) return fail(400, { form })
 
-		console.log('form.data.id', form.data.id)
-
 		const [result] = await db
 			.update(plant)
 			.set(form.data)
 			.where(eq(plant.id, form.data.id))
 			.returning()
 
-		console.log('result', result)
 		if (form.data.image) {
 			const oldImageUrl = form.data.oldImageUrl
 
@@ -157,7 +149,6 @@ export const actions = {
 				await s3Client.send(uploadCommand)
 
 				const imageUrl = env.R2_BUCKET_BASE_URL + fileName
-				console.log('imageUrl', imageUrl)
 
 				const resultAfterUpload = await db
 					.update(plant)
@@ -165,12 +156,8 @@ export const actions = {
 					.where(eq(plant.id, result.id))
 					.returning()
 
-				console.log('Image uploaded...', resultAfterUpload)
-
-				// TODO: Remove old image
 				if (oldImageUrl) {
 					const oldImageKey = new URL(oldImageUrl).pathname.slice(1)
-					console.log('old image key', oldImageKey)
 
 					const deleteCommand = new DeleteObjectCommand({
 						Bucket: env.R2_BUCKET_NAME,
@@ -178,7 +165,6 @@ export const actions = {
 					})
 
 					const deleteResult = await s3Client.send(deleteCommand)
-					console.log('deleteResult', deleteResult)
 				}
 			} catch (error) {
 				console.error('Upload error: ', error)
@@ -194,8 +180,6 @@ export const actions = {
 
 	deletePlant: async ({ request }) => {
 		const form = await superValidate(request, zod(deletePlantSchema))
-
-		console.log('form', form)
 
 		if (!form.valid) return fail(400, { form })
 
@@ -215,7 +199,6 @@ export const actions = {
 		if (form.data.image_url) {
 			// use s3 sdk to delete image
 			const imageKey = form.data.image_url.split('/').at(-1)
-			console.log('imageKey', imageKey)
 
 			const deleteCommand = new DeleteObjectCommand({
 				Bucket: env.R2_BUCKET_NAME,
@@ -236,15 +219,11 @@ export const actions = {
 	deleteEvent: async ({ request }) => {
 		const form = await superValidate(request, zod(deleteEventSchema))
 		if (!form.valid) return fail(400, { form })
-		console.log('form', form)
 
 		const wateringId = form.data.id
 		const plantId = form.data.plantId
-		console.log('wateringId', wateringId)
-		console.log('plantId', plantId)
 
 		const result = await db.delete(watering_event).where(eq(watering_event.id, wateringId))
-		console.log('db result', result)
 
 		return { deleteEvent: form }
 	},
