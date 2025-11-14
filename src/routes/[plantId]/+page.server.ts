@@ -129,49 +129,49 @@ export const actions = {
 			.where(eq(plant.id, form.data.id))
 			.returning()
 
-		if (form.data.image) {
-			const oldImageUrl = form.data.oldImageUrl
+		// if (form.data.image) {
+		// 	const oldImageUrl = form.data.oldImageUrl
 
-			// Image upload
-			const image = form.data.image
+		// 	// Image upload
+		// 	const image = form.data.image
 
-			const fileBuffer = await image.arrayBuffer()
-			const fileName = `${Date.now()}-${image.name}`
+		// 	const fileBuffer = await image.arrayBuffer()
+		// 	const fileName = `${Date.now()}-${image.name}`
 
-			try {
-				const uploadCommand = new PutObjectCommand({
-					Bucket: env.R2_BUCKET_NAME,
-					Key: fileName,
-					Body: Buffer.from(fileBuffer),
-					ContentType: image.type,
-				})
+		// 	try {
+		// 		const uploadCommand = new PutObjectCommand({
+		// 			Bucket: env.R2_BUCKET_NAME,
+		// 			Key: fileName,
+		// 			Body: Buffer.from(fileBuffer),
+		// 			ContentType: image.type,
+		// 		})
 
-				await s3Client.send(uploadCommand)
+		// 		await s3Client.send(uploadCommand)
 
-				const imageUrl = env.R2_BUCKET_BASE_URL + fileName
+		// 		const imageUrl = env.R2_BUCKET_BASE_URL + fileName
 
-				const resultAfterUpload = await db
-					.update(plant)
-					.set({ image_url: imageUrl })
-					.where(eq(plant.id, result.id))
-					.returning()
+		// 		const resultAfterUpload = await db
+		// 			.update(plant)
+		// 			.set({ image_url: imageUrl })
+		// 			.where(eq(plant.id, result.id))
+		// 			.returning()
 
-				if (oldImageUrl) {
-					const oldImageKey = new URL(oldImageUrl).pathname.slice(1)
+		// 		if (oldImageUrl) {
+		// 			const oldImageKey = new URL(oldImageUrl).pathname.slice(1)
 
-					const deleteCommand = new DeleteObjectCommand({
-						Bucket: env.R2_BUCKET_NAME,
-						Key: oldImageKey,
-					})
+		// 			const deleteCommand = new DeleteObjectCommand({
+		// 				Bucket: env.R2_BUCKET_NAME,
+		// 				Key: oldImageKey,
+		// 			})
 
-					const deleteResult = await s3Client.send(deleteCommand)
-				}
-			} catch (error) {
-				console.error('Upload error: ', error)
-				return fail(500, { form })
-			}
-			return message(form, 'Image uploaded successfully')
-		}
+		// 			const deleteResult = await s3Client.send(deleteCommand)
+		// 		}
+		// 	} catch (error) {
+		// 		console.error('Upload error: ', error)
+		// 		return fail(500, { form })
+		// 	}
+		// 	return message(form, 'Image uploaded successfully')
+		// }
 
 		return {
 			form,

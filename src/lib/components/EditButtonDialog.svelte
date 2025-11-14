@@ -109,10 +109,10 @@
 			enctype="multipart/form-data"
 		>
 			<!-- <SuperDebug data={$form} /> -->
-			<Label for="image">New Image</Label>
+			<!-- <Label for="image">New Image</Label>
 			<div class="self-start">
 				<ImageUploader {form} />
-			</div>
+			</div> -->
 			<!-- {#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if} -->
 
 			<Label for="species">Species</Label>
