@@ -99,7 +99,7 @@
 			/>
 		</div>
 		<div class="flex max-w-full items-center gap-4">
-			<Button onclick={triggerFileInput} variant="secondary">Select new Image</Button>
+			<Button onclick={triggerFileInput} variant="outline">Select new Image</Button>
 			<p
 				class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-xs italic opacity-50"
 			>
@@ -107,7 +107,7 @@
 			</p>
 		</div>
 	{:else}
-		<Button onclick={triggerFileInput} variant="secondary">
+		<Button onclick={triggerFileInput} variant="outline">
 			<svg aria-hidden="true" class="image-icon" viewBox="0 0 24 24" width="24" height="24">
 				<path
 					fill="currentColor"

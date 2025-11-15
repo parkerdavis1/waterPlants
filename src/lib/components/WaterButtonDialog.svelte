@@ -109,7 +109,7 @@
 			<!-- <SuperDebug data={$form} /> -->
 			<div>
 				<Tabs.Root bind:value={selectedEventType} onValueChange={handleTabChange}>
-					<Tabs.List class="grid w-full grid-cols-2 bg-gray-100">
+					<Tabs.List class="grid w-full grid-cols-2 ">
 						<Tabs.Trigger value="event">Record Event</Tabs.Trigger>
 						<Tabs.Trigger value="wait">Wait</Tabs.Trigger>
 					</Tabs.List>
