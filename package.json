@@ -8,7 +8,7 @@
 		"dev:docker": "docker compose -f docker-compose.local.yml up --build",
 		"build": "vite build",
 		"build:docker": "vite build && docker compose -f docker-compose.local.yml up --build",
-		"build:droplet": "./droplet.sh",
+		"deploy:droplet": "./droplet.sh",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
