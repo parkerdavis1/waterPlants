@@ -27,3 +27,5 @@ vite.config.ts.timestamp-*
 .netlify
 
 cert/**/*
+
+test-results
