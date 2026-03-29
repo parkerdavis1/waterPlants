@@ -143,6 +143,9 @@ export const actions = {
 
 		await db.delete(plant).where(eq(plant.id, form.data.id))
 
+		// TODO: cleanup, delete associated events and associated event images as well.
+		// This could possibly be partially handled with database cascades...
+
 		return redirect(302, '/')
 	},
 
