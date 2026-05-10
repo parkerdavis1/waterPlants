@@ -34,7 +34,7 @@
 		<div>
 			{wateringEvent.notes || ''}
 		</div>
-		<div>
+		<div class="event-thumb">
 			{#if wateringEvent.image_url}
 				<Lightbox url={wateringEvent.image_url} />
 			{/if}
@@ -58,7 +58,10 @@
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content align="end">
 				<DropdownMenu.Item onclick={() => (editDialogOpen = true)}>Edit</DropdownMenu.Item>
-				<DropdownMenu.Item class="text-destructive focus:bg-destructive/10 focus:text-destructive" onclick={() => (deleteDialogOpen = true)}>Delete</DropdownMenu.Item>
+				<DropdownMenu.Item
+					class="text-destructive focus:bg-destructive/10 focus:text-destructive"
+					onclick={() => (deleteDialogOpen = true)}>Delete</DropdownMenu.Item
+				>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 

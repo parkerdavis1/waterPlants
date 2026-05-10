@@ -9,7 +9,7 @@
 	}
 </script>
 
-<img src={url} alt="" onclick={handleClick} class={`cursor-pointer ${className}`} />
+<img src={url} alt="" onclick={handleClick} class={`event-thumb cursor-pointer ${className}`} />
 <dialog bind:this={dialog}>
 	<div class="grid w-full items-center">
 		<img src={url} alt="" class="dialog-image object-contain" />
@@ -25,9 +25,9 @@
 	}
 
 	.dialog-image {
-		max-width: 100%; /* No wider than 80% of viewport width */
-		max-height: calc(var(--height) - 5rem); /* No taller than 80% of viewport height */
-		object-fit: contain; /* Keep full image visible without cropping */
+		max-width: 100%;
+		max-height: calc(var(--height) - 5rem);
+		object-fit: contain;
 	}
 
 	dialog {
