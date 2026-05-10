@@ -10,6 +10,7 @@
 	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms'
 	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
 	import Spinner from 'src/lib/components/Spinner.svelte'
+	import CfImage from 'src/lib/components/CfImage.svelte'
 	import * as Tabs from '$lib/components/ui/tabs/index.js'
 	import { fade } from 'svelte/transition'
 	import DatePicker from './DatePicker.svelte'
@@ -21,7 +22,11 @@
 	let selectedEventType = $state(wateringEvent.waitUntil ? 'wait' : 'event')
 	let wateredTemp = $state(wateringEvent.watered)
 	let fertilizedTemp = $state(wateringEvent.fertilized)
-	let waitDays = $state(wateringEvent.waitUntil ? Math.round((wateringEvent.waitUntil - new Date().getTime()) / DAY_MILLISECONDS) : null)
+	let waitDays = $state(
+		wateringEvent.waitUntil
+			? Math.round((wateringEvent.waitUntil - new Date().getTime()) / DAY_MILLISECONDS)
+			: null,
+	)
 
 	$effect(() => {
 		if (selectedEventType === 'wait' && waitDays) {
@@ -85,7 +90,9 @@
 			selectedEventType = wateringEvent.waitUntil ? 'wait' : 'event'
 			wateredTemp = wateringEvent.watered
 			fertilizedTemp = wateringEvent.fertilized
-			waitDays = wateringEvent.waitUntil ? Math.round((wateringEvent.waitUntil - new Date().getTime()) / DAY_MILLISECONDS) : null
+			waitDays = wateringEvent.waitUntil
+				? Math.round((wateringEvent.waitUntil - new Date().getTime()) / DAY_MILLISECONDS)
+				: null
 		}
 	})
 
@@ -152,19 +159,26 @@
 				{#if wateringEvent.image_url}
 					<div class="mb-4">
 						<Label>Current Image</Label>
-						<img src={wateringEvent.image_url} alt="Event" class="mt-2 h-32 w-32 rounded-md object-cover" />
+						<CfImage
+							src={wateringEvent.image_url}
+							alt="Event"
+							width={128}
+							height={128}
+							class="mt-2 h-32 w-32 rounded-md object-cover"
+						/>
 					</div>
 				{/if}
-				<Label for="image"
-					>{wateringEvent.image_url ? 'Replace Image' : 'Image'} <span class="text-xs text-muted-foreground"> (optional)</span></Label
-				>
+				<Label for="image">
+					{wateringEvent.image_url ? 'Replace Image' : 'Image'}
+					<span class="text-xs text-muted-foreground"> (optional)</span>
+				</Label>
 				<ImageUploader {form} {constraints} />
 				{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 			</div>
 			<div>
-				<Label for="notes"
-					>Notes <span class="text-xs text-muted-foreground"> (optional)</span></Label
-				>
+				<Label for="notes">
+					Notes <span class="text-xs text-muted-foreground"> (optional)</span>
+				</Label>
 				<Textarea
 					placeholder="Type your message here."
 					id="notes"
@@ -181,8 +195,8 @@
 			<Input type="hidden" name="fertilized" bind:value={$form.fertilized} />
 			<Input type="hidden" name="waitUntil" bind:value={$form.waitUntil} />
 			<Input type="hidden" name="oldImageUrl" value={$form.oldImageUrl} />
-			<Button form={formId} type="submit" bind:disabled={isSubmitting}
-				>Save Changes
+			<Button form={formId} type="submit" bind:disabled={isSubmitting}>
+				Save Changes
 				{#if isSubmitting}
 					<Spinner className="w-4 h-4 ml-4" />
 				{/if}

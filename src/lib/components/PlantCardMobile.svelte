@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from './ui/button/button.svelte'
 	import bluegrad from '$lib/assets/images/bluegrad.png'
+	import CfImage from './CfImage.svelte'
 	import WaterProgress from './WaterProgress.svelte'
 	import { checkedObj } from '../stores/selectedPlants.svelte'
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
@@ -35,9 +36,11 @@
 					<div
 						class="grid h-full max-h-20 w-32 place-content-center rounded-lg bg-blue-100 text-black/60"
 					>
-						<img
-							src={imageUrl ? imageUrl : bluegrad}
+						<CfImage
+							src={imageUrl}
 							alt="placeholder"
+							width={128}
+							height={80}
 							class={`mx-auto aspect-square ${context === 'list' ? 'max-h-20' : ''} min-h-16 w-32 rounded-lg object-cover`}
 						/>
 						<p

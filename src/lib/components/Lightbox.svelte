@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from './ui/button/button.svelte'
+	import CfImage from './CfImage.svelte'
 	const { url, className = '' } = $props()
 
 	let dialog: HTMLDialogElement
@@ -9,7 +9,14 @@
 	}
 </script>
 
-<img src={url} alt="" onclick={handleClick} class={`event-thumb cursor-pointer ${className}`} />
+<CfImage
+	src={url}
+	height={320}
+	width={320}
+	alt=""
+	onclick={handleClick}
+	class={`event-thumb cursor-pointer ${className}`}
+/>
 <dialog bind:this={dialog}>
 	<div class="grid w-full items-center">
 		<img src={url} alt="" class="dialog-image object-contain" />

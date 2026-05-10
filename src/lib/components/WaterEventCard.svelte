@@ -5,6 +5,7 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
 	import { superForm } from 'sveltekit-superforms'
 	import { toast } from 'svelte-sonner'
+	import CfImage from './CfImage.svelte'
 	// import { users, currentUserId } from '../stores/user'
 
 	export let wateringEvent
@@ -41,7 +42,7 @@
 				<p>Fertilized: ✅</p>
 			{/if}
 			{#if wateringEvent.image_url}
-				<img src={wateringEvent.image_url} />
+				<CfImage src={wateringEvent.image_url} alt="Watering event" width={320} height={320} />
 			{/if}
 			<p>Waterer: {waterer}</p>
 			<AlertDialog.Root>

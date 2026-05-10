@@ -7,6 +7,13 @@ export default defineConfig({
 	server: {
 		https: true,
 		host: false,
+		proxy: {
+			'/cdn-cgi/image': {
+				target: 'https://happyplants.parker.town',
+				changeOrigin: true,
+				secure: false,
+			},
+		},
 	},
 	// server: {
 	// 	https: {

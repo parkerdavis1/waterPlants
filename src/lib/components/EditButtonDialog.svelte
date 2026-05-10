@@ -6,6 +6,7 @@
 	import { Separator } from './ui/separator'
 	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
 	import Spinner from 'src/lib/components/Spinner.svelte'
+	import CfImage from 'src/lib/components/CfImage.svelte'
 	import * as Select from 'src/lib/components/ui/select'
 	import Textarea from 'src/lib/components/ui/textarea/textarea.svelte'
 	import { toast } from 'svelte-sonner'
@@ -96,8 +97,11 @@
 				</Dialog.Description> -->
 		</Dialog.Header>
 		{#if data.plant.image_url}
-			<img
+			<CfImage
 				src={data.plant.image_url}
+				width={320}
+				height={320}
+				alt={data.plant.species}
 				class="mx-auto aspect-square min-h-16 w-full max-w-60 rounded-lg object-cover"
 			/>
 		{/if}

@@ -78,6 +78,7 @@
 		"@node-rs/argon2": "^2.0.2",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
+		"@unpic/svelte": "^1.0.1",
 		"@vitejs/plugin-basic-ssl": "^2.1.0",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",

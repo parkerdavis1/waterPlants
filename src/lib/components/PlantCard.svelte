@@ -1,5 +1,6 @@
 <script lang="ts">
 	import bluegrad from '$lib/assets/images/bluegrad.png'
+	import CfImage from './CfImage.svelte'
 	import WaterProgress2 from './WaterProgress2.svelte'
 	import PlantCardMobile from './PlantCardMobile.svelte'
 	import { checkedObj } from '../stores/selectedPlants.svelte'
@@ -62,11 +63,21 @@
 
 	<div class="relative">
 		<a href={`${plantWater.plant.id}`}>
-			<img
-				src={imageUrl ? imageUrl : bluegrad}
-				alt="placeholder"
-				class="click mx-auto aspect-square min-h-16 w-full rounded-lg object-cover sm:w-32"
-			/>
+			{#if imageUrl}
+				<CfImage
+					src={imageUrl}
+					alt="placeholder"
+					width={320}
+					height={320}
+					class="click mx-auto aspect-square min-h-16 w-full rounded-lg object-cover sm:w-32"
+				/>
+			{:else}
+				<img
+					src={bluegrad}
+					alt="placeholder"
+					class="click mx-auto aspect-square min-h-16 w-full rounded-lg object-cover sm:w-32"
+				/>
+			{/if}
 		</a>
 	</div>
 	<div class="flex justify-between gap-4">
