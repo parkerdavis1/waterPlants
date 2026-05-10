@@ -1,13 +1,15 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
 import basicSsl from '@vitejs/plugin-basic-ssl'
-import { VitePWA } from 'vite-plugin-pwa'
+import { SvelteKitPWA } from '@vite-pwa/sveltekit'
 
 export default defineConfig({
 	plugins: [
 		sveltekit(),
 		basicSsl(),
-		VitePWA({
+		SvelteKitPWA({
+			includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+			manifest: false,
 			injectRegister: 'auto',
 			registerType: 'autoUpdate',
 			devOptions: {
@@ -68,7 +70,7 @@ export default defineConfig({
 	],
 	server: {
 		https: true,
-		host: true,
+		host: false,
 	},
 	// server: {
 	// 	https: {
