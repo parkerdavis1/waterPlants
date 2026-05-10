@@ -7,6 +7,7 @@ import {
 	deletePlantSchema,
 	editPlantSchema,
 	plantEventSchema,
+	editEventSchema,
 } from 'src/lib/zodSchemas/plantSchema'
 import { fail, message, superValidate, withFiles } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
@@ -74,6 +75,7 @@ export async function load({ params, parent }) {
 		wateringEvents: await wateringEvents,
 		editForm: await superValidate(plantData, zod(editPlantSchema)),
 		waterForm: await superValidate(zod(plantEventSchema)),
+		editEventForm: await superValidate(zod(editEventSchema)),
 		deleteEvent: await superValidate(zod(deleteEventSchema)),
 		deletePlant: await superValidate(zod(deletePlantSchema)),
 	}
@@ -147,6 +149,35 @@ export const actions = {
 		// This could possibly be partially handled with database cascades...
 
 		return redirect(302, '/')
+	},
+
+	editEvent: async ({ request }) => {
+		const form = await superValidate(request, zod(editEventSchema))
+
+		if (!form.valid) return fail(400, withFiles({ form }))
+
+		const [result] = await db
+			.update(watering_event)
+			.set({
+				notes: form.data.notes,
+				fertilized: form.data.fertilized,
+				watered: form.data.watered,
+				waitUntil: form.data.waitUntil,
+				timestamp: form.data.timestamp,
+			})
+			.where(eq(watering_event.id, form.data.id))
+			.returning()
+
+		if (form.data.image) {
+			try {
+				const { url: image_url } = await uploadImageFile(form.data.image)
+				await db.update(watering_event).set({ image_url }).where(eq(watering_event.id, result.id))
+			} catch (error) {
+				console.error('\nImage upload error: ', error)
+				return fail(500, withFiles(form))
+			}
+		}
+		return withFiles({ form })
 	},
 
 	deleteEvent: async ({ request }) => {

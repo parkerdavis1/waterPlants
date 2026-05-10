@@ -1,17 +1,21 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js'
-
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js'
 	import * as Table from '$lib/components/ui/table/index.js'
 	import { format } from 'date-fns'
 	import { toast } from 'svelte-sonner'
 	import { superForm } from 'sveltekit-superforms'
 	import { buttonVariants } from './ui/button'
 	import Lightbox from './Lightbox.svelte'
+	import EditWateringEventDialog from './EditWateringEventDialog.svelte'
+	import { Ellipsis } from 'lucide-svelte'
 
 	let { data, wateringEvent } = $props()
 	const waterer = data.users.find((u) => u.id == wateringEvent.user_id)?.name
 
 	let deleteEventForm: HTMLFormElement
+	let deleteDialogOpen = $state(false)
+	let editDialogOpen = $state(false)
 
 	const { form, enhance } = superForm(data.deleteEvent, {
 		onResult: ({ result }) => {
@@ -28,14 +32,11 @@
 	</Table.Cell>
 	<Table.Cell class="min-w-48">
 		<div>
-			{wateringEvent.notes}
+			{wateringEvent.notes || ''}
 		</div>
 		<div>
 			{#if wateringEvent.image_url}
 				<Lightbox url={wateringEvent.image_url} />
-				<!-- <a href={wateringEvent.image_url} target="_blank"> -->
-				<!-- <img src={wateringEvent.image_url} /> -->
-				<!-- </a> -->
 			{/if}
 		</div>
 	</Table.Cell>
@@ -50,17 +51,18 @@
 	{/if}
 	<Table.Cell class="text-center">{waterer}</Table.Cell>
 	<Table.Cell class="text-center">
-		<AlertDialog.Root>
-			<AlertDialog.Trigger>
-				<div class="close">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-						<path
-							fill="currentColor"
-							d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"
-						/>
-					</svg>
-				</div>
-			</AlertDialog.Trigger>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+				<span class="sr-only">Open menu</span>
+				<Ellipsis class="h-4 w-4" />
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content align="end">
+				<DropdownMenu.Item onclick={() => (editDialogOpen = true)}>Edit</DropdownMenu.Item>
+				<DropdownMenu.Item class="text-destructive focus:bg-destructive/10 focus:text-destructive" onclick={() => (deleteDialogOpen = true)}>Delete</DropdownMenu.Item>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
+
+		<AlertDialog.Root bind:open={deleteDialogOpen}>
 			<AlertDialog.Content>
 				<AlertDialog.Header>
 					<AlertDialog.Title>Delete watering event?</AlertDialog.Title>
@@ -79,6 +81,8 @@
 				</AlertDialog.Footer>
 			</AlertDialog.Content>
 		</AlertDialog.Root>
+
+		<EditWateringEventDialog bind:dialogOpen={editDialogOpen} {data} {wateringEvent} />
 	</Table.Cell>
 </Table.Row>
 

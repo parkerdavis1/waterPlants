@@ -18,7 +18,7 @@
 			<Table.Head>Fert.</Table.Head>
 			<Table.Head>Wait Until</Table.Head>
 			<Table.Head>User</Table.Head>
-			<Table.Head class="text-center">🗑️</Table.Head>
+			<Table.Head class="text-center w-12"></Table.Head>
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
