@@ -7,7 +7,7 @@ let client
 if (env.LOCAL_DEV) {
 	client = createClient({
 		// url: "file:src/db/local.db",
-		url: 'file:src/db/happyplants_backup_20251108.db',
+		url: 'file:src/db/happyplants.db',
 	})
 } else {
 	client = createClient({
