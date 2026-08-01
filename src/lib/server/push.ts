@@ -18,7 +18,7 @@ export type PushPayload = {
  */
 async function sendToSubscription(subscription: SelectPushSubscription, payload: PushPayload) {
 	try {
-		await webpush.sendNotification(
+		const result = await webpush.sendNotification(
 			{
 				endpoint: subscription.endpoint,
 				keys: {
@@ -28,12 +28,18 @@ async function sendToSubscription(subscription: SelectPushSubscription, payload:
 			},
 			JSON.stringify(payload),
 		)
+		console.log(
+			`\nPush sent OK to subscription ${subscription.id} (endpoint ...${subscription.endpoint.slice(-12)}): statusCode=${result.statusCode}`,
+		)
 	} catch (error) {
 		const statusCode = (error as { statusCode?: number })?.statusCode
+		const body = (error as { body?: string })?.body
+		console.error(
+			`\nPush send error for subscription ${subscription.id} (endpoint ...${subscription.endpoint.slice(-12)}): statusCode=${statusCode} body=${body}`,
+			error,
+		)
 		if (statusCode === 404 || statusCode === 410) {
 			await db.delete(push_subscription).where(eq(push_subscription.id, subscription.id))
-		} else {
-			console.error('\nPush send error: ', error)
 		}
 	}
 }
