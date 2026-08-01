@@ -8,8 +8,6 @@ const stringBoolean = z.coerce
 	.pipe(z.boolean())
 
 const EnvSchema = z.object({
-	TURSO_DATABASE_URL: z.string(),
-	TURSO_AUTH_TOKEN: z.string(),
 	LOCAL_DEV: stringBoolean,
 	LOCAL_SEED: stringBoolean,
 	R2_ACCOUNT_ID: z.string(),

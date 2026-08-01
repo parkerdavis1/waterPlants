@@ -4,9 +4,8 @@ import env from './src/lib/env'
 export default defineConfig({
 	schema: './src/db/schema.ts',
 	out: './src/db/migrations',
-	dialect: 'turso',
+	dialect: 'sqlite',
 	dbCredentials: {
-		url: env.TURSO_DATABASE_URL,
-		authToken: env.TURSO_AUTH_TOKEN,
+		url: env.LOCAL_DEV ? 'file:src/db/happyplants.db' : 'file:/data/happyplants.db',
 	},
 })

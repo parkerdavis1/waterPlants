@@ -15,8 +15,14 @@ ssh droplet '
     echo "⬇️ Pulling from github..."
     git pull
 
-    echo "🔄 Rebuilding container..."
-    docker compose -f /root/waterPlants/docker-compose.yml up --detach --build
+    echo "🏗️ Building image..."
+    docker compose -f /root/waterPlants/docker-compose.yml build
+
+    echo "🗄️ Running database migrations..."
+    docker compose -f /root/waterPlants/docker-compose.yml run --rm waterplants pnpm db:migrate
+
+    echo "🔄 Restarting container..."
+    docker compose -f /root/waterPlants/docker-compose.yml up --detach
 '
 echo "✅ Done!"
 

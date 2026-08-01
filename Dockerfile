@@ -21,6 +21,7 @@ RUN pnpm install --frozen-lockfile --prod=true
 
 FROM base AS development
 COPY build /app/build
+COPY src/db /app/src/db
 COPY .env.localdocker /app/.env
 # Start the server by default, this can be overwritten at runtime
 CMD [ "pnpm", "run", "start" ]
@@ -28,6 +29,10 @@ CMD [ "pnpm", "run", "start" ]
 FROM base AS production
 # Copy built application
 COPY build /app/build
+# Needed to run `pnpm db:migrate` (see scripts/droplet.sh) against the
+# volume-mounted sqlite db — the rest of src/ isn't needed at runtime since
+# the app itself runs from the pre-built build/ output.
+COPY src/db /app/src/db
 COPY .env.prod /app/.env
 # Start the server by default, this can be overwritten at runtime
 CMD [ "pnpm", "run", "start" ]

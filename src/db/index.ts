@@ -3,7 +3,7 @@ import { createClient } from '@libsql/client'
 import env from '$lib/env'
 import * as schema from 'src/db/schema'
 
-let client
+let client: ReturnType<typeof createClient>
 if (env.LOCAL_DEV) {
 	client = createClient({
 		// url: "file:src/db/local.db",
