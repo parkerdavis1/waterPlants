@@ -1,7 +1,7 @@
-# Not enough memory to build, so rsyncing builds in 
+# Not enough memory to build, so rsyncing builds in
 
 # Adjust NODE_VERSION as desired
-ARG NODE_VERSION=24.4.1
+ARG NODE_VERSION=24.14.0
 FROM node:${NODE_VERSION}-slim AS base
 
 # SvelteKit app lives here
@@ -11,7 +11,7 @@ WORKDIR /app
 ENV NODE_ENV="production"
 
 # Install pnpm
-ARG PNPM_VERSION=latest-10
+ARG PNPM_VERSION=latest-11
 RUN npm install -g pnpm@$PNPM_VERSION
 
 # Install node modules
