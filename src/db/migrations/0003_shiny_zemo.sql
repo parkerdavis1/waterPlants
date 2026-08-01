@@ -1,0 +1,2 @@
+-- No-op: this migration only reflects a column-order change in the snapshot
+-- (waitUntil), which does not require a schema change in SQLite.

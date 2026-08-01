@@ -1,5 +1,8 @@
 import type { Handle } from '@sveltejs/kit'
 import * as auth from '$lib/server/auth'
+import { startScheduler } from '$lib/server/scheduler'
+
+startScheduler()
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName)

@@ -19,6 +19,9 @@ const EnvSchema = z.object({
 	R2_ENDPOINT: z.string().url(),
 	R2_BUCKET_NAME: z.string(),
 	R2_BUCKET_BASE_URL: z.string().url(),
+	VAPID_PUBLIC_KEY: z.string(),
+	VAPID_PRIVATE_KEY: z.string(),
+	VAPID_SUBJECT: z.string(),
 })
 
 export type EnvSchema = z.infer<typeof EnvSchema>

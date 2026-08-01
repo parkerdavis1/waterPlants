@@ -7,7 +7,6 @@ import {
 	text,
 } from 'drizzle-orm/sqlite-core'
 import { type InferSelectModel } from 'drizzle-orm'
-import { boolean } from 'drizzle-orm/gel-core'
 
 export const plant = sqliteTable('plant', {
 	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
@@ -22,7 +21,7 @@ export const plant = sqliteTable('plant', {
 	room_id: integer('room_id')
 		.references(() => room.id)
 		.notNull(),
-	alive: boolean('alive').notNull().default(true),
+	alive: integer('alive', { mode: 'boolean' }).notNull().default(true),
 	created_at: integer('created_at', { mode: 'number' })
 		.notNull()
 		.default(sql`(unixepoch('subsec') * 1000)`),
@@ -35,6 +34,7 @@ export const watering_event = sqliteTable('watering_event', {
 	fertilized: integer('fertilized', { mode: 'boolean' }),
 	waitUntil: integer('waitUntil', { mode: 'number' }),
 	image_url: text('image_url'),
+	notified_at: integer('notified_at', { mode: 'number' }),
 	plant_id: integer('plant_id')
 		.references(() => plant.id, { onDelete: 'cascade' })
 		.notNull(),
@@ -61,7 +61,7 @@ export const room = sqliteTable('room', {
 		.default(sql`(unixepoch('subsec') * 1000)`),
 	house_id: integer('house_id').references(() => house.id),
 	name: text('name').notNull(),
-	active: boolean().default(true),
+	active: integer('active', { mode: 'boolean' }).default(true),
 })
 
 export const user = sqliteTable('user', {
@@ -88,6 +88,20 @@ export const user_to_house = sqliteTable(
 	},
 )
 
+export const push_subscription = sqliteTable('push_subscription', {
+	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+	user_id: integer('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	endpoint: text('endpoint').notNull().unique(),
+	p256dh: text('p256dh').notNull(),
+	auth: text('auth').notNull(),
+	user_agent: text('user_agent'),
+	created_at: integer('created_at', { mode: 'number' })
+		.notNull()
+		.default(sql`(unixepoch('subsec') * 1000)`),
+})
+
 export const session = sqliteTable('session', {
 	id: text('id').primaryKey(),
 	userId: integer('user_id')
@@ -108,6 +122,7 @@ export type SelectHouse = InferSelectModel<typeof house>
 export type SelectWateringEvent = InferSelectModel<typeof watering_event>
 export type SelectPlant = InferSelectModel<typeof plant>
 export type Session = InferSelectModel<typeof session>
+export type SelectPushSubscription = InferSelectModel<typeof push_subscription>
 
 export type PlantWateringEventJoin = {
 	plant: SelectPlant

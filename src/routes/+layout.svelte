@@ -61,6 +61,12 @@
 				{/if}
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
+				<DropdownMenu.Item>
+					<a href="/settings" class="flex items-center">
+						<Settings class="mr-2 h-4 w-4" />
+						Settings
+					</a>
+				</DropdownMenu.Item>
 				<DropdownMenu.Item closeOnSelect={false}>
 					<form action="/api?/logout" method="POST">
 						<div class="flex items-center">
