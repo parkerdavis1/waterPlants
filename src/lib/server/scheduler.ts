@@ -5,7 +5,7 @@ import { plant, room, watering_event, type SelectPlant, type SelectRoom, type Se
 import { DAY_MILLISECONDS } from 'src/lib/utils/constants'
 import { sendPushToAllUsers } from './push'
 
-const CRON_EXPRESSION = '0 8,12,16,20 * * *'
+const CRON_EXPRESSION = '0 8,9,19,11,12,13,14,15,16,17,18,19,20 * * *'
 const CRON_TIMEZONE = 'America/Phoenix'
 
 type DuePlant = {
