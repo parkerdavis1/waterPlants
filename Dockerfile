@@ -15,7 +15,7 @@ ARG PNPM_VERSION=latest-11
 RUN npm install -g pnpm@$PNPM_VERSION
 
 # Install node modules
-COPY .npmrc package.json pnpm-lock.yaml ./
+COPY .npmrc package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --prod=true
 
 
