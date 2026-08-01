@@ -9,6 +9,7 @@
 	import { Toaster } from 'svelte-sonner'
 	import bluegrad from 'src/lib/assets/images/bluegrad.png'
 	import LogOut from 'lucide-svelte/icons/log-out'
+	import BackButton from '$lib/components/BackButton.svelte'
 
 	import { navigating } from '$app/state'
 	import { onNavigate } from '$app/navigation'
@@ -46,6 +47,7 @@
 {/if}
 
 <Toaster richColors />
+<BackButton />
 <div class="container flex h-screen max-w-6xl flex-col pt-8 dark:bg-gray-800 dark:text-white">
 	<header class="flex justify-between">
 		<h1 class="click text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
