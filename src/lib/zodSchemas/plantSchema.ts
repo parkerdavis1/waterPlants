@@ -52,28 +52,30 @@ export const deleteEventSchema = z.object({
 	plantId: z.string(),
 })
 
-export const editEventSchema = z.object({
-	id: z.number(),
-	notes: z.string().optional(),
-	fertilized: z.boolean(),
-	watered: z.boolean().default(true),
-	waitUntil: z.number().optional(),
-	plant_id: z.number(),
-	user_id: z.number(),
-	image: imageSchema,
-	oldImageUrl: z.string().url().optional(),
-	timestamp: z.number(),
-}).transform((data) => {
-	if (data.waitUntil) {
-		return {
-			...data,
-			watered: false,
-			fertilized: false,
+export const editEventSchema = z
+	.object({
+		id: z.number(),
+		notes: z.string().optional(),
+		fertilized: z.boolean(),
+		watered: z.boolean().default(true),
+		waitUntil: z.number().optional(),
+		plant_id: z.number(),
+		user_id: z.number(),
+		image: imageSchema,
+		oldImageUrl: z.string().url().optional(),
+		timestamp: z.number(),
+	})
+	.transform((data) => {
+		if (data.waitUntil) {
+			return {
+				...data,
+				watered: false,
+				fertilized: false,
+			}
+		} else {
+			return data
 		}
-	} else {
-		return data
-	}
-})
+	})
 
 export const deletePlantSchema = z.object({
 	id: z.string(),

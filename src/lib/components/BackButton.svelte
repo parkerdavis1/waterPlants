@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ArrowLeft from 'lucide-svelte/icons/arrow-left'
+	import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/state'
 

@@ -15,6 +15,7 @@
 	import { Button } from 'src/lib/components/ui/button/index.js'
 	import DatePicker from 'src/lib/components/DatePicker.svelte'
 	import { invalidate, invalidateAll } from '$app/navigation'
+	import { browser } from '$app/environment'
 
 	let { data } = $props()
 
@@ -59,15 +60,22 @@
 		$form.plantIds = stringArray.map((string) => Number(string))
 	})
 
-	const openRooms =
-		// get open rooms from session storage if it exists, otherwise set to all rooms
-		window.sessionStorage.getItem('accordionValue') !== null
-			? JSON.parse(window.sessionStorage.getItem('accordionValue') ?? '[]')
-			: data.rooms?.map((room) => room.name)
-	let values = $state([...openRooms])
+	let openRooms: string[] = $state([])
+
+	$effect(() => {
+		if (browser) {
+			openRooms =
+				// get open rooms from session storage if it exists, otherwise set to all rooms
+				window.sessionStorage.getItem('accordionValue') !== null
+					? JSON.parse(window.sessionStorage.getItem('accordionValue') ?? '[]')
+					: data.rooms?.map((room) => room.name)
+		}
+	})
 
 	function handleAccordionChange(arrayOfValues: string[]) {
-		window.sessionStorage.setItem('accordionValue', JSON.stringify(arrayOfValues))
+		if (browser) {
+			window.sessionStorage.setItem('accordionValue', JSON.stringify(arrayOfValues))
+		}
 	}
 </script>
 
@@ -77,7 +85,7 @@
 <Toolbar {data} {waterDisabled} />
 <!-- <SuperDebug data={$form} /> -->
 <div class=" gap-4">
-	<Accordion.Root type="multiple" value={values} onValueChange={handleAccordionChange}>
+	<Accordion.Root type="multiple" value={openRooms} onValueChange={handleAccordionChange}>
 		{#if data.rooms}
 			{#each data.rooms as room (room.id)}
 				<Accordion.Item value={room.name}>

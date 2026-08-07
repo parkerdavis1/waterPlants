@@ -8,7 +8,7 @@
 	import { buttonVariants } from './ui/button'
 	import Lightbox from './Lightbox.svelte'
 	import EditWateringEventDialog from './EditWateringEventDialog.svelte'
-	import { Ellipsis } from 'lucide-svelte'
+	import { Ellipsis } from '@lucide/svelte'
 
 	let { data, wateringEvent } = $props()
 	const waterer = data.users.find((u) => u.id == wateringEvent.user_id)?.name

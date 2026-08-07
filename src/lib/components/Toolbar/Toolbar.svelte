@@ -6,7 +6,7 @@
 	import Label from '../ui/label/label.svelte'
 	import { scale } from 'svelte/transition'
 	import { waterPlantsView, waterMultipleOpen } from 'src/lib/stores/viewStore.svelte'
-	import { CirclePlus, Droplets, Plus, Sprout } from 'lucide-svelte'
+	import { CirclePlus, Droplets, Plus, Sprout } from '@lucide/svelte'
 
 	const { data, waterDisabled } = $props()
 

@@ -5,10 +5,10 @@
 	import { Button } from '$lib/components/ui/button'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Separator } from 'bits-ui'
-	import { Settings } from 'lucide-svelte'
+	import { Settings } from '@lucide/svelte'
 	import { Toaster } from 'svelte-sonner'
 	import bluegrad from 'src/lib/assets/images/bluegrad.png'
-	import LogOut from 'lucide-svelte/icons/log-out'
+	import LogOut from '@lucide/svelte/icons/log-out'
 	import BackButton from '$lib/components/BackButton.svelte'
 
 	import { navigating } from '$app/state'

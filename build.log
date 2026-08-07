@@ -41,7 +41,7 @@
 #12 0.652 Progress: resolved 1, reused 0, downloaded 0, added 0
 #12 0.730 Packages: +552
 #12 0.730 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#12 1.128 
+#12 1.128
 #12 1.128    ╭──────────────────────────────────────────────────────────────────╮
 #12 1.128    │                                                                  │
 #12 1.128    │                Update available! 9.5.0 → 9.12.2.                 │
@@ -51,7 +51,7 @@
 #12 1.128    │         Follow @pnpmjs for updates: https://x.com/pnpmjs         │
 #12 1.128    │                                                                  │
 #12 1.128    ╰──────────────────────────────────────────────────────────────────╯
-#12 1.128 
+#12 1.128
 #12 1.655 Progress: resolved 552, reused 0, downloaded 39, added 39
 #12 2.657 Progress: resolved 552, reused 0, downloaded 107, added 107
 #12 3.660 Progress: resolved 552, reused 0, downloaded 114, added 114
@@ -87,7 +87,7 @@
 #12 23.69 .../esbuild@0.18.20/node_modules/esbuild postinstall: Done
 #12 23.72 .../node_modules/@sveltejs/kit postinstall$ node postinstall.js
 #12 23.76 .../node_modules/@sveltejs/kit postinstall: Done
-#12 24.01 
+#12 24.01
 #12 24.01 dependencies:
 #12 24.01 + @aws-sdk/client-s3 3.676.0
 #12 24.01 + @libsql/client 0.14.0
@@ -105,7 +105,7 @@
 #12 24.01 + tsx 4.19.1
 #12 24.01 + ulid 2.3.0
 #12 24.01 + vaul-svelte 0.3.2
-#12 24.01 
+#12 24.01
 #12 24.01 devDependencies:
 #12 24.01 + @faker-js/faker 9.0.3
 #12 24.01 + @flydotio/dockerfile 0.5.9
@@ -125,7 +125,7 @@
 #12 24.01 + eslint-config-prettier 9.1.0
 #12 24.01 + eslint-plugin-svelte 2.46.0
 #12 24.01 + globals 15.11.0
-#12 24.01 + lucide-svelte 0.453.0
+#12 24.01 + @lucide/svelte 0.453.0
 #12 24.01 + postcss 8.4.47
 #12 24.01 + prettier 3.3.3
 #12 24.01 + prettier-plugin-svelte 3.2.7
@@ -140,7 +140,7 @@
 #12 24.01 + vite 5.4.9
 #12 24.01 + vitest 2.1.3
 #12 24.01 + zod 3.23.8
-#12 24.01 
+#12 24.01
 #12 24.06 Done in 23.9s
 #12 DONE 24.5s
 
@@ -152,16 +152,16 @@
 #14 DONE 0.3s
 
 #15 [build 6/7] RUN pnpm run build:docker
-#15 0.450 
+#15 0.450
 #15 0.450 > waterplants@0.0.1 build:docker /app
 #15 0.450 > vite build --debug
-#15 0.450 
+#15 0.450
 #15 0.578 ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
-#15 0.578 
+#15 0.578
 #15 0.578     tsconfig.json:2:12:
 #15 0.578       2 │   "extends": "./.svelte-kit/tsconfig.json",
 #15 0.578         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#15 0.578 
+#15 0.578
 #15 0.992 2024-10-22T14:00:51.405Z vite:config bundled config file loaded in 423.43ms
 #15 1.131 2024-10-22T14:00:51.544Z vite:config using resolved config: {
 #15 1.131   plugins: [
@@ -411,11 +411,11 @@
 #15 1.148 transforming...
 #15 1.366 2:00:51 PM [vite-plugin-svelte] src/lib/components/Toolbar/Toolbar.svelte:6:12 Component has unused export property 'data'. If it is for external reference only, please consider using `export const data`
 #15 1.366 4:   import AddNewPlant from './AddNewPlant.svelte';
-#15 1.366 5: 
+#15 1.366 5:
 #15 1.366 6:   export let data;
 #15 1.366                     ^
 #15 1.366 7: </script>
-#15 1.366 8: 
+#15 1.366 8:
 #15 1.418 2:00:51 PM [vite-plugin-svelte] src/lib/components/EditButtonDialog.svelte:71:3 `<img>` element should have an alt attribute
 #15 1.418 69:     </Dialog.Header>
 #15 1.418 70:     {#if data.plant.image_url}
@@ -425,14 +425,14 @@
 #15 1.418 73:         class="mx-auto aspect-square min-h-16 w-full max-w-60 rounded-lg object-cover"
 #15 2.275 2:00:52 PM [vite-plugin-svelte] src/lib/components/PlantCard.svelte:10:12 Component has unused export property 'data'. If it is for external reference only, please consider using `export const data`
 #15 2.275  8:   import PlantCardMobile from './PlantCardMobile.svelte'
-#15 2.275  9: 
+#15 2.275  9:
 #15 2.275 10:   export let data
 #15 2.275                      ^
 #15 2.275 11:   export let plantWater
 #15 2.275 12:   export let context = 'default'
 #15 2.275 2:00:52 PM [vite-plugin-svelte] src/lib/components/PlantCard.svelte:109:1 Unused CSS selector ".progress-ring"
 #15 2.275 107:   }
-#15 2.275 108: 
+#15 2.275 108:
 #15 2.275 109:   .progress-ring {
 #15 2.275                      ^
 #15 2.275 110:     --size: 2rem;
@@ -445,7 +445,7 @@
 #15 2.275 95:         src={previewImage}
 #15 2.275 96:         alt="Selected image preview"
 #15 2.275 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:121:1 Unused CSS selector ".select-image-button"
-#15 2.275 119: 
+#15 2.275 119:
 #15 2.275 120: <style>
 #15 2.275 121:   .select-image-button {
 #15 2.275                            ^
@@ -453,13 +453,13 @@
 #15 2.275 123:     align-items: center;
 #15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:135:1 Unused CSS selector ".select-image-button:hover"
 #15 2.276 133:   }
-#15 2.276 134: 
+#15 2.276 134:
 #15 2.276 135:   .select-image-button:hover,
 #15 2.276                                  ^
 #15 2.276 136:   .select-image-button:focus {
 #15 2.276 137:     background-color: #0056b3;
 #15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:136:1 Unused CSS selector ".select-image-button:focus"
-#15 2.276 134: 
+#15 2.276 134:
 #15 2.276 135:   .select-image-button:hover,
 #15 2.276 136:   .select-image-button:focus {
 #15 2.276                                  ^
@@ -467,7 +467,7 @@
 #15 2.276 138:   }
 #15 2.276 2:00:52 PM [vite-plugin-svelte] src/lib/components/ImageUploader.svelte:140:1 Unused CSS selector ".visually-hidden"
 #15 2.276 138:   }
-#15 2.276 139: 
+#15 2.276 139:
 #15 2.276 140:   .visually-hidden {
 #15 2.276                        ^
 #15 2.276 141:     position: absolute;
@@ -492,36 +492,36 @@
 #15 5.658 11:   export let showPlantCare
 #15 5.658                               ^
 #15 5.658 12:   export let className
-#15 5.658 13: 
+#15 5.658 13:
 #15 9.778 ✓ 3933 modules transformed.
 #15 9.822 Generated an empty chunk: "entries/endpoints/api/plant/_plantId_/_server.ts".
 #15 9.935 Generated an empty chunk: "entries/endpoints/api/setUser/_server.ts".
 #15 9.956 rendering chunks...
-#15 10.64 
+#15 10.64
 #15 10.64 node:internal/event_target:1100
 #15 10.64   process.nextTick(() => { throw err; });
 #15 10.64                            ^
-#15 10.64 
+#15 10.64
 #15 10.64 Emitted 'error' event on Worker instance at:
 #15 10.64     at [kOnErrorMessage] (node:internal/worker:326:10)
 #15 10.64     at [kOnMessage] (node:internal/worker:337:37)
 #15 10.64     at MessagePort.<anonymous> (node:internal/worker:232:57)
 #15 10.64     at [nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)
 #15 10.64     at exports.emitMessage (node:internal/per_context/messageport:23:28)
-#15 10.64 
+#15 10.64
 #15 10.64 Node.js v20.11.1
 #15 10.68  ELIFECYCLE  Command failed with exit code 1.
 #15 ERROR: process "/bin/sh -c pnpm run build:docker" did not complete successfully: exit code: 1
 ------
  > [build 6/7] RUN pnpm run build:docker:
-10.64 
+10.64
 10.64 Emitted 'error' event on Worker instance at:
 10.64     at [kOnErrorMessage] (node:internal/worker:326:10)
 10.64     at [kOnMessage] (node:internal/worker:337:37)
 10.64     at MessagePort.<anonymous> (node:internal/worker:232:57)
 10.64     at [nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)
 10.64     at exports.emitMessage (node:internal/per_context/messageport:23:28)
-10.64 
+10.64
 10.64 Node.js v20.11.1
 10.68  ELIFECYCLE  Command failed with exit code 1.
 ------
@@ -531,10 +531,10 @@
  - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 21)
 Dockerfile:38
 --------------------
-  36 |     
+  36 |
   37 |     # Build application
   38 | >>> RUN pnpm run build:docker
-  39 |     
+  39 |
   40 |     # Remove development dependencies
 --------------------
 ERROR: failed to solve: process "/bin/sh -c pnpm run build:docker" did not complete successfully: exit code: 1
