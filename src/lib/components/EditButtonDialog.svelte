@@ -17,7 +17,6 @@
 	import { editPlantSchema } from '../zodSchemas/plantSchema'
 	import Switch from './ui/switch/switch.svelte'
 
-	// export let data
 	let { data } = $props()
 
 	let isSubmitting = $state(false)

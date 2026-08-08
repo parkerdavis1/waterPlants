@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left'
+	import RefreshCw from '@lucide/svelte/icons/refresh-cw'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/state'
 
@@ -12,15 +13,29 @@
 			goto(fallback)
 		}
 	}
+
+	function refresh() {
+		window.location.reload()
+	}
 </script>
 
 {#if page.url.pathname !== '/'}
-	<button
-		type="button"
-		onclick={goBack}
-		aria-label="Back"
-		class="fixed bottom-4 left-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur hover:bg-white dark:bg-gray-700/90 dark:hover:bg-gray-700"
-	>
-		<ArrowLeft class="h-5 w-5" />
-	</button>
+	<div class="fixed bottom-4 left-4 z-40 flex gap-2">
+		<button
+			type="button"
+			onclick={goBack}
+			aria-label="Back"
+			class="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur hover:bg-white dark:bg-gray-700/90 dark:hover:bg-gray-700"
+		>
+			<ArrowLeft class="h-5 w-5" />
+		</button>
+		<button
+			type="button"
+			onclick={refresh}
+			aria-label="Refresh"
+			class="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur hover:bg-white dark:bg-gray-700/90 dark:hover:bg-gray-700"
+		>
+			<RefreshCw class="h-5 w-5" />
+		</button>
+	</div>
 {/if}

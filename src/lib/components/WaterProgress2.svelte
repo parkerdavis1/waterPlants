@@ -1,5 +1,5 @@
 <script lang="ts">
-	const { fillPercentage } = $props()
+	const { fillPercentage, customId = 'clip_id_1' } = $props()
 	const radius = 40
 	// function calculateFillLineY(fillPercentage: number, diameter: number) {
 	// 	// Validate input
@@ -54,7 +54,11 @@
 	// const y = $derived(100 - (Math.log(fillPercentage + 1) / Math.log(101)) * 100)
 	// y = 0 is full
 	// y = 100 is empty
-	const customId = 'circleClip' + Math.floor(Math.random() * 100000000).toString()
+
+	// const customId = 'circleClip' + Math.floor(Math.random() * 100000000).toString()
+
+	// let progressId = 0
+	// const customId = () => `circleClip${progressId++}`
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">

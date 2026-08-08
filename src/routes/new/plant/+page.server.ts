@@ -32,23 +32,32 @@ export const actions = {
 
 		if (!form.valid) return fail(400, withFiles({ form }))
 
-		const [insertedPlant] = await db.insert(plant).values(form.data).returning()
-		if (!insertedPlant) return fail(400, { form })
-
+		let image_url: string | undefined
 		if (form.data.image) {
 			try {
-				const { url: image_url } = await uploadImageFile(form.data.image)
-				await db.update(plant).set({ image_url }).where(eq(plant.id, insertedPlant.id))
-				await db.insert(watering_event).values({
-					plant_id: insertedPlant.id,
-					user_id: locals.user.id,
-					image_url: image_url,
-				})
+				const uploaded = await uploadImageFile(form.data.image)
+				image_url = uploaded.url
 			} catch (error) {
 				console.error('\nImage upload error: ', error)
 				return fail(500, withFiles({ form }))
 			}
 		}
+
+		const { image, ...plantFields } = form.data
+		const [insertedPlant] = await db
+			.insert(plant)
+			.values({ ...plantFields, ...(image_url ? { image_url } : {}) })
+			.returning()
+		if (!insertedPlant) return fail(400, { form })
+
+		if (image_url) {
+			await db.insert(watering_event).values({
+				plant_id: insertedPlant.id,
+				user_id: locals.user.id,
+				image_url,
+			})
+		}
+
 		return redirect(302, '/')
 		// return message(form, 'new plant')
 	},

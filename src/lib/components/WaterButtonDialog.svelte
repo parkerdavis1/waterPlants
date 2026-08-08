@@ -29,6 +29,9 @@
 	let wateredTemp = $state(true)
 	let fertilizedTemp = $state(false)
 	let waitDays = $state(null)
+	let retryCount = $state(0)
+	const MAX_CLIENT_RETRIES = 2
+	const RETRY_DELAYS_MS = [1000, 3000]
 
 	$effect(() => {
 		if (selectedEventType === 'wait' && waitDays) {
@@ -57,23 +60,44 @@
 		}
 	}
 
-	const { form, enhance, errors, message, constraints } = superForm(data.waterForm, {
+	const { form, enhance, errors, message, constraints, submit } = superForm(data.waterForm, {
 		invalidateAll: 'force',
 		onSubmit: () => {
 			isSubmitting = true
 		},
+		onError: ({ result }) => {
+			void handleTransientFailure()
+		},
 		onResult: ({ result }) => {
-			isSubmitting = false
-			dialogOpen = false
 			if (result.type === 'success') {
+				isSubmitting = false
+				retryCount = 0
+				dialogOpen = false
 				toast.success(`Successfully watered ${data.plant.name ?? data.plant.species ?? 'plant'}!`)
 				createJoyfulFuzzyGurgle()
+			} else if (result.type === 'failure' && result.status === 500) {
+				void handleTransientFailure()
 			} else {
+				isSubmitting = false
+				retryCount = 0
 				console.error('result', result)
 				toast.error('There was an error.')
 			}
 		},
 	})
+
+	async function handleTransientFailure() {
+		if (retryCount < MAX_CLIENT_RETRIES) {
+			const delay = RETRY_DELAYS_MS[retryCount] ?? RETRY_DELAYS_MS.at(-1)
+			retryCount += 1
+			await new Promise((resolve) => setTimeout(resolve, delay))
+			submit()
+		} else {
+			isSubmitting = false
+			retryCount = 0
+			toast.error('Upload failed. Try again.')
+		}
+	}
 
 	const file = fileProxy(form, 'image')
 

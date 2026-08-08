@@ -28,5 +28,6 @@ minimumReleaseAgeExclude:
   - '@typescript-eslint/visitor-keys@8.66.0'
   - daisyui@5.7.15
   - typescript-eslint@8.66.0
+  - '@sveltejs/vite-plugin-svelte@7.3.0'
 onlyBuiltDependencies:
   - esbuild

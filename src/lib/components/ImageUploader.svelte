@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Button from './ui/button/button.svelte'
 	import { fileProxy } from 'sveltekit-superforms'
-
-	// export let form
+	import { onMount } from 'svelte'
 
 	let { form } = $props()
 
@@ -12,17 +11,27 @@
 
 	const fileProx = fileProxy(form, 'image')
 
+	onMount(() => {
+		const existing = fileProx && $fileProx?.[0]
+		if (existing) {
+			previewImage = URL.createObjectURL(existing)
+			fileName = existing.name
+		}
+	})
+
 	async function handleFileSelect(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0]
 		if (!file) return
 
 		// Create preview
 		previewImage = URL.createObjectURL(file)
+		fileName = file.name
 
 		// Resize image
 		const resizedBlob = await resizeImage(file, 1200, 1200)
 		const newFileName = file.name.split('.').slice(0, -1).join('.') + '.jpeg' // incase there are multiple . in name
 		const newImageFile = new File([resizedBlob], newFileName, { type: resizedBlob.type })
+		fileName = newImageFile.name
 
 		// Update form data
 		fileProx.set(newImageFile)

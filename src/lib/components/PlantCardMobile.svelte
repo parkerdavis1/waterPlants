@@ -72,7 +72,10 @@
 		<div class="flex flex-col items-center justify-start">
 			{#if plantWater.plant.alive}
 				<a href={`${plantWater.plant.id}`}>
-					<WaterProgress2 fillPercentage={waterProgressPercent} />
+					<WaterProgress2
+						fillPercentage={waterProgressPercent}
+						customId={'mobile_clip_id_' + plantWater.plant.id}
+					/>
 				</a>
 			{:else}
 				<p class="text-sm opacity-60">Dead</p>

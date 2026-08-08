@@ -1,11 +1,16 @@
 import env from 'src/lib/env'
 import s3Client from 'src/lib/s3Client'
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import { withRetry } from './utils/retry'
+
 function sanitizeFilename(name: string) {
 	return name.replace(/[^a-zA-Z0-9._-]/g, '-')
 }
 
 export async function uploadImageFile(image: File | Blob) {
+	// test
+	// throw new Error('image fail')
+
 	const arrayBuffer = await image.arrayBuffer()
 	const buffer = Buffer.from(arrayBuffer)
 
@@ -20,7 +25,7 @@ export async function uploadImageFile(image: File | Blob) {
 		ContentType: contentType,
 	})
 
-	await s3Client.send(command)
+	await withRetry(() => s3Client.send(command), { attempts: 3, baseDelayMs: 500 })
 
 	return {
 		url: env.R2_BUCKET_BASE_URL + key,

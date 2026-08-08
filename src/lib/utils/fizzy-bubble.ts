@@ -1,8 +1,13 @@
-// Joyful Fuzzy Gurgle Sound with Web Audio API
-const audioContext = new AudioContext()
+import { browser } from '$app/environment'
+
+let audioContext: AudioContext | undefined
+if (browser) {
+	audioContext = new AudioContext()
+}
 
 // Function to create a single bubble sound with randomized parameters
 function createBubbleSound(startTime, duration, baseFreq) {
+	if (!audioContext) return
 	// Oscillator for the bubble tone
 	const oscillator = audioContext.createOscillator()
 	oscillator.type = 'sine'
@@ -51,6 +56,7 @@ function createBubbleSound(startTime, duration, baseFreq) {
 
 // Function to create white noise with filtering for fuzzy texture
 function createFuzzyNoise(startTime, duration, filterFreq) {
+	if (!audioContext) return
 	// Create buffer source for noise
 	const bufferSize = audioContext.sampleRate * 2 // 2 seconds buffer
 	const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
@@ -107,8 +113,9 @@ function createFuzzyNoise(startTime, duration, filterFreq) {
 
 // Function to create a joyful gurgle sound (multiple bubbles with fuzzy noise)
 export function createJoyfulFuzzyGurgle() {
+	let audioContext: AudioContext | undefined
 	if (typeof audioContext === 'undefined') {
-		const audioContext = new AudioContext()
+		audioContext = new AudioContext()
 	}
 	if (audioContext.state === 'suspended') {
 		audioContext.resume()

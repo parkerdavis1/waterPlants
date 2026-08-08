@@ -87,21 +87,24 @@ export const actions = {
 
 		if (!form.valid) return fail(400, { form })
 
-		const [insertedWaterEvent] = await db.insert(watering_event).values(form.data).returning()
-		if (!insertedWaterEvent) return fail(400, { form })
-
+		let image_url: string | undefined
 		if (form.data.image) {
 			try {
-				const { url: image_url } = await uploadImageFile(form.data.image)
-				await db
-					.update(watering_event)
-					.set({ image_url })
-					.where(eq(watering_event.id, insertedWaterEvent.id))
+				const uploaded = await uploadImageFile(form.data.image)
+				image_url = uploaded.url
 			} catch (error) {
 				console.error('\nImage upload error: ', error)
 				return fail(500, withFiles({ form }))
 			}
 		}
+
+		const { image: _image, ...eventFields } = form.data
+		const [insertedWaterEvent] = await db
+			.insert(watering_event)
+			.values({ ...eventFields, image_url })
+			.returning()
+		if (!insertedWaterEvent) return fail(400, { form })
+
 		return message(form, 'Success...')
 	},
 
@@ -110,26 +113,33 @@ export const actions = {
 
 		if (!form.valid) return fail(400, withFiles({ form }))
 
-		const [result] = await db
-			.update(plant)
-			.set(form.data)
-			.where(eq(plant.id, form.data.id))
-			.returning()
+		let image_url: string | undefined
 
 		if (form.data.image) {
 			try {
-				const { url: image_url } = await uploadImageFile(form.data.image)
-				await db.update(plant).set({ image_url }).where(eq(plant.id, result.id))
-				await db.insert(watering_event).values({
-					plant_id: result.id,
-					user_id: locals.user.id,
-					image_url: image_url,
-				})
+				const uploaded = await uploadImageFile(form.data.image)
+				image_url = uploaded.url
 			} catch (error) {
 				console.error('\nImage upload error: ', error)
-				return fail(500, withFiles(form))
+				return fail(500, withFiles({ form }))
 			}
 		}
+
+		const { image, ...plantFields } = form.data
+		const [result] = await db
+			.update(plant)
+			.set({ ...plantFields, ...(image_url ? { image_url } : {}) })
+			.where(eq(plant.id, form.data.id))
+			.returning()
+
+		if (image_url) {
+			await db.insert(watering_event).values({
+				plant_id: result.id,
+				user_id: locals.user.id,
+				image_url,
+			})
+		}
+
 		return withFiles({ form })
 	},
 
@@ -156,6 +166,16 @@ export const actions = {
 
 		if (!form.valid) return fail(400, withFiles({ form }))
 
+		let image_url: string | undefined
+		if (form.data.image) {
+			try {
+				const uploaded = await uploadImageFile(form.data.image)
+				image_url = uploaded.url
+			} catch (error) {
+				console.error('\nImage upload error: ', error)
+				return fail(500, withFiles(form))
+			}
+		}
 		const [result] = await db
 			.update(watering_event)
 			.set({
@@ -164,19 +184,11 @@ export const actions = {
 				watered: form.data.watered,
 				waitUntil: form.data.waitUntil,
 				timestamp: form.data.timestamp,
+				...(image_url ? { image_url } : {}),
 			})
 			.where(eq(watering_event.id, form.data.id))
 			.returning()
 
-		if (form.data.image) {
-			try {
-				const { url: image_url } = await uploadImageFile(form.data.image)
-				await db.update(watering_event).set({ image_url }).where(eq(watering_event.id, result.id))
-			} catch (error) {
-				console.error('\nImage upload error: ', error)
-				return fail(500, withFiles(form))
-			}
-		}
 		return withFiles({ form })
 	},
 

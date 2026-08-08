@@ -103,7 +103,10 @@
 				{:else}
 					<p class="water-label">Water</p>
 					<a href={`${plantWater.plant.id}`} class="click">
-						<WaterProgress2 fillPercentage={waterProgressPercent} />
+						<WaterProgress2
+							fillPercentage={waterProgressPercent}
+							customId={'clid_id_' + plantWater.plant.id}
+						/>
 					</a>
 				{/if}
 			</div>
