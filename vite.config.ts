@@ -15,12 +15,6 @@ export default defineConfig({
 			},
 		},
 	},
-	// server: {
-	// 	https: {
-	// 		key: fs.readFileSync(`${process.cwd()}/cert/key.pem`),
-	// 		cert: fs.readFileSync(`${process.cwd()}/cert/cert.pem`)
-	// 	}
-	// },
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 	},
