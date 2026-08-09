@@ -1,10 +1,6 @@
-import env from 'src/lib/env.js'
 import db from 'src/db'
-import { and, desc, eq, sql } from 'drizzle-orm'
-import { plant, room, watering_event } from 'src/db/schema'
-import s3Client from 'src/lib/s3Client.js'
-import { PutObjectCommand } from '@aws-sdk/client-s3'
-import { fail, message, setError, superValidate, withFiles } from 'sveltekit-superforms'
+import { plant, watering_event } from 'src/db/schema'
+import { fail, superValidate, withFiles } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { newPlantSchema } from 'src/lib/zodSchemas/plantSchema'
 import { redirect } from '@sveltejs/kit'
@@ -59,6 +55,5 @@ export const actions = {
 		}
 
 		return redirect(302, '/')
-		// return message(form, 'new plant')
 	},
 }

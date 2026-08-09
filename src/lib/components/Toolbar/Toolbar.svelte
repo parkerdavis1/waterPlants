@@ -1,16 +1,12 @@
 <script>
 	import Button from '../ui/button/button.svelte'
-	import * as Select from '../ui/select'
-	import AddNewPlant from './AddNewPlant.svelte'
 	import { Switch } from '$lib/components/ui/switch'
 	import Label from '../ui/label/label.svelte'
 	import { scale } from 'svelte/transition'
 	import { waterPlantsView, waterMultipleOpen } from 'src/lib/stores/viewStore.svelte'
-	import { CirclePlus, Droplets, Plus, Sprout } from '@lucide/svelte'
+	import { Droplets, Sprout } from '@lucide/svelte'
 
-	const { data, waterDisabled } = $props()
-
-	// const checked = $state(waterPlantsView)
+	const { waterDisabled } = $props()
 </script>
 
 <div class="sticky top-0 z-50 my-4 flex flex-wrap justify-between gap-2 bg-background py-2">

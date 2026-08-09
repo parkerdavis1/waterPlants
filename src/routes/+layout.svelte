@@ -1,35 +1,18 @@
 <script lang="ts">
 	import '../app.css'
 	import * as Avatar from '$lib/components/ui/avatar'
-	import * as Sheet from '$lib/components/ui/sheet'
-	import { Button } from '$lib/components/ui/button'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
-	import { Separator } from 'bits-ui'
 	import { Settings } from '@lucide/svelte'
 	import { Toaster } from 'svelte-sonner'
-	import bluegrad from 'src/lib/assets/images/bluegrad.png'
 	import LogOut from '@lucide/svelte/icons/log-out'
 	import BackButton from '$lib/components/BackButton.svelte'
 
 	import { navigating } from '$app/state'
-	import { onNavigate } from '$app/navigation'
 	import { fade, slide } from 'svelte/transition'
 	import { expoOut } from 'svelte/easing'
 
 	const { data, children } = $props()
 	const { loggedIn } = data
-	let logoutForm: HTMLFormElement | undefined = $state()
-
-	onNavigate((navigation) => {
-		if (!document.startViewTransition) return
-
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve()
-				await navigation.complete
-			})
-		})
-	})
 </script>
 
 <svelte:head>
