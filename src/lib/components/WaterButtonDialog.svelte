@@ -112,7 +112,7 @@
 	<Dialog.Trigger class={`w-full ${buttonVariants({ variant: 'default' })}`}>
 		💧Record Event
 	</Dialog.Trigger>
-	<Dialog.Content class="dialog-content max-h-full overflow-scroll sm:max-w-[425px]">
+	<Dialog.Content class="dialog-content max-h-full overflow-scroll rounded sm:max-w-[425px]">
 		<Dialog.Header>
 			<Dialog.Title>
 				{#if selectedEventType === 'wait'}

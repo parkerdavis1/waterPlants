@@ -20,9 +20,3 @@
 	bind:value
 	{...restProps}
 />
-
-<style>
-	input {
-		unset: all;
-	}
-</style>
