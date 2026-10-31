@@ -1,4 +1,5 @@
 import type { RequestEvent } from '@sveltejs/kit'
+import { dev } from '$app/env'
 import { eq } from 'drizzle-orm'
 import { sha256 } from '@oslojs/crypto/sha2'
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding'
@@ -24,6 +25,12 @@ export async function createSession(token: string, userId: number) {
 	}
 	await db.insert(table.session).values(session)
 	return session
+}
+
+export async function startSession(event: RequestEvent, userId: number) {
+	const token = generateSessionToken()
+	const session = await createSession(token, userId)
+	setSessionTokenCookie(event, token, session.expiresAt)
 }
 
 export async function validateSessionToken(token: string) {
@@ -71,11 +78,18 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
 	event.cookies.set(sessionCookieName, token, {
 		expires: expiresAt,
 		path: '/',
+		// Explicit rather than relying on SvelteKit's defaults.
+		httpOnly: true,
+		sameSite: 'lax',
+		secure: !dev,
 	})
 }
 
 export function deleteSessionTokenCookie(event: RequestEvent) {
 	event.cookies.delete(sessionCookieName, {
 		path: '/',
+		httpOnly: true,
+		sameSite: 'lax',
+		secure: !dev,
 	})
 }
