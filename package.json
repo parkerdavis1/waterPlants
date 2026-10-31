@@ -22,6 +22,7 @@
 		"db:migrate": "tsx src/db/migrate.ts",
 		"db:reconcile": "tsx src/db/reconcileMigrations.ts",
 		"db:seed": "tsx src/db/seed.ts",
+		"db:resetPasswords": "tsx src/db/resetPasswords.ts",
 		"db:resetPre": "touch src/db/migrations/something.txt && rm -rf src/db/migrations/* && rm -f src/db/local.db",
 		"db:resetPost": "pnpm db:generate && pnpm db:migrate && pnpm db:seed",
 		"db:reset": "pnpm db:resetPre && pnpm db:resetPost",

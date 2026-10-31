@@ -1,15 +1,13 @@
 import { eq } from 'drizzle-orm'
 import type { db as DbType } from '..'
-import { house, user } from '../schema'
 import { hash } from '@node-rs/argon2'
+import { house, user } from '../schema'
+import { argon2Options, seedPassword } from '../seedPassword'
 
-const passwordHash = await hash('goose', {
-	// recommended minimum parameters
-	memoryCost: 19456,
-	timeCost: 2,
-	outputLen: 32,
-	parallelism: 1,
-})
+const seededUsers = [
+	{ name: 'Parker', avatar_url: 'https://happyplants.parker.town/parker-avatar.png' },
+	{ name: 'Nell', avatar_url: 'https://happyplants.parker.town/nellavatar.png' },
+]
 
 export default async function seed(db: DbType) {
 	const houseResult = await db
@@ -18,16 +16,22 @@ export default async function seed(db: DbType) {
 		.where(eq(house.name, 'Pants'))
 		.limit(1)
 	const { houseId } = houseResult[0]
-	await db.insert(user).values({
-		name: 'Parker',
-		passwordHash: passwordHash,
-		avatar_url: 'https://happyplants.parker.town/parker-avatar.png',
-		default_house_id: houseId,
-	})
-	await db.insert(user).values({
-		name: 'Nell',
-		passwordHash: passwordHash,
-		avatar_url: 'https://happyplants.parker.town/nellavatar.png',
-		default_house_id: houseId,
-	})
+	const passwordHash = await hash(seedPassword(), argon2Options)
+
+	for (const { name, avatar_url } of seededUsers) {
+		const existing = await db
+			.select({ id: user.id })
+			.from(user)
+			.where(eq(user.name, name))
+			.limit(1)
+
+		if (existing.length > 0) {
+			await db
+				.update(user)
+				.set({ passwordHash, avatar_url, default_house_id: houseId })
+				.where(eq(user.id, existing[0].id))
+		} else {
+			await db.insert(user).values({ name, passwordHash, avatar_url, default_house_id: houseId })
+		}
+	}
 }

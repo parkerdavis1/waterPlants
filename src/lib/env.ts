@@ -10,6 +10,7 @@ const stringBoolean = z.coerce
 const EnvSchema = z.object({
 	LOCAL_DEV: stringBoolean,
 	LOCAL_SEED: stringBoolean,
+	SEED_USER_PASSWORD: z.string().default(''),
 	R2_ACCOUNT_ID: z.string(),
 	R2_TOKEN: z.string(),
 	R2_ACCESS_KEY_ID: z.string(),
