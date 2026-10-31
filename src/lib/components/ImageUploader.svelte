@@ -128,25 +128,6 @@
 </div>
 
 <style>
-	.select-image-button {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 12px 16px;
-		background-color: #007bff;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		font-size: 16px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-	}
-
-	.select-image-button:hover,
-	.select-image-button:focus {
-		background-color: #0056b3;
-	}
-
 	.visually-hidden {
 		position: absolute;
 		width: 1px;

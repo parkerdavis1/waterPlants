@@ -2,8 +2,10 @@
 	import '../app.css'
 	import * as Avatar from '#lib/components/ui/avatar/index.js'
 	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js'
-	import { Settings } from '@lucide/svelte'
+	import { Button } from '#lib/components/ui/button/index.js'
+	import { Moon, Settings, Sun } from '@lucide/svelte'
 	import { Toaster } from 'svelte-sonner'
+	import { ModeWatcher, toggleMode } from 'mode-watcher'
 	import LogOut from '@lucide/svelte/icons/log-out'
 	import BackButton from '#lib/components/BackButton.svelte'
 
@@ -31,38 +33,45 @@
 {/if}
 
 <Toaster richColors />
+<ModeWatcher />
 <BackButton />
-<div class="container flex h-screen max-w-6xl flex-col pt-8 dark:bg-gray-800 dark:text-white">
+<div class="container flex h-screen max-w-6xl flex-col pt-8">
 	<header class="flex justify-between">
 		<h1 class="click text-2xl font-bold"><a href="/">🪴 Happy Plants</a></h1>
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger>
-				{#if loggedIn === true}
-					<div class="cursor-pointer">
-						<Avatar.Root>
-							<Avatar.Image src={data.user?.avatar_url} class="object-cover" />
-							<Avatar.Fallback>{data.user?.name}</Avatar.Fallback>
-						</Avatar.Root>
-					</div>
-				{/if}
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content>
-				<DropdownMenu.Item>
-					<a href="/settings" class="flex items-center">
-						<Settings class="mr-2 h-4 w-4" />
-						Settings
-					</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item closeOnSelect={false}>
-					<form action="/api?/logout" method="POST">
-						<div class="flex items-center">
-							<LogOut class="mr-2 h-4 w-4" />
-							<button type="submit">Log out</button>
+		<div class="flex items-center gap-2">
+			<Button variant="ghost" size="icon" onclick={toggleMode} aria-label="Toggle theme">
+				<Sun class="h-5 w-5 dark:hidden" />
+				<Moon class="hidden h-5 w-5 dark:block" />
+			</Button>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger>
+					{#if loggedIn === true}
+						<div class="cursor-pointer">
+							<Avatar.Root>
+								<Avatar.Image src={data.user?.avatar_url} class="object-cover" />
+								<Avatar.Fallback>{data.user?.name}</Avatar.Fallback>
+							</Avatar.Root>
 						</div>
-					</form>
-				</DropdownMenu.Item>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
+					{/if}
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content>
+					<DropdownMenu.Item>
+						<a href="/settings" class="flex items-center">
+							<Settings class="mr-2 h-4 w-4" />
+							Settings
+						</a>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item closeOnSelect={false}>
+						<form action="/api?/logout" method="POST">
+							<div class="flex items-center">
+								<LogOut class="mr-2 h-4 w-4" />
+								<button type="submit">Log out</button>
+							</div>
+						</form>
+					</DropdownMenu.Item>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		</div>
 	</header>
 	<main class="grow pb-16">
 		<div class="mx-auto max-w-3xl lg:max-w-6xl">
@@ -81,7 +90,7 @@
 		left: 0;
 		height: 4px;
 		z-index: 50;
-		background-color: #0284c5;
+		background-color: hsl(var(--primary));
 		view-transition-name: 'navigation-loader';
 	}
 </style>

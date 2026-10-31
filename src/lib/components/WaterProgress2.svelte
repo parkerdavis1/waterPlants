@@ -75,7 +75,7 @@
 		cx="50"
 		cy="50"
 		r={radius}
-		fill="hsl(var(--background)"
+		fill="hsl(var(--background))"
 		stroke={fillPercentage > 0 ? 'var(--circle)' : 'var(--dry-fill)'}
 		stroke-width="8"
 		paint-order="stroke"
@@ -98,12 +98,10 @@
 	svg {
 		display: block;
 		margin: auto;
-		--fill: #0284c5;
+		--fill: hsl(var(--primary));
 		--size: 5rem;
-		--circle: #0284c5;
-		/* --dry-fill: #e0e0e0; */
-		--dry-fill: rgb(190, 129, 64);
-		--dry-fill: hsla(36 95.4% 65%);
+		--circle: hsl(var(--primary));
+		--dry-fill: hsl(var(--warning));
 		width: var(--size);
 		height: var(--size);
 	}

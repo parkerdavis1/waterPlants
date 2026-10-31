@@ -39,7 +39,7 @@
 
 	dialog {
 		border-radius: 0.5rem;
-		background: var(--background);
+		background: hsl(var(--background));
 	}
 
 	dialog::backdrop {
