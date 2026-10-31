@@ -1,21 +1,21 @@
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
-  - '@aws-sdk/client-s3@3.1101.0 || 3.1102.0'
+  - '@aws-sdk/client-s3@3.1101.0 || 3.1102.0 || 3.1161.0'
   - tsx@4.23.4
-  - '@aws-sdk/checksums@3.1000.25'
-  - '@aws-sdk/core@3.977.5'
-  - '@aws-sdk/credential-provider-env@3.972.66'
-  - '@aws-sdk/credential-provider-http@3.972.68'
-  - '@aws-sdk/credential-provider-ini@3.973.11'
-  - '@aws-sdk/credential-provider-login@3.972.73'
-  - '@aws-sdk/credential-provider-node@3.972.77'
-  - '@aws-sdk/credential-provider-process@3.972.66'
-  - '@aws-sdk/credential-provider-sso@3.973.10'
-  - '@aws-sdk/credential-provider-web-identity@3.972.72'
-  - '@aws-sdk/middleware-sdk-s3@3.972.71'
-  - '@aws-sdk/nested-clients@3.997.40'
-  - '@aws-sdk/token-providers@3.1102.0'
+  - '@aws-sdk/checksums@3.1000.25 || 3.1002.1'
+  - '@aws-sdk/core@3.977.5 || 3.979.1'
+  - '@aws-sdk/credential-provider-env@3.972.66 || 3.972.80'
+  - '@aws-sdk/credential-provider-http@3.972.68 || 3.972.82'
+  - '@aws-sdk/credential-provider-ini@3.973.11 || 3.973.25'
+  - '@aws-sdk/credential-provider-login@3.972.73 || 3.972.87'
+  - '@aws-sdk/credential-provider-node@3.972.77 || 3.972.92'
+  - '@aws-sdk/credential-provider-process@3.972.66 || 3.972.80'
+  - '@aws-sdk/credential-provider-sso@3.973.10 || 3.973.24'
+  - '@aws-sdk/credential-provider-web-identity@3.972.72 || 3.972.86'
+  - '@aws-sdk/middleware-sdk-s3@3.972.71 || 3.972.85'
+  - '@aws-sdk/nested-clients@3.997.40 || 3.997.54'
+  - '@aws-sdk/token-providers@3.1102.0 || 3.1161.0'
   - '@typescript-eslint/eslint-plugin@8.66.0'
   - '@typescript-eslint/parser@8.66.0'
   - '@typescript-eslint/project-service@8.66.0'
@@ -31,5 +31,9 @@ minimumReleaseAgeExclude:
   - '@sveltejs/vite-plugin-svelte@7.3.0'
   - '@lucide/svelte@1.66.0'
   - knip@6.44.1
+  - '@aws-sdk/signature-v4-multi-region@3.996.51'
+  - '@smithy/core@3.38.1'
+  - '@smithy/node-http-handler@4.14.1'
+  - tslib@2.9.1
 onlyBuiltDependencies:
   - esbuild

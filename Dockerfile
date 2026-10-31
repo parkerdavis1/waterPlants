@@ -11,7 +11,7 @@ WORKDIR /app
 ENV NODE_ENV="production"
 
 # Install pnpm
-ARG PNPM_VERSION=latest-11
+ARG PNPM_VERSION=latest-12
 RUN npm install -g pnpm@$PNPM_VERSION
 
 # Install node modules
