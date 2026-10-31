@@ -1,5 +1,5 @@
 <script>
-	export let className;
+	export let className
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" class={className} viewBox="0 0 24 24"

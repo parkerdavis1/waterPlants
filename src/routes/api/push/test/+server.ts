@@ -1,5 +1,5 @@
 import { json, error } from '@sveltejs/kit'
-import { sendPushToUser } from '$lib/server/push'
+import { sendPushToUser } from '#lib/server/push.js'
 import type { RequestHandler } from './$types'
 
 export const POST: RequestHandler = async ({ locals }) => {

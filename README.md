@@ -26,10 +26,10 @@ Normal workflow for a schema change:
 4. Commit the new migration files along with your code changes.
 5. `pnpm deploy:droplet` — migrations run automatically against production as
    part of the deploy (via a one-off `docker compose run --rm waterplants
-   pnpm db:migrate`, using the same image and volume-mounted db as the
+pnpm db:migrate`, using the same image and volume-mounted db as the
    running app).
 
-`db:migrate` is intentionally self-contained (no `$lib`/`src/*` aliases, no
+`db:migrate` is intentionally self-contained (no `#lib`/`src/*` aliases, no
 `drizzle-kit`) so it can run inside the slim production image, which only has
 `dependencies` installed (not `devDependencies`).
 

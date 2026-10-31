@@ -5,6 +5,7 @@ photo upload, avoid orphaned DB rows, and never make the user re-select a
 photo after a failed submit.
 
 Decisions locked in (see conversation for rationale):
+
 - On upload failure, **fail the whole submission** (no DB row created) rather
   than saving the event without a photo.
 - Retry both the R2/S3 `PutObject` call (server-side) **and** the whole
@@ -204,6 +205,7 @@ water: async ({ request }) => {
 ```
 
 Notes:
+
 - The image upload now happens before any DB write, so a failed upload never
   leaves a "watered but no photo" event behind.
 - `withFiles({ form })` is included in the `fail(400, ...)` on insert failure
@@ -586,6 +588,7 @@ this task but cheap to fix alongside.)
 **File: `src/lib/utils/retry.test.ts`** (new)
 
 Add unit tests for `withRetry`:
+
 - Succeeds on first try — `fn` called once.
 - Fails twice with a retryable error (e.g. `{ code: 'ETIMEDOUT' }`), succeeds
   on 3rd attempt — resolves, `fn` called 3 times.

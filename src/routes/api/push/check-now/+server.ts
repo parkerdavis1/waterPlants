@@ -1,5 +1,5 @@
 import { json, error } from '@sveltejs/kit'
-import { checkAndSendWateringNotifications } from '$lib/server/scheduler'
+import { checkAndSendWateringNotifications } from '#lib/server/scheduler.js'
 import type { RequestHandler } from './$types'
 
 export const POST: RequestHandler = async ({ locals }) => {

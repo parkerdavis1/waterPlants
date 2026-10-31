@@ -1,5 +1,5 @@
-import { PUBLIC_VAPID_KEY } from '$env/static/public'
-import { dev } from '$app/environment'
+import { PUBLIC_VAPID_KEY } from '$app/env/public'
+import { dev } from '$app/env'
 
 function urlBase64ToUint8Array(base64String: string) {
 	const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -76,9 +76,11 @@ export async function subscribeToPush(): Promise<PushSubscription> {
 
 export async function unsubscribeFromPush() {
 	const subscription = await getExistingSubscription()
+
 	if (!subscription) return
 
 	const endpoint = subscription.endpoint
+
 	await subscription.unsubscribe()
 
 	await fetch('/api/push/unsubscribe', {

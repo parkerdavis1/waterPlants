@@ -29,5 +29,7 @@ minimumReleaseAgeExclude:
   - daisyui@5.7.15
   - typescript-eslint@8.66.0
   - '@sveltejs/vite-plugin-svelte@7.3.0'
+  - '@lucide/svelte@1.66.0'
+  - knip@6.44.1
 onlyBuiltDependencies:
   - esbuild

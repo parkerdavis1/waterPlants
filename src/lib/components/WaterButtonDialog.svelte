@@ -1,24 +1,24 @@
 <script lang="ts">
-	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
-	import * as Dialog from '$lib/components/ui/dialog/index.js'
-	import { Input } from '$lib/components/ui/input/index.js'
-	import { Label } from '$lib/components/ui/label/index.js'
-	import { Switch } from '$lib/components/ui/switch/index.js'
+	import { Button, buttonVariants } from '#lib/components/ui/button/index.js'
+	import * as Dialog from '#lib/components/ui/dialog/index.js'
+	import { Input } from '#lib/components/ui/input/index.js'
+	import { Label } from '#lib/components/ui/label/index.js'
+	import { Switch } from '#lib/components/ui/switch/index.js'
 
-	import { Textarea } from 'src/lib/components/ui/textarea/index'
+	import { Textarea } from '#src/lib/components/ui/textarea/index.js'
 	import { toast } from 'svelte-sonner'
 	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms'
-	import PlantCard from 'src/lib/components/PlantCard.svelte'
-	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
-	import Spinner from 'src/lib/components/Spinner.svelte'
-	import Separator from 'src/lib/components/ui/separator/separator.svelte'
-	import { Checkbox } from 'src/lib/components/ui/checkbox/'
-	import * as Tabs from '$lib/components/ui/tabs/index.js'
-	import * as Select from '$lib/components/ui/select/index.js'
+	import PlantCard from '#src/lib/components/PlantCard.svelte'
+	import ImageUploader from '#src/lib/components/ImageUploader.svelte'
+	import Spinner from '#src/lib/components/Spinner.svelte'
+	import Separator from '#src/lib/components/ui/separator/separator.svelte'
+	import { Checkbox } from '#src/lib/components/ui/checkbox/index.js'
+	import * as Tabs from '#lib/components/ui/tabs/index.js'
+	import * as Select from '#lib/components/ui/select/index.js'
 	import { fade, scale, slide } from 'svelte/transition'
 	import { id } from 'date-fns/locale'
 	import DatePicker from './DatePicker.svelte'
-	import { createJoyfulFuzzyGurgle } from '$lib/utils/fizzy-bubble'
+	import { createJoyfulFuzzyGurgle } from '#lib/utils/fizzy-bubble.js'
 	import { DAY_MILLISECONDS } from '../utils/constants'
 
 	const { data } = $props()
@@ -169,7 +169,7 @@
 				<Label for="image"
 					>Image <span class="text-xs text-muted-foreground"> (optional)</span></Label
 				>
-				<ImageUploader {form} {constraints} />
+				<ImageUploader {form} />
 				{#if !$form.image}
 					<p class="text-center text-xs text-muted-foreground">
 						{#if data.plant.daysSinceLastPhoto === Infinity}

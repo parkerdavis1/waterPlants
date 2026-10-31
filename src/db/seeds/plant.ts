@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import type { db } from 'src/db'
+import type { db } from '#src/db/index.js'
 import { plant, room, house } from '../schema'
 import { eq } from 'drizzle-orm'
 

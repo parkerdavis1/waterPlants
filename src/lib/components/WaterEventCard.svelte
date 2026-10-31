@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { format } from 'date-fns'
-	import * as Card from '$lib/components/ui/card/index.js'
-	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js'
-	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
+	import * as Card from '#lib/components/ui/card/index.js'
+	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.js'
+	import { Button, buttonVariants } from '#lib/components/ui/button/index.js'
 	import { superForm } from 'sveltekit-superforms'
 	import { toast } from 'svelte-sonner'
 	import CfImage from './CfImage.svelte'
@@ -25,7 +25,9 @@
 		},
 	})
 
-	const waterer = data.users.find((u) => u.id == wateringEvent.user_id)?.name
+	const waterer = data.users.find(
+		(u: { id: number; name: string }) => u.id == wateringEvent.user_id,
+	)?.name
 </script>
 
 <div>

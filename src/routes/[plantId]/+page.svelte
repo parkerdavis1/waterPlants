@@ -1,15 +1,17 @@
 <script lang="ts">
-	import Separator from 'src/lib/components/ui/separator/separator.svelte'
-	import WaterButtonDialog from 'src/lib/components/WaterButtonDialog.svelte'
-	import EditButtonDialog from 'src/lib/components/EditButtonDialog.svelte'
-	import PastWatering from 'src/lib/components/PastWatering.svelte'
-	import bluegrad from '$lib/assets/images/bluegrad.png'
-	import WaterProgress2 from 'src/lib/components/WaterProgress2.svelte'
-	import Lightbox from 'src/lib/components/Lightbox.svelte'
+	import Separator from '#src/lib/components/ui/separator/separator.svelte'
+	import WaterButtonDialog from '#src/lib/components/WaterButtonDialog.svelte'
+	import EditButtonDialog from '#src/lib/components/EditButtonDialog.svelte'
+	import PastWatering from '#src/lib/components/PastWatering.svelte'
+	import bluegrad from '#lib/assets/images/bluegrad.png'
+	import WaterProgress2 from '#src/lib/components/WaterProgress2.svelte'
+	import Lightbox from '#src/lib/components/Lightbox.svelte'
 
 	const { data } = $props()
 
-	const room_name = data.rooms.find((room) => room.id === data.plant.room_id).name
+	const room_name = data.rooms.find(
+		(room: { id: number; name: string }) => room.id === data.plant.room_id,
+	)?.name
 
 	const title = data.plant.name
 		? `${data.plant.name} (${data.plant.species}) - Happy Plants`
@@ -46,7 +48,7 @@
 				<p>
 					<span class="opacity-60">Watering Schedule: </span> Every {data.plant.water_schedule} days
 				</p>
-				{#if isNaN(data.plant?.daysSinceLastWatered)}
+				{#if isNaN(data.plant.daysSinceLastWatered)}
 					<p><span class="opacity-60">No watering events recorded</span></p>
 				{:else}
 					<p>

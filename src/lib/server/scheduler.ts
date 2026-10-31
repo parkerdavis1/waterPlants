@@ -1,8 +1,15 @@
 import cron from 'node-cron'
 import { and, desc, eq, gt, or } from 'drizzle-orm'
-import db from 'src/db'
-import { plant, room, watering_event, type SelectPlant, type SelectRoom, type SelectWateringEvent } from 'src/db/schema'
-import { DAY_MILLISECONDS } from 'src/lib/utils/constants'
+import db from '#src/db/index.js'
+import {
+	plant,
+	room,
+	watering_event,
+	type SelectPlant,
+	type SelectRoom,
+	type SelectWateringEvent,
+} from '#src/db/schema.js'
+import { DAY_MILLISECONDS } from '#src/lib/utils/constants.js'
 import { sendPushToAllUsers } from './push'
 
 const CRON_EXPRESSION = '0 8,9,10,11,12,13,14,15,16,17,18,19,20 * * *'
@@ -16,7 +23,10 @@ type DuePlant = {
 	wateringEventId: number
 }
 
-function getDueDate(wateringEvent: { waitUntil: number | null; timestamp: number } | undefined, waterSchedule: number) {
+function getDueDate(
+	wateringEvent: { waitUntil: number | null; timestamp: number } | undefined,
+	waterSchedule: number,
+) {
 	if (!wateringEvent) return 0
 	if (wateringEvent.waitUntil) return wateringEvent.waitUntil
 	return wateringEvent.timestamp + waterSchedule * DAY_MILLISECONDS
@@ -116,11 +126,15 @@ export function startScheduler() {
 	if (started) return
 	started = true
 
-	cron.schedule(CRON_EXPRESSION, () => {
-		checkAndSendWateringNotifications().catch((error) => {
-			console.error('\nWatering notification scheduler error: ', error)
-		})
-	}, { timezone: CRON_TIMEZONE })
+	cron.schedule(
+		CRON_EXPRESSION,
+		() => {
+			checkAndSendWateringNotifications().catch((error) => {
+				console.error('\nWatering notification scheduler error: ', error)
+			})
+		},
+		{ timezone: CRON_TIMEZONE },
+	)
 
 	console.log(`\nWatering notification scheduler started (${CRON_EXPRESSION} ${CRON_TIMEZONE})`)
 }

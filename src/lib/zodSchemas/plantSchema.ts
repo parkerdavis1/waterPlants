@@ -11,28 +11,16 @@ export const newPlantSchema = z.object({
 	water_schedule: z.number().positive().min(1).default(7),
 })
 
-export const plantEventSchema = z
-	.object({
-		notes: z.string().optional(),
-		fertilized: z.boolean(),
-		watered: z.boolean().default(true),
-		waitUntil: z.number().optional(),
-		plant_id: z.number(),
-		user_id: z.number(),
-		image: imageSchema,
-		timestamp: z.number().optional(),
-	})
-	.transform((data) => {
-		if (data.waitUntil) {
-			return {
-				...data,
-				watered: false,
-				fertilized: false,
-			}
-		} else {
-			return data
-		}
-	})
+export const plantEventSchema = z.object({
+	notes: z.string().optional(),
+	fertilized: z.boolean(),
+	watered: z.boolean().default(true),
+	waitUntil: z.number().optional(),
+	plant_id: z.number(),
+	user_id: z.number(),
+	image: imageSchema,
+	timestamp: z.number().optional(),
+})
 
 export const editPlantSchema = z.object({
 	id: z.number(),
@@ -48,36 +36,24 @@ export const editPlantSchema = z.object({
 })
 
 export const deleteEventSchema = z.object({
-	id: z.string(),
-	plantId: z.string(),
+	id: z.coerce.number(),
+	plantId: z.coerce.number(),
 })
 
-export const editEventSchema = z
-	.object({
-		id: z.number(),
-		notes: z.string().optional(),
-		fertilized: z.boolean(),
-		watered: z.boolean().default(true),
-		waitUntil: z.number().optional(),
-		plant_id: z.number(),
-		user_id: z.number(),
-		image: imageSchema,
-		oldImageUrl: z.string().url().optional(),
-		timestamp: z.number(),
-	})
-	.transform((data) => {
-		if (data.waitUntil) {
-			return {
-				...data,
-				watered: false,
-				fertilized: false,
-			}
-		} else {
-			return data
-		}
-	})
+export const editEventSchema = z.object({
+	id: z.number(),
+	notes: z.string().optional(),
+	fertilized: z.boolean(),
+	watered: z.boolean().default(true),
+	waitUntil: z.number().optional(),
+	plant_id: z.number(),
+	user_id: z.number(),
+	image: imageSchema,
+	oldImageUrl: z.string().url().optional(),
+	timestamp: z.number(),
+})
 
 export const deletePlantSchema = z.object({
-	id: z.string(),
+	id: z.coerce.number(),
 	image_url: z.string().url().optional(),
 })

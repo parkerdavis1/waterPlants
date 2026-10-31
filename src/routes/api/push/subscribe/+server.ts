@@ -1,6 +1,6 @@
 import { json, error } from '@sveltejs/kit'
-import db from 'src/db'
-import { push_subscription } from 'src/db/schema'
+import db from '#src/db/index.js'
+import { push_subscription } from '#src/db/schema.js'
 import { eq } from 'drizzle-orm'
 import type { RequestHandler } from './$types'
 

@@ -492,11 +492,11 @@ _Thinking:_
 <type>file</type>
 <content>
 1: <script lang="ts">
-2: 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
-3: 	import * as Dialog from '$lib/components/ui/dialog/index.js'
-4: 	import { Input } from '$lib/components/ui/input/index.js'
-5: 	import { Label } from '$lib/components/ui/label/index.js'
-6: 	import { Switch } from '$lib/components/ui/switch/index.js'
+2: 	import { Button, buttonVariants } from '#lib/components/ui/button/index.js'
+3: 	import * as Dialog from '#lib/components/ui/dialog/index.js'
+4: 	import { Input } from '#lib/components/ui/input/index.js'
+5: 	import { Label } from '#lib/components/ui/label/index.js'
+6: 	import { Switch } from '#lib/components/ui/switch/index.js'
 7:
 8: 	import { Textarea } from 'src/lib/components/ui/textarea/index'
 9: 	import { toast } from 'svelte-sonner'
@@ -506,12 +506,12 @@ _Thinking:_
 13: 	import Spinner from 'src/lib/components/Spinner.svelte'
 14: 	import Separator from 'src/lib/components/ui/separator/separator.svelte'
 15: 	import { Checkbox } from 'src/lib/components/ui/checkbox/'
-16: 	import * as Tabs from '$lib/components/ui/tabs/index.js'
-17: 	import * as Select from '$lib/components/ui/select/index.js'
+16: 	import * as Tabs from '#lib/components/ui/tabs/index.js'
+17: 	import * as Select from '#lib/components/ui/select/index.js'
 18: 	import { fade, scale, slide } from 'svelte/transition'
 19: 	import { id } from 'date-fns/locale'
 20: 	import DatePicker from './DatePicker.svelte'
-21: 	import { createJoyfulFuzzyGurgle } from '$lib/utils/fizzy-bubble'
+21: 	import { createJoyfulFuzzyGurgle } from '#lib/utils/fizzy-bubble.js'
 22: 	import { DAY_MILLISECONDS } from '../utils/constants'
 23:
 24: 	const { data } = $props()
@@ -1239,10 +1239,10 @@ export const actions = {
 <type>file</type>
 <content>
 1: <script lang="ts">
-2: 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
-3: 	import * as Dialog from '$lib/components/ui/dialog/index.js'
-4: 	import { Input } from '$lib/components/ui/input/index.js'
-5: 	import { Label } from '$lib/components/ui/label/index.js'
+2: 	import { Button, buttonVariants } from '#lib/components/ui/button/index.js'
+3: 	import * as Dialog from '#lib/components/ui/dialog/index.js'
+4: 	import { Input } from '#lib/components/ui/input/index.js'
+5: 	import { Label } from '#lib/components/ui/label/index.js'
 6: 	import { Separator } from './ui/separator'
 7: 	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
 8: 	import Spinner from 'src/lib/components/Spinner.svelte'
@@ -1516,14 +1516,14 @@ _Thinking:_
 <type>file</type>
 <content>
 1: <script lang="ts">
-2: 	import Button from '$lib/components/ui/button/button.svelte';
-3: 	import * as Dialog from '$lib/components/ui/dialog';
-4: 	import * as Form from '$lib/components/ui/form';
-5: 	import { Input } from '$lib/components/ui/input';
-6: 	import { Label } from '$lib/components/ui/label';
+2: 	import Button from '#lib/components/ui/button/button.svelte';
+3: 	import * as Dialog from '#lib/components/ui/dialog/index.js';
+4: 	import * as Form from '#lib/components/ui/form/index.js';
+5: 	import { Input } from '#lib/components/ui/input/index.js';
+6: 	import { Label } from '#lib/components/ui/label/index.js';
 7: 	import { fileProxy, superForm, superValidate } from 'sveltekit-superforms';
 8: 	import SuperDebug from 'sveltekit-superforms';
-9: 	import * as Select from '$lib/components/ui/select/index';
+9: 	import * as Select from '#lib/components/ui/select/index.js';
 10: 	import { faker } from '@faker-js/faker';
 11: 	import { toast } from 'svelte-sonner';
 12: 	import { onMount } from 'svelte';
@@ -1640,11 +1640,11 @@ _Thinking:_
 <type>file</type>
 <content>
 1: <script lang="ts">
-2: 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
-3: 	import * as Dialog from '$lib/components/ui/dialog/index.js'
-4: 	import { Input } from '$lib/components/ui/input/index.js'
-5: 	import { Label } from '$lib/components/ui/label/index.js'
-6: 	import { Switch } from '$lib/components/ui/switch/index.js'
+2: 	import { Button, buttonVariants } from '#lib/components/ui/button/index.js'
+3: 	import * as Dialog from '#lib/components/ui/dialog/index.js'
+4: 	import { Input } from '#lib/components/ui/input/index.js'
+5: 	import { Label } from '#lib/components/ui/label/index.js'
+6: 	import { Switch } from '#lib/components/ui/switch/index.js'
 7:
 8: 	import { Textarea } from 'src/lib/components/ui/textarea/index'
 9: 	import { toast } from 'svelte-sonner'
@@ -1652,7 +1652,7 @@ _Thinking:_
 11: 	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
 12: 	import Spinner from 'src/lib/components/Spinner.svelte'
 13: 	import CfImage from 'src/lib/components/CfImage.svelte'
-14: 	import * as Tabs from '$lib/components/ui/tabs/index.js'
+14: 	import * as Tabs from '#lib/components/ui/tabs/index.js'
 15: 	import { fade } from 'svelte/transition'
 16: 	import DatePicker from './DatePicker.svelte'
 17: 	import { DAY_MILLISECONDS } from '../utils/constants'

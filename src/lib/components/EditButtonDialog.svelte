@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
-	import * as Dialog from '$lib/components/ui/dialog/index.js'
-	import { Input } from '$lib/components/ui/input/index.js'
-	import { Label } from '$lib/components/ui/label/index.js'
+	import { Button, buttonVariants } from '#lib/components/ui/button/index.js'
+	import * as Dialog from '#lib/components/ui/dialog/index.js'
+	import { Input } from '#lib/components/ui/input/index.js'
+	import { Label } from '#lib/components/ui/label/index.js'
 	import { Separator } from './ui/separator'
-	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
-	import Spinner from 'src/lib/components/Spinner.svelte'
-	import CfImage from 'src/lib/components/CfImage.svelte'
-	import * as Select from 'src/lib/components/ui/select'
-	import Textarea from 'src/lib/components/ui/textarea/textarea.svelte'
+	import ImageUploader from '#src/lib/components/ImageUploader.svelte'
+	import Spinner from '#src/lib/components/Spinner.svelte'
+	import CfImage from '#src/lib/components/CfImage.svelte'
+	import * as Select from '#src/lib/components/ui/select/index.js'
+	import Textarea from '#src/lib/components/ui/textarea/textarea.svelte'
 	import { toast } from 'svelte-sonner'
 	import SuperDebug, { superForm } from 'sveltekit-superforms'
-	import * as AlertDialog from 'src/lib/components/ui/alert-dialog'
+	import * as AlertDialog from '#src/lib/components/ui/alert-dialog/index.js'
 	import { goto } from '$app/navigation'
-	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { zod4Client as zodClient } from 'sveltekit-superforms/adapters'
 	import { editPlantSchema } from '../zodSchemas/plantSchema'
 	import Switch from './ui/switch/switch.svelte'
 
@@ -71,7 +71,7 @@
 	// }
 
 	const triggerContent = $derived(
-		data.rooms.find((room) => room.id === $form.room_id)?.name ?? 'Select a room',
+		data.rooms?.find((room: Room) => room.id === $form.room_id)?.name ?? 'Select a room',
 	)
 
 	let deleteForm: HTMLFormElement

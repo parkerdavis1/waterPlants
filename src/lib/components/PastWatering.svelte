@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { format } from 'date-fns'
-	import * as Table from '$lib/components/ui/table/index.js'
+	import * as Table from '#lib/components/ui/table/index.js'
 	import PastWateringRow from './PastWateringRow.svelte'
 
 	let { data } = $props()
@@ -18,11 +18,11 @@
 			<Table.Head>Fert.</Table.Head>
 			<Table.Head>Wait Until</Table.Head>
 			<Table.Head>User</Table.Head>
-			<Table.Head class="text-center w-12"></Table.Head>
+			<Table.Head class="w-12 text-center"></Table.Head>
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#each data.wateringEvents.sort((a, b) => b.timestamp - a.timestamp) as event (event.id)}
+		{#each data.wateringEvents.sort((a: { timestamp: number }, b: { timestamp: number }) => b.timestamp - a.timestamp) as event (event.id)}
 			<PastWateringRow wateringEvent={event} {data} />
 		{/each}
 	</Table.Body>

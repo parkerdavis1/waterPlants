@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/libsql'
 import { createClient } from '@libsql/client'
-import env from '$lib/env'
-import * as schema from 'src/db/schema'
+import env from '#lib/env.js'
+import * as schema from '#src/db/schema.js'
 
 let client: ReturnType<typeof createClient>
 if (env.LOCAL_DEV) {

@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
-	import * as Dialog from '$lib/components/ui/dialog/index.js'
-	import { Input } from '$lib/components/ui/input/index.js'
-	import { Label } from '$lib/components/ui/label/index.js'
-	import { Switch } from '$lib/components/ui/switch/index.js'
+	import { Button, buttonVariants } from '#lib/components/ui/button/index.js'
+	import * as Dialog from '#lib/components/ui/dialog/index.js'
+	import { Input } from '#lib/components/ui/input/index.js'
+	import { Label } from '#lib/components/ui/label/index.js'
+	import { Switch } from '#lib/components/ui/switch/index.js'
 
-	import { Textarea } from 'src/lib/components/ui/textarea/index'
+	import { Textarea } from '#src/lib/components/ui/textarea/index.js'
 	import { toast } from 'svelte-sonner'
 	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms'
-	import ImageUploader from 'src/lib/components/ImageUploader.svelte'
-	import Spinner from 'src/lib/components/Spinner.svelte'
-	import CfImage from 'src/lib/components/CfImage.svelte'
-	import * as Tabs from '$lib/components/ui/tabs/index.js'
+	import ImageUploader from '#src/lib/components/ImageUploader.svelte'
+	import Spinner from '#src/lib/components/Spinner.svelte'
+	import CfImage from '#src/lib/components/CfImage.svelte'
+	import * as Tabs from '#lib/components/ui/tabs/index.js'
 	import { fade } from 'svelte/transition'
 	import DatePicker from './DatePicker.svelte'
 	import { DAY_MILLISECONDS } from '../utils/constants'
@@ -172,7 +172,7 @@
 					{wateringEvent.image_url ? 'Replace Image' : 'Image'}
 					<span class="text-xs text-muted-foreground"> (optional)</span>
 				</Label>
-				<ImageUploader {form} {constraints} />
+				<ImageUploader {form} />
 				{#if $errors.image}<p class="text-red-500">{$errors.image}</p>{/if}
 			</div>
 			<div>

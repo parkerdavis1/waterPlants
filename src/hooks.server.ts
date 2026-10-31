@@ -1,6 +1,6 @@
-import type { Handle } from '@sveltejs/kit'
-import * as auth from '$lib/server/auth'
-import { startScheduler } from '$lib/server/scheduler'
+import type { Handle } from '@sveltejs/kit/hooks'
+import * as auth from '#lib/server/auth.js'
+import { startScheduler } from '#lib/server/scheduler.js'
 
 startScheduler()
 
@@ -14,14 +14,15 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	}
 
 	const { session, user } = await auth.validateSessionToken(sessionToken)
-	
+
 	if (session) {
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt)
 	} else {
 		auth.deleteSessionTokenCookie(event)
 	}
 
-	event.locals = { user, session }
+	event.locals.user = user
+	event.locals.session = session
 
 	return resolve(event)
 }

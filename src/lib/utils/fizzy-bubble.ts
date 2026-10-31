@@ -1,4 +1,4 @@
-import { browser } from '$app/environment'
+import { browser } from '$app/env'
 
 let audioContext: AudioContext | undefined
 if (browser) {
@@ -6,29 +6,34 @@ if (browser) {
 }
 
 // Function to create a single bubble sound with randomized parameters
-function createBubbleSound(startTime, duration, baseFreq) {
+function createBubbleSound(startTime: number, duration: number, baseFreq: number) {
 	if (!audioContext) return
 	// Oscillator for the bubble tone
 	const oscillator = audioContext.createOscillator()
+
 	oscillator.type = 'sine'
 	oscillator.frequency.value = baseFreq
 
 	// Gain node to control volume envelope
 	const gainNode = audioContext.createGain()
+
 	gainNode.gain.value = 0
 
 	// Filter for bubble resonance
 	const filter = audioContext.createBiquadFilter()
+
 	filter.type = 'bandpass'
 	filter.Q.value = 10 + Math.random() * 12 // Higher Q for more resonant, joyful sound
 	filter.frequency.value = baseFreq * (1 + Math.random() * 0.3)
 
 	// Create bubble formation sound with more playful frequency shifts
 	gainNode.gain.setValueAtTime(0, startTime)
+
 	gainNode.gain.linearRampToValueAtTime(0.2 + Math.random() * 0.15, startTime + duration * 0.3)
 
 	// More dramatic, joyful frequency shifts
 	oscillator.frequency.setValueAtTime(baseFreq, startTime)
+
 	oscillator.frequency.exponentialRampToValueAtTime(
 		baseFreq * (1.5 + Math.random() * 0.5),
 		startTime + duration * 0.6,
@@ -37,14 +42,17 @@ function createBubbleSound(startTime, duration, baseFreq) {
 
 	// Create amplitude envelope for the pop
 	gainNode.gain.linearRampToValueAtTime(0.2 + Math.random() * 0.15, startTime + duration * 0.8)
+
 	gainNode.gain.linearRampToValueAtTime(0, startTime + duration)
 
 	// Master gain for overall volume
 	const masterGain = audioContext.createGain()
+
 	masterGain.gain.value = 0.2
 
 	// Connect everything
 	oscillator.connect(filter)
+
 	filter.connect(gainNode)
 	gainNode.connect(masterGain)
 	masterGain.connect(audioContext.destination)
@@ -55,10 +63,11 @@ function createBubbleSound(startTime, duration, baseFreq) {
 }
 
 // Function to create white noise with filtering for fuzzy texture
-function createFuzzyNoise(startTime, duration, filterFreq) {
+function createFuzzyNoise(startTime: number, duration: number, filterFreq: number) {
 	if (!audioContext) return
 	// Create buffer source for noise
 	const bufferSize = audioContext.sampleRate * 2 // 2 seconds buffer
+
 	const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
 	const data = noiseBuffer.getChannelData(0)
 
@@ -69,16 +78,19 @@ function createFuzzyNoise(startTime, duration, filterFreq) {
 
 	// Create buffer source
 	const noise = audioContext.createBufferSource()
+
 	noise.buffer = noiseBuffer
 
 	// Create a bandpass filter for the fuzzy texture
 	const fuzzyFilter = audioContext.createBiquadFilter()
+
 	fuzzyFilter.type = 'bandpass'
 	fuzzyFilter.frequency.value = filterFreq
 	fuzzyFilter.Q.value = 1.5
 
 	// Add a second resonant filter for more character
 	const resonantFilter = audioContext.createBiquadFilter()
+
 	resonantFilter.type = 'peaking'
 	resonantFilter.frequency.value = filterFreq * 1.5
 	resonantFilter.Q.value = 6
@@ -86,22 +98,26 @@ function createFuzzyNoise(startTime, duration, filterFreq) {
 
 	// Gain node for envelope
 	const gainNode = audioContext.createGain()
+
 	gainNode.gain.value = 0
 
 	// Create envelope
 	gainNode.gain.setValueAtTime(0, startTime)
+
 	gainNode.gain.linearRampToValueAtTime(0.04, startTime + duration * 0.2) // Low volume for noise
 	gainNode.gain.setValueAtTime(0.04, startTime + duration * 0.7)
 	gainNode.gain.linearRampToValueAtTime(0, startTime + duration)
 
 	// Filter modulation for dynamic fuzzy texture
 	fuzzyFilter.frequency.setValueAtTime(filterFreq, startTime)
+
 	fuzzyFilter.frequency.linearRampToValueAtTime(filterFreq * 2, startTime + duration * 0.3)
 	fuzzyFilter.frequency.linearRampToValueAtTime(filterFreq * 0.8, startTime + duration * 0.7)
 	fuzzyFilter.frequency.linearRampToValueAtTime(filterFreq * 1.5, startTime + duration)
 
 	// Connect everything
 	noise.connect(fuzzyFilter)
+
 	fuzzyFilter.connect(resonantFilter)
 	resonantFilter.connect(gainNode)
 	gainNode.connect(audioContext.destination)

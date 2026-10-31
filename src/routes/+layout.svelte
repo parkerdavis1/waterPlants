@@ -1,11 +1,11 @@
 <script lang="ts">
 	import '../app.css'
-	import * as Avatar from '$lib/components/ui/avatar'
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import * as Avatar from '#lib/components/ui/avatar/index.js'
+	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js'
 	import { Settings } from '@lucide/svelte'
 	import { Toaster } from 'svelte-sonner'
 	import LogOut from '@lucide/svelte/icons/log-out'
-	import BackButton from '$lib/components/BackButton.svelte'
+	import BackButton from '#lib/components/BackButton.svelte'
 
 	import { navigating } from '$app/state'
 	import { fade, slide } from 'svelte/transition'
@@ -40,8 +40,8 @@
 				{#if loggedIn === true}
 					<div class="cursor-pointer">
 						<Avatar.Root>
-							<Avatar.Image src={data.user.avatar_url} class="object-cover" />
-							<Avatar.Fallback>{data.user.name}</Avatar.Fallback>
+							<Avatar.Image src={data.user?.avatar_url} class="object-cover" />
+							<Avatar.Fallback>{data.user?.name}</Avatar.Fallback>
 						</Avatar.Root>
 					</div>
 				{/if}

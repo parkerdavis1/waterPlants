@@ -1,22 +1,22 @@
-import env from 'src/lib/env'
-import db from 'src/db'
+import env from '#src/lib/env.js'
+import db from '#src/db/index.js'
 import { desc, eq } from 'drizzle-orm'
-import { plant, watering_event } from 'src/db/schema.js'
+import { plant, watering_event } from '#src/db/schema.js'
 import {
 	deleteEventSchema,
 	deletePlantSchema,
 	editPlantSchema,
 	plantEventSchema,
 	editEventSchema,
-} from 'src/lib/zodSchemas/plantSchema'
+} from '#src/lib/zodSchemas/plantSchema.js'
 import { fail, message, superValidate, withFiles } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
-import { DAY_MILLISECONDS } from 'src/lib/utils/constants'
-import s3Client from 'src/lib/s3Client'
+import { zod4 as zod } from 'sveltekit-superforms/adapters'
+import { DAY_MILLISECONDS } from '#src/lib/utils/constants.js'
+import s3Client from '#src/lib/s3Client.js'
 import { DeleteObjectCommand } from '@aws-sdk/client-s3'
-import { redirect } from '@sveltejs/kit'
-import { getProgressPercent } from 'src/lib/utils/getProgressPercent.js'
-import { deleteImageByUrl, uploadImageFile } from 'src/lib/uploadImage'
+import { error, redirect } from '@sveltejs/kit'
+import { getProgressPercent } from '#src/lib/utils/getProgressPercent.js'
+import { deleteImageByUrl, uploadImageFile } from '#src/lib/uploadImage.js'
 
 export async function load({ params, parent }) {
 	const { plantId } = params
@@ -36,13 +36,10 @@ export async function load({ params, parent }) {
 		wateringEvents,
 	])
 
-	if (!plantDataPromise) {
-		return fail(404, {
-			message: 'Plant not found',
-		})
-	}
-
 	const plantData = plantDataResolved[0]
+	if (!plantData) {
+		error(404, 'Plant not found')
+	}
 
 	// Last Watering Event
 	const lastWateringEvent = wateringEventsResolved.filter(
@@ -73,7 +70,10 @@ export async function load({ params, parent }) {
 			// 	?.name,
 		},
 		wateringEvents: await wateringEvents,
-		editForm: await superValidate(plantData, zod(editPlantSchema)),
+		editForm: await superValidate(
+			{ ...plantData, name: plantData.name ?? '', notes: plantData.notes ?? '' },
+			zod(editPlantSchema),
+		),
 		waterForm: await superValidate(zod(plantEventSchema)),
 		editEventForm: await superValidate(zod(editEventSchema)),
 		deleteEvent: await superValidate(zod(deleteEventSchema)),
@@ -98,7 +98,10 @@ export const actions = {
 			}
 		}
 
-		const { image: _image, ...eventFields } = form.data
+		const eventData = form.data.waitUntil
+			? { ...form.data, watered: false, fertilized: false }
+			: form.data
+		const { image: _image, ...eventFields } = eventData
 		const [insertedWaterEvent] = await db
 			.insert(watering_event)
 			.values({ ...eventFields, image_url })
@@ -109,6 +112,8 @@ export const actions = {
 	},
 
 	editPlant: async ({ request, locals }) => {
+		if (!locals.user) return fail(401, { message: 'Not logged in' })
+
 		const form = await superValidate(request, zod(editPlantSchema))
 
 		if (!form.valid) return fail(400, withFiles({ form }))
@@ -176,17 +181,20 @@ export const actions = {
 				return fail(500, withFiles(form))
 			}
 		}
+		const eventData = form.data.waitUntil
+			? { ...form.data, watered: false, fertilized: false }
+			: form.data
 		const [result] = await db
 			.update(watering_event)
 			.set({
-				notes: form.data.notes,
-				fertilized: form.data.fertilized,
-				watered: form.data.watered,
-				waitUntil: form.data.waitUntil,
-				timestamp: form.data.timestamp,
+				notes: eventData.notes,
+				fertilized: eventData.fertilized,
+				watered: eventData.watered,
+				waitUntil: eventData.waitUntil,
+				timestamp: eventData.timestamp,
 				...(image_url ? { image_url } : {}),
 			})
-			.where(eq(watering_event.id, form.data.id))
+			.where(eq(watering_event.id, eventData.id))
 			.returning()
 
 		return withFiles({ form })

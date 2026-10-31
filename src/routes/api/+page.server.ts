@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit'
-import * as auth from '$lib/server/auth'
+import * as auth from '#lib/server/auth.js'
 
 export const actions = {
 	logout: async (event) => {

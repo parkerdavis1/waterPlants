@@ -1,9 +1,9 @@
-services: 
+services:
   waterplants:
-    build: 
+    build:
       context: .
       target: development
     volumes:
       - ./src/db:/data
     ports:
-      - "3000:3000"
+      - '3000:3000'

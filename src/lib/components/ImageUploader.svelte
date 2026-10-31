@@ -5,7 +5,7 @@
 
 	let { form } = $props()
 
-	let fileInput: HTMLInputElement = $state()
+	let fileInput = $state<HTMLInputElement>()
 	let previewImage: string | null = $state(null)
 	let fileName: string = $state('')
 
@@ -40,7 +40,7 @@
 	}
 
 	function triggerFileInput() {
-		fileInput.click()
+		fileInput?.click()
 	}
 
 	async function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<Blob> {

@@ -1,8 +1,8 @@
 import webpush from 'web-push'
 import { eq } from 'drizzle-orm'
-import db from 'src/db'
-import { push_subscription, type SelectPushSubscription } from 'src/db/schema'
-import env from '$lib/env'
+import db from '#src/db/index.js'
+import { push_subscription, type SelectPushSubscription } from '#src/db/schema.js'
+import env from '#lib/env.js'
 
 webpush.setVapidDetails(env.VAPID_SUBJECT, env.VAPID_PUBLIC_KEY, env.VAPID_PRIVATE_KEY)
 

@@ -1,5 +1,5 @@
-import env from 'src/lib/env'
-import s3Client from 'src/lib/s3Client'
+import env from '#src/lib/env.js'
+import s3Client from '#src/lib/s3Client.js'
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { withRetry } from './utils/retry'
 
@@ -14,7 +14,7 @@ export async function uploadImageFile(image: File | Blob) {
 	const arrayBuffer = await image.arrayBuffer()
 	const buffer = Buffer.from(arrayBuffer)
 
-	const originalName = image.name ?? 'upload'
+	const originalName = 'name' in image ? image.name : 'upload'
 	const key = `${Date.now()}-${sanitizeFilename(originalName)}`
 	const contentType = image.type ?? 'application/octet-stream'
 
@@ -42,6 +42,14 @@ export async function deleteImageByKey(key: string) {
 	// S3/R2 sometimes returns 204, sometimes 200; check metadata
 	const code = res?.$metadata?.httpStatusCode
 	return code === 200 || code === 204
+}
+
+export async function replaceImage(oldUrl: string | null | undefined, image: File | Blob) {
+	const uploaded = await uploadImageFile(image)
+	if (oldUrl) {
+		await deleteImageByUrl(oldUrl)
+	}
+	return uploaded
 }
 
 export async function deleteImageByUrl(url: string) {

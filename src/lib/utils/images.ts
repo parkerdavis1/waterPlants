@@ -1,6 +1,6 @@
-import fs from 'fs/promises';
+import fs from 'fs/promises'
 
 export async function getImageBuffer(filePath: string): Promise<Buffer> {
-	const image = await fs.readFile(filePath);
-	return image;
+	const image = await fs.readFile(filePath)
+	return image
 }

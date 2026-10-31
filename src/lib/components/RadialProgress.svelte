@@ -1,13 +1,13 @@
 <script lang="ts">
-	export let progress: number = 0;
+	export let progress: number = 0
 
 	// Ensure progress is between 0 and 100
-	$: clampedProgress = Math.round(Math.min(Math.max(progress, 0), 100));
+	$: clampedProgress = Math.round(Math.min(Math.max(progress, 0), 100))
 
 	// Calculate the stroke-dasharray and stroke-dashoffset
-	const radius = 45;
-	const circumference = 2 * Math.PI * radius;
-	$: dashOffset = circumference - (clampedProgress / 100) * circumference;
+	const radius = 45
+	const circumference = 2 * Math.PI * radius
+	$: dashOffset = circumference - (clampedProgress / 100) * circumference
 
 	// TODO: When watering time has arrived, show a water icon or something? A clickable button that just waters the plant.
 	// When fertilization is due, show a relevant icon, but clicking the button opens the watering page

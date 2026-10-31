@@ -1,30 +1,27 @@
 <script lang="ts">
-	import PlantCard from '$lib/components/PlantCard.svelte'
-	import Toolbar from 'src/lib/components/Toolbar/Toolbar.svelte'
-	import * as Accordion from '$lib/components/ui/accordion'
-	import * as Dialog from '$lib/components/ui/dialog/index.js'
+	import PlantCard from '#lib/components/PlantCard.svelte'
+	import Toolbar from '#src/lib/components/Toolbar/Toolbar.svelte'
+	import * as Accordion from '#lib/components/ui/accordion/index.js'
+	import * as Dialog from '#lib/components/ui/dialog/index.js'
 	import { superForm } from 'sveltekit-superforms'
 	import SuperDebug from 'sveltekit-superforms'
 	import { toast } from 'svelte-sonner'
-	import { waterPlantsView } from 'src/lib/stores/viewStore.svelte.js'
+	import { waterPlantsView } from '#src/lib/stores/viewStore.svelte.js'
 	import { writable, type Writable } from 'svelte/store'
-	import { checkedObj } from 'src/lib/stores/selectedPlants.svelte.js'
-	import { waterMultipleOpen } from 'src/lib/stores/viewStore.svelte.js'
-	import { Label } from 'src/lib/components/ui/label/index.js'
-	import { Textarea } from 'src/lib/components/ui/textarea/index.js'
-	import { Button } from 'src/lib/components/ui/button/index.js'
-	import DatePicker from 'src/lib/components/DatePicker.svelte'
+	import { checkedObj } from '#src/lib/stores/selectedPlants.svelte.js'
+	import { waterMultipleOpen } from '#src/lib/stores/viewStore.svelte.js'
+	import { Label } from '#src/lib/components/ui/label/index.js'
+	import { Textarea } from '#src/lib/components/ui/textarea/index.js'
+	import { Button } from '#src/lib/components/ui/button/index.js'
+	import DatePicker from '#src/lib/components/DatePicker.svelte'
 	import { invalidate, invalidateAll } from '$app/navigation'
-	import { browser } from '$app/environment'
+	import { browser } from '$app/env'
 
 	let { data } = $props()
-
-	const alivePlants = $derived(data.plantsWater?.filter((plantWater) => plantWater.plant.alive))
-
+	const alivePlants = $derived(data.plantsWater.filter((plantWater) => plantWater.plant.alive))
 	const plantsThatNeedWater = $derived(
 		alivePlants.filter((plantWater) => plantWater.plant.dueDate < new Date().getTime()),
 	)
-
 	let activePlants = $derived(waterPlantsView.value ? plantsThatNeedWater : alivePlants)
 
 	// State used in many places, so it is stored in a store
@@ -36,7 +33,7 @@
 		dataType: 'json',
 		invalidateAll: true,
 		onSubmit: ({ jsonData }) => {
-			$form.userId = data.user.id
+			$form.userId = data.user!.id
 		},
 		onResult: ({ result }) => {
 			if (result.type === 'success') {
@@ -56,7 +53,8 @@
 	let waterDisabled = $derived($form.plantIds.length === 0)
 
 	$effect(() => {
-		const stringArray = Object.keys($checkedObj).filter((key) => $checkedObj[key] === true)
+		const stringArray = Object.keys($checkedObj).filter((key) => $checkedObj[Number(key)] === true)
+
 		$form.plantIds = stringArray.map((string) => Number(string))
 	})
 
@@ -79,10 +77,8 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Happy Plants</title>
-</svelte:head>
-<Toolbar {data} {waterDisabled} />
+<svelte:head><title>Happy Plants</title></svelte:head>
+<Toolbar {waterDisabled} />
 <!-- <SuperDebug data={$form} /> -->
 <div class=" gap-4">
 	<Accordion.Root type="multiple" value={openRooms} onValueChange={handleAccordionChange}>
@@ -110,7 +106,7 @@
 				<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
 					{#each data.plantsWater?.filter((plantWater) => !plantWater.plant.alive) as plantWater}
 						<div class="flex gap-2 rounded-xl lg:border lg:border-border">
-							<PlantCard {plantWater} {data} context="list" />
+							<PlantCard {plantWater} context="list" />
 						</div>
 					{/each}
 				</div>
@@ -121,7 +117,7 @@
 
 <!-- hidden -->
 <form method="POST" action="?/waterPlants" use:enhance id="multiplantwater">
-	<input type="hidden" name="userId" bind:value={data.user.id} />
+	<input type="hidden" name="userId" bind:value={data.user!.id} />
 	<input type="hidden" name="plantIds" bind:value={$form.plantIds} />
 	<input type="hidden" name="notes" bind:value={$form.notes} />
 	<input type="hidden" name="timestamp" bind:value={$form.timestamp} />
@@ -130,9 +126,11 @@
 <Dialog.Root bind:open={waterMultipleOpen.value}>
 	<Dialog.Content class="max-h-screen overflow-auto">
 		<Dialog.Title>Water Plants</Dialog.Title>
-		<Dialog.Description>
-			Watering {$form.plantIds.length} plant{$form.plantIds.length > 1 ? 's' : ''}
-		</Dialog.Description>
+		<Dialog.Description
+			>Watering {$form.plantIds.length} plant{$form.plantIds.length > 1
+				? 's'
+				: ''}</Dialog.Description
+		>
 		<DatePicker {form} />
 		<Label for="notes">Notes</Label>
 		<Textarea id="notes" bind:value={$form.notes} />

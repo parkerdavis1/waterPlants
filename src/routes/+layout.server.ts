@@ -1,9 +1,9 @@
-import db from 'src/db'
+import db from '#src/db/index.js'
 import type { LayoutServerLoad } from './$types'
-import { plant, room, user, watering_event } from 'src/db/schema'
+import { plant, room, user, watering_event } from '#src/db/schema.js'
 import { and, desc, eq, or, gt } from 'drizzle-orm'
-import { DAY_MILLISECONDS } from 'src/lib/utils/constants'
-import type { PlantObj } from 'src/lib/types/plantObj'
+import { DAY_MILLISECONDS } from '#src/lib/utils/constants.js'
+import type { PlantObj } from '#src/lib/types/plantObj.js'
 
 export const ssr = false
 
@@ -19,7 +19,11 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		}
 	} else {
 		return {
+			user: null,
+			rooms: [],
+			users: [],
 			loggedIn: false,
+			plantsWater: [],
 		}
 	}
 }

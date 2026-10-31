@@ -2,8 +2,8 @@ import type { RequestEvent } from '@sveltejs/kit'
 import { eq } from 'drizzle-orm'
 import { sha256 } from '@oslojs/crypto/sha2'
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding'
-import db from 'src/db'
-import * as table from 'src/db/schema'
+import db from '#src/db/index.js'
+import * as table from '#src/db/schema.js'
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24
 

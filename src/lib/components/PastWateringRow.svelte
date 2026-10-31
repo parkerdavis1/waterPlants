@@ -1,7 +1,7 @@
 <script lang="ts">
-	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js'
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js'
-	import * as Table from '$lib/components/ui/table/index.js'
+	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.js'
+	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js'
+	import * as Table from '#lib/components/ui/table/index.js'
 	import { format } from 'date-fns'
 	import { toast } from 'svelte-sonner'
 	import { superForm } from 'sveltekit-superforms'
@@ -11,7 +11,9 @@
 	import { Ellipsis } from '@lucide/svelte'
 
 	let { data, wateringEvent } = $props()
-	const waterer = data.users.find((u) => u.id == wateringEvent.user_id)?.name
+	const waterer = data.users.find(
+		(u: { id: number; name: string }) => u.id == wateringEvent.user_id,
+	)?.name
 
 	let deleteEventForm: HTMLFormElement
 	let deleteDialogOpen = $state(false)

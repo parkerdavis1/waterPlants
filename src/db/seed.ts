@@ -1,8 +1,8 @@
 import { type Table } from 'drizzle-orm'
 import type { db as DbType } from '.'
 import db from '.'
-import * as schema from 'src/db/schema'
-import * as seeds from 'src/db/seeds'
+import * as schema from '#src/db/schema.js'
+import * as seeds from '#src/db/seeds/index.js'
 
 // console.log('\ndoes it exist\n', await db.select().from(schema.house));
 

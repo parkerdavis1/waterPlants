@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Button from './ui/button/button.svelte'
-	import bluegrad from '$lib/assets/images/bluegrad.png'
+	import bluegrad from '#lib/assets/images/bluegrad.png'
 	import CfImage from './CfImage.svelte'
 	import WaterProgress from './WaterProgress.svelte'
 	import { checkedObj } from '../stores/selectedPlants.svelte'
-	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
+	import { Checkbox } from '#lib/components/ui/checkbox/index.js'
 	import WaterProgress2 from './WaterProgress2.svelte'
 
 	const {

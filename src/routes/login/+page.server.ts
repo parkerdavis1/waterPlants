@@ -2,10 +2,10 @@ import { hash, verify } from '@node-rs/argon2'
 import { encodeBase32LowerCase } from '@oslojs/encoding'
 import { fail, redirect } from '@sveltejs/kit'
 import { eq } from 'drizzle-orm'
-import * as auth from '$lib/server/auth'
-import db from 'src/db'
-import * as table from 'src/db/schema'
-import { lower } from 'src/db/schema'
+import * as auth from '#lib/server/auth.js'
+import db from '#src/db/index.js'
+import * as table from '#src/db/schema.js'
+import { lower } from '#src/db/schema.js'
 import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -18,11 +18,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	login: async (event) => {
 		const formData = await event.request.formData()
-		const username = formData.get('username')
+		const username = String(formData.get('username') ?? '').trim()
 		const password = formData.get('password')
 
 		// Honeypot
 		if (formData.get('secret_key')) {
+			return fail(400, { message: 'Incorrect username or password' })
+		}
+
+		if (!username || typeof password !== 'string') {
 			return fail(400, { message: 'Incorrect username or password' })
 		}
 
@@ -55,8 +59,12 @@ export const actions: Actions = {
 	},
 	register: async (event) => {
 		const formData = await event.request.formData()
-		const username = formData.get('username')
+		const username = String(formData.get('username') ?? '').trim()
 		const password = formData.get('password')
+
+		if (!username || typeof password !== 'string') {
+			return fail(400, { message: 'Username and password are required' })
+		}
 
 		// const userId = generateUserId()
 		const passwordHash = await hash(password, {

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Button } from 'src/lib/components/ui/button'
-	import { Input } from 'src/lib/components/ui/input'
-	import { Label } from 'src/lib/components/ui/label'
+	import { Button } from '#src/lib/components/ui/button/index.js'
+	import { Input } from '#src/lib/components/ui/input/index.js'
+	import { Label } from '#src/lib/components/ui/label/index.js'
 	import { enhance } from '$app/forms'
 	import type { ActionData } from './$types'
 

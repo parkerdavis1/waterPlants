@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Switch } from '$lib/components/ui/switch'
-	import { Label } from '$lib/components/ui/label'
-	import { Button } from '$lib/components/ui/button'
+	import { Switch } from '#lib/components/ui/switch/index.js'
+	import { Label } from '#lib/components/ui/label/index.js'
+	import { Button } from '#lib/components/ui/button/index.js'
 	import { toast } from 'svelte-sonner'
 	import { onMount } from 'svelte'
 	import {
@@ -9,7 +9,7 @@
 		pushSupported,
 		subscribeToPush,
 		unsubscribeFromPush,
-	} from '$lib/pushClient'
+	} from '#lib/pushClient.js'
 
 	const { data } = $props()
 
@@ -105,14 +105,10 @@
 				onCheckedChange={onToggle}
 			/>
 		</div>
-		<p class="text-sm opacity-70">
-			Get a push notification when your plants are due for watering.
-		</p>
+		<p class="text-sm opacity-70">Get a push notification when your plants are due for watering.</p>
 
 		{#if !supported}
-			<p class="text-sm text-red-500">
-				Push notifications aren't supported in this browser.
-			</p>
+			<p class="text-sm text-red-500">Push notifications aren't supported in this browser.</p>
 		{:else if !isStandalone}
 			<p class="text-sm text-amber-500">
 				On iPhone/iPad, add Happy Plants to your Home Screen first (Share &rarr; Add to Home
@@ -144,4 +140,3 @@
 		</div>
 	{/if}
 </div>
-

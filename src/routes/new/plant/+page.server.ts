@@ -1,10 +1,10 @@
-import db from 'src/db'
-import { plant, watering_event } from 'src/db/schema'
+import db from '#src/db/index.js'
+import { plant, watering_event } from '#src/db/schema.js'
 import { fail, superValidate, withFiles } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
-import { newPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+import { zod4 as zod } from 'sveltekit-superforms/adapters'
+import { newPlantSchema } from '#src/lib/zodSchemas/plantSchema.js'
 import { redirect } from '@sveltejs/kit'
-import { uploadImageFile } from 'src/lib/uploadImage.js'
+import { uploadImageFile } from '#src/lib/uploadImage.js'
 
 export async function load() {
 	return {
@@ -14,6 +14,8 @@ export async function load() {
 
 export const actions = {
 	newPlant: async ({ request, locals }) => {
+		if (!locals.user) return fail(401, { message: 'Not logged in' })
+
 		// delay for testing
 		// await new Promise((resolve) => setTimeout(resolve, 1000))
 

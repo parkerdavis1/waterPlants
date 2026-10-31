@@ -1,5 +1,5 @@
 /**
- * Standalone migration runner. Deliberately avoids the `$lib` / `src/*`
+ * Standalone migration runner. Deliberately avoids the `#lib` / `src/*`
  * path aliases (which rely on the .svelte-kit generated tsconfig, not
  * present in the slim production Docker image) so this can run anywhere the
  * repo's `src/db` folder + node_modules are present — including in
@@ -24,7 +24,9 @@ const db = drizzle(client, { schema })
 
 const migrationsFolder = path.join(import.meta.dirname, 'migrations')
 
-console.log(`Running migrations from ${migrationsFolder} against ${isLocalDev ? 'local dev' : 'production'} db...`)
+console.log(
+	`Running migrations from ${migrationsFolder} against ${isLocalDev ? 'local dev' : 'production'} db...`,
+)
 
 await migrate(db, { migrationsFolder })
 

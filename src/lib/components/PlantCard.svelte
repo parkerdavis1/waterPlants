@@ -1,10 +1,10 @@
 <script lang="ts">
-	import bluegrad from '$lib/assets/images/bluegrad.png'
+	import bluegrad from '#lib/assets/images/bluegrad.png'
 	import CfImage from './CfImage.svelte'
 	import WaterProgress2 from './WaterProgress2.svelte'
 	import PlantCardMobile from './PlantCardMobile.svelte'
 	import { checkedObj } from '../stores/selectedPlants.svelte'
-	import { Checkbox } from '$lib/components/ui/checkbox/index.js'
+	import { Checkbox } from '#lib/components/ui/checkbox/index.js'
 	import { DAY_MILLISECONDS } from '../utils/constants'
 	import { getProgressPercent } from '../utils/getProgressPercent'
 

@@ -1,18 +1,18 @@
-import env from 'src/lib/env.js'
-import db from 'src/db'
+import env from '#src/lib/env.js'
+import db from '#src/db/index.js'
 import { and, desc, eq, inArray } from 'drizzle-orm'
-import { plant, room, watering_event } from 'src/db/schema'
-// import * as auth from '$lib/server/auth'
+import { plant, room, watering_event } from '#src/db/schema.js'
+// import * as auth from '#lib/server/auth.js'
 
-import s3Client from 'src/lib/s3Client.js'
+import s3Client from '#src/lib/s3Client.js'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 
 import { fail, message, superValidate } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
+import { zod4 as zod } from 'sveltekit-superforms/adapters'
 
-import { newPlantSchema } from 'src/lib/zodSchemas/plantSchema'
+import { newPlantSchema } from '#src/lib/zodSchemas/plantSchema.js'
 import { redirect } from '@sveltejs/kit'
-import { multiWateringFormSchema } from 'src/lib/zodSchemas/waterManyForm.js'
+import { multiWateringFormSchema } from '#src/lib/zodSchemas/waterManyForm.js'
 
 export async function load({ locals }) {
 	if (!locals.user) {

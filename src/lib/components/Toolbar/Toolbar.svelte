@@ -1,9 +1,9 @@
 <script>
 	import Button from '../ui/button/button.svelte'
-	import { Switch } from '$lib/components/ui/switch'
+	import { Switch } from '#lib/components/ui/switch/index.js'
 	import Label from '../ui/label/label.svelte'
 	import { scale } from 'svelte/transition'
-	import { waterPlantsView, waterMultipleOpen } from 'src/lib/stores/viewStore.svelte'
+	import { waterPlantsView, waterMultipleOpen } from '#src/lib/stores/viewStore.svelte.js'
 	import { Droplets, Sprout } from '@lucide/svelte'
 
 	const { waterDisabled } = $props()

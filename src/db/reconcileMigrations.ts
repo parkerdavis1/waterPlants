@@ -86,4 +86,3 @@ async function main() {
 }
 
 main()
-

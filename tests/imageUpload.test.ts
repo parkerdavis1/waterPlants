@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock environment and s3Client before importing the module under test.
-vi.mock('src/lib/env', () => {
+vi.mock('#src/lib/env.js', () => {
 	return {
 		default: {
 			R2_BUCKET_NAME: 'test-bucket',
@@ -10,7 +10,7 @@ vi.mock('src/lib/env', () => {
 	}
 })
 const sendMock = vi.fn()
-vi.mock('src/lib/s3Client', () => {
+vi.mock('#src/lib/s3Client.js', () => {
 	return {
 		default: {
 			send: sendMock,
@@ -18,7 +18,7 @@ vi.mock('src/lib/s3Client', () => {
 	}
 })
 // Now import the module under test (mocks are active)
-import * as uploadModule from 'src/lib/uploadImage'
+import * as uploadModule from '#src/lib/uploadImage.js'
 beforeEach(() => {
 	sendMock.mockReset()
 })
@@ -27,8 +27,7 @@ describe('uploadImage helpers', () => {
 	it('uploadImageFile calls s3Client.send with PutObject and returns url/key', async () => {
 		// Create a Blob that mimics File (has arrayBuffer), add a name property
 		const data = new Uint8Array([1, 2, 3])
-		const blob = new Blob([data], { type: 'image/png' })
-		blob.name = 'my photo.png' // simulate File.name
+		const blob = new File([data], 'my photo.png', { type: 'image/png' })
 		// s3Client.send should resolve successfully
 		sendMock.mockResolvedValueOnce({ $metadata: { httpStatusCode: 200 } })
 		const result = await uploadModule.uploadImageFile(blob)
@@ -62,9 +61,8 @@ describe('uploadImage helpers', () => {
 	})
 
 	it('replaceImage uploads new file then attempts to delete old url', async () => {
-		// Prepare blob/file-like object
-		const blob = new Blob([new Uint8Array([4, 5, 6])], { type: 'image/jpeg' })
-		;(blob as any).name = 'plant.jpg'
+		// Prepare a File-like object
+		const blob = new File([new Uint8Array([4, 5, 6])], 'plant.jpg', { type: 'image/jpeg' })
 		// First call: upload result; second call: delete old image
 		sendMock
 			.mockResolvedValueOnce({ $metadata: { httpStatusCode: 200 } }) // upload

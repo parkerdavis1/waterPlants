@@ -1,4 +1,4 @@
-import env from '$lib/env'
+import env from '#lib/env.js'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {

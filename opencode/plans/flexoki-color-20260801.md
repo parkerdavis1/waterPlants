@@ -3,12 +3,14 @@
 Source palette: https://github.com/kepano/flexoki
 
 Goals:
+
 1. Replace the app's shadcn-style CSS variable tokens (light + dark) with Flexoki colors.
 2. Tokenize the handful of components that use hardcoded hex colors instead of the CSS variables.
 3. Update the PWA manifest theme colors.
 4. Wire up dark mode (currently defined in CSS but never activated) using the already-installed `mode-watcher` package.
 
 Decisions already made:
+
 - Accent color: neutral Flexoki base tone (not a colored tint).
 - Watering progress indicators: `--primary` (blue) = watered/fill, `--muted` = dry/empty track.
 - Dark mode: fully wire up with a toggle, not just leave the CSS dormant.
@@ -102,6 +104,7 @@ File: `src/lib/components/WaterProgress.svelte`
 Current hardcoded colors: `#EEEEEE`, `rgb(253 186 116)`, `#0284c5`, `#e0e0e0`, plus a stray literal text node `#0284c5` inside the `<rect>` (looks like a leftover debug artifact — remove it).
 
 Changes:
+
 - Line 17: `fill="#EEEEEE"` → `fill="hsl(var(--muted))"`
 - Line 24 and line 38 (duplicated in the commented-out block): `stroke={progress > 0 ? 'var(--dry-fill)' : 'rgb(253 186 116)'}` → `stroke={progress > 0 ? 'var(--dry-fill)' : 'hsl(var(--muted))'}`
 - Lines 42-46: remove the stray `#0284c5` text node that renders inside the `<rect>` element:
@@ -206,13 +209,17 @@ The `.select-image-button` class (lines 122-139) with hardcoded `#007bff`/`#0056
 File: `src/routes/+layout.svelte`
 
 - Line 51: remove the one-off, non-tokenized dark mode classes:
+
   ```svelte
   <div class="container flex h-screen max-w-6xl flex-col pt-8 dark:bg-gray-800 dark:text-white">
   ```
+
   becomes:
+
   ```svelte
   <div class="container flex h-screen max-w-6xl flex-col pt-8">
   ```
+
   (The `bg-background text-foreground` are already applied globally to `body` via `app.css` line 81 (`@apply bg-background text-foreground`), so this container doesn't need its own background/text classes — the old `dark:bg-gray-800` was redundant/inconsistent with the token system and actively fought against it.)
 
 - Line 100 (style block): `background-color: #0284c5;` → `background-color: hsl(var(--primary));` for the `.navigation-loader` bar.
@@ -226,15 +233,19 @@ File: `src/routes/+layout.svelte`
 File: `static/manifest.webmanifest`
 
 Change:
+
 ```json
 "theme_color": "#FFDDAA",
 "background_color": "#FFDDAA",
 ```
+
 to:
+
 ```json
 "theme_color": "#FFFCF0",
 "background_color": "#FFFCF0",
 ```
+
 (Flexoki `paper`, matching the new light-mode `--background`.)
 
 **Verify:** reinstall/reload the PWA (or check browser dev tools Application tab) to confirm the manifest reflects the new color; this mainly affects mobile browser chrome/splash screen, low risk.
@@ -250,8 +261,7 @@ Package `mode-watcher` (`^0.5.1`) is already a dependency but unused.
    - Render `<ModeWatcher />` once near the top of the markup (e.g. right after `<Toaster richColors />` on line 49), so it manages the `dark` class on `<html>` and persists the preference.
 2. Add a toggle button in the header (near the existing `DropdownMenu` for settings/logout, around lines 52-82). Simplest option: add a button with a sun/moon icon (lucide-svelte already installed, e.g. `Sun`, `Moon` icons) that calls `toggleMode()` on click. Example:
    ```svelte
-   import { Sun, Moon } from 'lucide-svelte'
-   ...
+   import {(Sun, Moon)} from 'lucide-svelte' ...
    <Button variant="ghost" size="icon" onclick={toggleMode}>
    	<Sun class="h-5 w-5 dark:hidden" />
    	<Moon class="hidden h-5 w-5 dark:block" />
@@ -261,6 +271,7 @@ Package `mode-watcher` (`^0.5.1`) is already a dependency but unused.
 3. Confirm `tailwind.config.ts`'s `darkMode: ['class']` and `safelist: ['dark']` (already present, lines 6 & 8) are compatible with `mode-watcher`'s class-based approach — no changes needed there.
 
 **Verify:**
+
 - Toggle switches the whole app between light/dark Flexoki palettes.
 - Preference persists across page reloads (mode-watcher uses localStorage by default).
 - No flash-of-wrong-theme on initial load (mode-watcher handles this by injecting a blocking script — confirm this behavior works in the SvelteKit setup, may require adding `import { ModeWatcher } from 'mode-watcher'` at the root layout level only, not per-page).
@@ -270,6 +281,7 @@ Package `mode-watcher` (`^0.5.1`) is already a dependency but unused.
 ## Step 10: Final visual QA pass
 
 After all edits, run the dev server (`npm run dev` or equivalent) and manually check, in both light and dark mode:
+
 - Home / plant list page — card backgrounds, borders, muted text legibility.
 - Plant detail page — `WaterProgress`/`WaterProgress2`/`RadialProgress` components render with correct blue fill / neutral dry-track.
 - Any dialogs/sheets/dropdowns (uses `popover`/`card` tokens) — check contrast against new dark `base-950` popover background.
