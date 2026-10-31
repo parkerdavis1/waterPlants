@@ -13,9 +13,7 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 export function pushSupported() {
-	return (
-		typeof window !== 'undefined' && 'serviceWorker' in navigator && 'PushManager' in window
-	)
+	return typeof window !== 'undefined' && 'serviceWorker' in navigator && 'PushManager' in window
 }
 
 /**

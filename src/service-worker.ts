@@ -55,3 +55,10 @@ self.addEventListener('notificationclick', (event) => {
 		}),
 	)
 })
+
+// Add this to resolve the iOS blank/null network pipeline freeze
+self.addEventListener('fetch', (event) => {
+	// Simply pass everything straight down to the native network.
+	// This forces iOS to wake up the network connection cleanly.
+	event.respondWith(fetch(event.request))
+})
