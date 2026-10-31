@@ -1,12 +1,13 @@
-services: 
-  waterplants:
-    build: 
-      context: .
-      target: production  
-    networks: 
-      - app-network
-    volumes:
-      - /root/data:/data
+services:
+    waterplants:
+        build:
+            context: .
+            target: production
+        networks:
+            - app-network
+        volumes:
+            - /root/data:/data
+        restart: 'always'
 networks:
-  app-network:
-    external: true
+    app-network:
+        external: true
