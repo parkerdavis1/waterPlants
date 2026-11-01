@@ -8,10 +8,6 @@
 	import { DAY_MILLISECONDS } from '../utils/constants'
 	import { getProgressPercent } from '../utils/getProgressPercent'
 
-	// export let data
-	// export let plantWater
-	// export let context = 'default'
-
 	let { plantWater, context = 'default' } = $props()
 	let showPlantCare = $state(false)
 
@@ -23,13 +19,6 @@
 
 	let daysSinceLastWatered = $derived(Math.round(millisectionsSinceLastWatered / DAY_MILLISECONDS))
 
-	let waterPeriod = $derived(plantWater.plant.water_schedule)
-
-	// let waterProgressPercent = $derived(
-	// 	lastWateringEventTimestamp
-	// 		? 100 - (millisectionsSinceLastWatered / (waterPeriod * DAY_MILLISECONDS)) * 100
-	// 		: 0,
-	// )
 	let waterProgressPercent = $derived(
 		getProgressPercent(plantWater.watering_event, plantWater.plant),
 	)

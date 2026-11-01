@@ -54,7 +54,7 @@
 					</div>
 				{:else}
 					<p
-						class="grid h-full max-h-20 w-32 place-content-center rounded-lg bg-blue-100 text-black/60"
+						class="grid h-full max-h-20 w-32 place-content-center rounded-lg bg-accent text-foreground"
 					>
 						{#if plantWater.plant.name}
 							{plantWater.plant.name} - {plantWater.plant.species}
@@ -83,47 +83,6 @@
 	</div>
 </div>
 
-<!-- <div
-	class={`plant-card grid w-full rounded-lg border p-4 ${className} ${$checkedObj[plantWater.plant.id] ? 'bg-blue-100' : ''}`}
->
-	{#if context === 'list'}
-		<Checkbox bind:checked={$checkedObj[plantWater.plant.id]} class="h-8 w-8 self-center" />
-	{:else}
-		<span></span>
-	{/if}
-	<div class="relative">
-		<a href={`${plantWater.plant.id}`}>
-			<img
-				src={imageUrl ? imageUrl : bluegrad}
-				alt="placeholder"
-				class={`mx-auto aspect-square ${context === 'list' ? 'max-h-32' : ''} min-h-16 w-full rounded-lg object-cover sm:w-32`}
-			/>
-		</a>
-	</div>
-	<div class="flex justify-between gap-4">
-		<div>
-			<a href={`${plantWater.plant.id}`}>
-				<h2 class="name-wrap text-lg font-bold">{plantWater.plant.species}</h2>
-			</a>
-			{#if plantWater.plant.name}<p>{plantWater.plant.name}</p>{/if}
-			{#if plantWater.watering_event?.timestamp}
-				<p class="text-sm opacity-60">
-					{daysSinceLastWatered} day{daysSinceLastWatered === 1 ? '' : 's'} since last water
-				</p>
-			{/if}
-		</div>
-		<div class="flex justify-end gap-4">
-			<div class="flex flex-col items-center justify-start">
-				<p class="water-label">Water</p>
-				<a href={`${plantWater.plant.id}`}>
-					<WaterProgress2 fillPercentage={waterProgressPercent} />
-				</a>
-			</div>
-		</div>
-	</div>
-</div>
--->
-
 <style>
 	.plant-card {
 		display: grid;
@@ -141,5 +100,9 @@
 		.plant-card {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	p {
+		color: hsl(var(--foreground));
 	}
 </style>
