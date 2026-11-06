@@ -1,7 +1,7 @@
 # Not enough memory to build, so rsyncing builds in
 
 # Adjust NODE_VERSION as desired
-ARG NODE_VERSION=24.14.0
+ARG NODE_VERSION=24
 FROM node:${NODE_VERSION}-slim AS base
 
 # SvelteKit app lives here
