@@ -6,7 +6,6 @@
 	import { Label } from '#lib/components/ui/label/index.js'
 	import { fileProxy, superForm, superValidate } from 'sveltekit-superforms'
 	import SuperDebug from 'sveltekit-superforms'
-	import * as Select from '#lib/components/ui/select/index.js'
 	import { faker } from '@faker-js/faker'
 	import { toast } from 'svelte-sonner'
 	import { onMount } from 'svelte'
@@ -14,6 +13,7 @@
 	import ImageUploader from '#lib/components/ImageUploader.svelte'
 	import Spinner from '#lib/components/Spinner.svelte'
 	import ClaudeImage from '#lib/components/ImageUploader.svelte'
+	import RoomSelect from '#lib/components/RoomSelect.svelte'
 	import { goto } from '$app/navigation'
 	import Textarea from './ui/textarea/textarea.svelte'
 	import { newPlantSchema } from '../zodSchemas/plantSchema'
@@ -48,11 +48,6 @@
 		const num = sessionStorage.getItem('selectedRoom')
 		if (num) $form.room_id = parseInt(num)
 	}
-
-	const triggerContent = $derived(
-		data.rooms?.find((room: { id: number; name: string }) => room.id === $form.room_id)?.name ??
-			'Select a room',
-	)
 
 	$effect(() => {
 		sessionStorage.setItem('selectedRoom', $form.room_id)
@@ -107,17 +102,7 @@
 
 	<!-- TODO: Add new room option to side of select -->
 	<Label for="room">Room</Label>
-	<Select.Root bind:value={$form.room_id} type="single">
-		<Select.Trigger class="w-[180px]">
-			{triggerContent}
-		</Select.Trigger>
-		<Select.Content>
-			{#each data.rooms as room (room.id)}
-				<Select.Item value={room.id} label={room.name}>{room.name}</Select.Item>
-			{/each}
-		</Select.Content>
-		<input type="hidden" name="room_id" bind:value={$form.room_id} />
-	</Select.Root>
+	<RoomSelect bind:value={$form.room_id} rooms={data.rooms} />
 	{#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if}
 
 	<Label for="water_schedule">Watering Schedule (days)</Label>

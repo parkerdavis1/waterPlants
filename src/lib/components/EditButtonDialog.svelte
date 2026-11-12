@@ -7,7 +7,7 @@
 	import ImageUploader from '#src/lib/components/ImageUploader.svelte'
 	import Spinner from '#src/lib/components/Spinner.svelte'
 	import CfImage from '#src/lib/components/CfImage.svelte'
-	import * as Select from '#src/lib/components/ui/select/index.js'
+	import RoomSelect from '#src/lib/components/RoomSelect.svelte'
 	import Textarea from '#src/lib/components/ui/textarea/textarea.svelte'
 	import { toast } from 'svelte-sonner'
 	import SuperDebug, { superForm } from 'sveltekit-superforms'
@@ -51,28 +51,6 @@
 			}
 		},
 	})
-
-	interface Room {
-		id: number
-		created_at: number
-		house_id: number
-		name: string
-	}
-
-	// let selectedRoom = $derived({
-	// 	label: data.rooms.find((obj: Room) => obj.id === $form.room_id).name,
-	// 	value: $form.room_id,
-	// })
-
-	let selectedRoom = $state('')
-
-	// function handleSelectedChange(v) {
-	// 	v && ($form.room_id = v.value)
-	// }
-
-	const triggerContent = $derived(
-		data.rooms?.find((room: Room) => room.id === $form.room_id)?.name ?? 'Select a room',
-	)
 
 	let deleteForm: HTMLFormElement
 	let deleteOpen = $state(false)
@@ -150,18 +128,7 @@
 
 			<!-- TODO: Add new room option to side of select -->
 			<Label for="room">Room</Label>
-			<Select.Root bind:value={$form.room_id} type="single">
-				<Select.Trigger class="w-[180px]">
-					{triggerContent}
-					<!-- <Select.Value placeholder="Select a room" /> -->
-				</Select.Trigger>
-				<Select.Content>
-					{#each data.rooms as room (room.id)}
-						<Select.Item value={room.id} label={room.name}>{room.name}</Select.Item>
-					{/each}
-				</Select.Content>
-				<input type="hidden" name="room_id" bind:value={$form.room_id} />
-			</Select.Root>
+			<RoomSelect bind:value={$form.room_id} rooms={data.rooms} />
 			<!-- {#if $errors.room_id}<p class="text-red-500">{$errors.room_id}</p>{/if} -->
 
 			<Label for="water_schedule">Watering Schedule (Every __ days)</Label>
