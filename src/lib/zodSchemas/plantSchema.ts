@@ -22,6 +22,13 @@ export const plantEventSchema = z.object({
 	timestamp: z.number().optional(),
 })
 
+// Checkbox switches submit their value ("on" by default) when checked and
+// omit the field entirely when unchecked, so treat absence as false.
+const checkboxBoolean = z.preprocess(
+	(value) => value === true || value === 'true' || value === 'on' || value === '1',
+	z.boolean(),
+)
+
 export const editPlantSchema = z.object({
 	id: z.number(),
 	species: z.string(),
@@ -32,7 +39,7 @@ export const editPlantSchema = z.object({
 	house_id: z.number().default(1),
 	water_schedule: z.number().positive().min(1).default(7),
 	oldImageUrl: z.string().url().optional(),
-	alive: z.coerce.boolean().default(true),
+	alive: checkboxBoolean.default(false),
 })
 
 export const deleteEventSchema = z.object({
