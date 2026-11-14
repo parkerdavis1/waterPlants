@@ -62,6 +62,7 @@
 		bind:this={ref}
 		class={cn(buttonVariants({ variant, size }), className)}
 		{type}
+		{disabled}
 		{...restProps}
 	>
 		{@render children?.()}

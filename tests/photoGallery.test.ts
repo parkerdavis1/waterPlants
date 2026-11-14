@@ -3,7 +3,10 @@ import { expect, test } from '@playwright/test'
 test('photo gallery opens from a past watering thumbnail and navigates', async ({ page }) => {
 	await page.goto('/24')
 
-	const trigger = page.getByRole('button', { name: /^View photo from / }).first()
+	const trigger = page
+		.getByRole('table')
+		.getByRole('button', { name: /^View photo from / })
+		.first()
 	await expect(trigger).toBeVisible()
 	await trigger.click()
 
@@ -49,4 +52,16 @@ test('photo gallery opens from a past watering thumbnail and navigates', async (
 	// Click the dialog layer outside the centered panel.
 	await page.locator('dialog[open]').click({ position: { x: 5, y: 5 } })
 	await expect(gallery).toBeHidden()
+})
+
+test('large plant photo opens the gallery at its matching event', async ({ page }) => {
+	await page.goto('/24')
+
+	const trigger = page.getByRole('button', { name: /^View photo from / }).first()
+	const label = await trigger.getAttribute('aria-label')
+	await trigger.click()
+
+	const gallery = page.getByTestId('photo-gallery')
+	await expect(gallery).toBeVisible()
+	await expect(gallery.locator('time')).toHaveText(label?.replace('View photo from ', '') ?? '')
 })
