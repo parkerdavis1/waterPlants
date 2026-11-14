@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Plant photo gallery — design prototypes</title>
+		<style>
+			:root {
+				--bg: #f4f4f1;
+				--card: #ffffff;
+				--fg: #1b1c19;
+				--muted: #6d7169;
+				--border: #e3e4de;
+				--accent: #4d7c55;
+				--accent-soft: #e8f0e6;
+				--shadow: 0 24px 70px rgb(20 24 18 / 0.28);
+				--radius: 16px;
+				font-family:
+					ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+					sans-serif;
+				color: var(--fg);
+				background: var(--bg);
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				padding: 32px 20px 80px;
+			}
+
+			.page-head {
+				max-width: 1040px;
+				margin: 0 auto 36px;
+			}
+
+			.page-head h1 {
+				font-size: clamp(1.6rem, 4vw, 2.4rem);
+				letter-spacing: -0.03em;
+				margin: 0 0 10px;
+			}
+
+			.page-head p {
+				color: var(--muted);
+				line-height: 1.55;
+				margin: 0;
+				max-width: 70ch;
+			}
+
+			.kbd {
+				display: inline-block;
+				border: 1px solid var(--border);
+				border-bottom-width: 2px;
+				border-radius: 6px;
+				padding: 0 6px;
+				font-size: 0.8em;
+				background: #fff;
+				color: var(--fg);
+			}
+
+			.option {
+				max-width: 1040px;
+				margin: 0 auto 56px;
+			}
+
+			.option-head {
+				display: flex;
+				align-items: baseline;
+				gap: 12px;
+				flex-wrap: wrap;
+				margin-bottom: 12px;
+			}
+
+			.option-head h2 {
+				font-size: 1.15rem;
+				margin: 0;
+				letter-spacing: -0.01em;
+			}
+
+			.option-head span {
+				color: var(--muted);
+				font-size: 0.92rem;
+			}
+
+			/* The stage is a fake plant page with a modal on top. */
+			.stage {
+				position: relative;
+				height: 720px;
+				overflow: hidden;
+				border-radius: 22px;
+				border: 1px solid var(--border);
+				background: #fafaf8;
+				box-shadow: 0 10px 30px rgb(20 24 18 / 0.06);
+			}
+
+			.mock-page {
+				position: absolute;
+				inset: 0;
+				padding: 28px;
+				display: grid;
+				grid-template-columns: 260px 1fr;
+				gap: 28px;
+				filter: blur(1.2px);
+				opacity: 0.55;
+				pointer-events: none;
+			}
+
+			.mock-photo {
+				aspect-ratio: 1;
+				border-radius: 18px;
+				background:
+					radial-gradient(circle at 35% 30%, #9fbf8e, transparent 60%),
+					linear-gradient(145deg, #c9ddc0, #6f9169);
+			}
+
+			.mock-lines {
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+				padding-top: 8px;
+			}
+
+			.mock-lines i {
+				display: block;
+				height: 13px;
+				border-radius: 99px;
+				background: #d9dbd4;
+			}
+
+			.mock-lines i:nth-child(1) {
+				width: 42%;
+				height: 26px;
+				background: #c7cac1;
+			}
+			.mock-lines i:nth-child(2) {
+				width: 64%;
+			}
+			.mock-lines i:nth-child(3) {
+				width: 50%;
+			}
+			.mock-lines i:nth-child(4) {
+				width: 72%;
+			}
+			.mock-lines i:nth-child(5) {
+				width: 58%;
+			}
+
+			.mock-table {
+				position: absolute;
+				left: 28px;
+				right: 28px;
+				bottom: 28px;
+				display: grid;
+				gap: 10px;
+			}
+
+			.mock-table i {
+				height: 38px;
+				border-radius: 8px;
+				background: #ecece7;
+			}
+
+			.scrim {
+				position: absolute;
+				inset: 0;
+				background: rgb(14 18 13 / 0.62);
+				backdrop-filter: blur(3px);
+				display: grid;
+				place-items: center;
+				padding: 22px;
+			}
+
+			.scrim.is-closed .gallery {
+				display: none;
+			}
+
+			.reopen {
+				display: none;
+				align-items: center;
+				gap: 8px;
+				border: 0;
+				border-radius: 99px;
+				padding: 11px 18px;
+				background: #fff;
+				color: var(--fg);
+				font: inherit;
+				font-size: 0.9rem;
+				cursor: pointer;
+				box-shadow: var(--shadow);
+			}
+
+			.scrim.is-closed .reopen {
+				display: inline-flex;
+			}
+
+			/* Shared gallery bits */
+			.gallery {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				background: var(--card);
+				border-radius: var(--radius);
+				box-shadow: var(--shadow);
+				overflow: hidden;
+				outline: none;
+			}
+
+			.gallery:focus-visible {
+				box-shadow:
+					var(--shadow),
+					0 0 0 3px rgb(255 255 255 / 0.8),
+					0 0 0 6px var(--accent);
+			}
+
+			.g-top {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 12px;
+				padding: 10px 12px 10px 16px;
+				font-size: 0.86rem;
+				color: var(--muted);
+			}
+
+			.g-counter {
+				font-variant-numeric: tabular-nums;
+				letter-spacing: 0.02em;
+			}
+
+			.g-close,
+			.g-arrow,
+			.g-nav,
+			.g-thumb {
+				font: inherit;
+				cursor: pointer;
+				border: 0;
+			}
+
+			.g-close {
+				width: 34px;
+				height: 34px;
+				display: grid;
+				place-items: center;
+				border-radius: 99px;
+				background: transparent;
+				color: var(--fg);
+				font-size: 1.1rem;
+				line-height: 1;
+			}
+
+			.g-close:hover {
+				background: #f0f1ed;
+			}
+
+			.g-figure {
+				position: relative;
+				margin: 0;
+				background: #e9ebe5;
+				min-height: 0;
+			}
+
+			.g-image-wrap {
+				position: relative;
+				width: 100%;
+				aspect-ratio: 1 / 1;
+				overflow: hidden;
+				background:
+					radial-gradient(circle at 35% 30%, #b7d0a7, transparent 60%),
+					linear-gradient(145deg, #d4e3cb, #6f9169);
+			}
+
+			.g-image-wrap::after {
+				content: '🌿';
+				position: absolute;
+				inset: 0;
+				display: grid;
+				place-items: center;
+				font-size: 4rem;
+				opacity: 0.35;
+			}
+
+			.g-image {
+				position: relative;
+				z-index: 1;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+
+			.g-image.is-broken {
+				display: none;
+			}
+
+			.g-arrow {
+				position: absolute;
+				z-index: 2;
+				top: 50%;
+				translate: 0 -50%;
+				width: 42px;
+				height: 42px;
+				display: grid;
+				place-items: center;
+				border-radius: 99px;
+				background: rgb(255 255 255 / 0.88);
+				color: #1b1c19;
+				box-shadow: 0 2px 12px rgb(0 0 0 / 0.18);
+				font-size: 1.2rem;
+				line-height: 1;
+				transition:
+					opacity 0.15s,
+					transform 0.15s;
+			}
+
+			.g-arrow:hover:not(:disabled) {
+				transform: scale(1.06);
+			}
+
+			.g-arrow:disabled {
+				opacity: 0.28;
+				cursor: default;
+			}
+
+			.g-arrow.prev {
+				left: 12px;
+			}
+			.g-arrow.next {
+				right: 12px;
+			}
+
+			.g-caption {
+				padding: 14px 18px 18px;
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+			}
+
+			.g-date {
+				font-size: 0.8rem;
+				color: var(--muted);
+				font-variant-numeric: tabular-nums;
+			}
+
+			.g-notes {
+				font-size: 0.95rem;
+				line-height: 1.45;
+				max-height: 5.8em;
+				overflow: auto;
+			}
+
+			.g-notes.is-empty {
+				color: var(--muted);
+				font-style: italic;
+			}
+
+			.g-hint {
+				font-size: 0.72rem;
+				color: var(--muted);
+				text-align: center;
+				padding: 0 12px 10px;
+			}
+
+			/* Option A — classic carousel */
+			.opt-a {
+				width: min(100%, 420px);
+			}
+
+			/* Option B — immersive overlay */
+			.opt-b {
+				width: min(100%, 430px);
+				background: #10130f;
+				color: #f7f8f5;
+			}
+
+			.opt-b .g-top {
+				position: absolute;
+				z-index: 3;
+				inset: 0 0 auto;
+				color: #fff;
+				background: linear-gradient(rgb(0 0 0 / 0.55), transparent);
+				padding: 12px 14px 28px;
+			}
+
+			.opt-b .g-close {
+				color: #fff;
+				background: rgb(0 0 0 / 0.28);
+			}
+
+			.opt-b .g-close:hover {
+				background: rgb(0 0 0 / 0.48);
+			}
+
+			.opt-b .g-figure {
+				background: #10130f;
+			}
+
+			.opt-b .g-image-wrap {
+				aspect-ratio: 3 / 4;
+			}
+
+			.opt-b .g-caption {
+				position: absolute;
+				z-index: 3;
+				inset: auto 0 0;
+				padding: 64px 20px 20px;
+				background: linear-gradient(transparent, rgb(0 0 0 / 0.78) 38%);
+				color: #fff;
+			}
+
+			.opt-b .g-date {
+				color: rgb(255 255 255 / 0.72);
+			}
+
+			.opt-b .g-notes {
+				max-height: 4.8em;
+				font-size: 0.98rem;
+			}
+
+			.opt-b .g-arrow {
+				background: rgb(0 0 0 / 0.34);
+				color: #fff;
+				box-shadow: none;
+				border: 1px solid rgb(255 255 255 / 0.2);
+			}
+
+			/* Option C — desktop side panel */
+			.opt-c {
+				width: min(100%, 900px);
+			}
+
+			.opt-c .g-body {
+				display: grid;
+				grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+				min-height: 0;
+			}
+
+			.opt-c .g-figure {
+				background: #e9ebe5;
+			}
+
+			.opt-c .g-image-wrap {
+				aspect-ratio: 4 / 3;
+				height: 100%;
+			}
+
+			.opt-c .g-side {
+				display: flex;
+				flex-direction: column;
+				gap: 14px;
+				padding: 20px;
+				border-left: 1px solid var(--border);
+			}
+
+			.opt-c .g-side-date {
+				font-size: 0.82rem;
+				color: var(--muted);
+			}
+
+			.opt-c .g-side-notes {
+				font-size: 1rem;
+				line-height: 1.5;
+				overflow: auto;
+			}
+
+			.opt-c .g-side-spacer {
+				flex: 1;
+			}
+
+			.opt-c .g-nav {
+				display: flex;
+				gap: 8px;
+			}
+
+			.opt-c .g-nav button {
+				flex: 1;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				gap: 6px;
+				padding: 10px 12px;
+				border-radius: 10px;
+				border: 1px solid var(--border);
+				background: #fff;
+				color: var(--fg);
+				font-size: 0.86rem;
+			}
+
+			.opt-c .g-nav button:hover:not(:disabled) {
+				background: #f4f5f1;
+			}
+
+			.opt-c .g-nav button:disabled {
+				opacity: 0.4;
+				cursor: default;
+			}
+
+			.opt-c .g-side-count {
+				font-size: 0.76rem;
+				color: var(--muted);
+				text-align: center;
+				font-variant-numeric: tabular-nums;
+			}
+
+			/* Option D — filmstrip */
+			.opt-d {
+				width: min(100%, 420px);
+			}
+
+			.opt-d .g-thumbs {
+				display: flex;
+				gap: 8px;
+				padding: 0 14px 16px;
+				overflow-x: auto;
+			}
+
+			.opt-d .g-thumb {
+				flex: 0 0 64px;
+				width: 64px;
+				height: 64px;
+				border-radius: 10px;
+				overflow: hidden;
+				padding: 0;
+				border: 2px solid transparent;
+				background: #dfe3d9;
+				opacity: 0.62;
+				transition:
+					opacity 0.15s,
+					border-color 0.15s;
+			}
+
+			.opt-d .g-thumb:hover {
+				opacity: 0.9;
+			}
+
+			.opt-d .g-thumb[aria-current='true'] {
+				opacity: 1;
+				border-color: var(--accent);
+			}
+
+			.opt-d .g-thumb img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+
+			/* Option E — bottom sheet */
+			.opt-e {
+				width: min(100%, 430px);
+				background: #10130f;
+				color: #f7f8f5;
+			}
+
+			.opt-e .g-top {
+				position: absolute;
+				z-index: 3;
+				inset: 0 0 auto;
+				color: #fff;
+				background: linear-gradient(rgb(0 0 0 / 0.5), transparent);
+			}
+
+			.opt-e .g-close {
+				color: #fff;
+			}
+
+			.opt-e .g-image-wrap {
+				aspect-ratio: 1 / 1;
+			}
+
+			.opt-e .g-date,
+			.opt-e .g-notes {
+				display: block;
+			}
+
+			.opt-e .g-notes {
+				margin-top: 6px;
+			}
+
+			.opt-e .g-sheet {
+				position: relative;
+				z-index: 4;
+				margin-top: -26px;
+				border-radius: 22px 22px 0 0;
+				background: var(--card);
+				color: var(--fg);
+				padding: 10px 20px 20px;
+				box-shadow: 0 -12px 40px rgb(0 0 0 / 0.22);
+			}
+
+			.opt-e .g-handle {
+				width: 42px;
+				height: 4px;
+				border-radius: 99px;
+				background: #d4d6cf;
+				margin: 0 auto 14px;
+			}
+
+			.opt-e .g-sheet-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 12px;
+				margin-top: 16px;
+			}
+
+			.opt-e .g-nav {
+				display: flex;
+				gap: 8px;
+			}
+
+			.opt-e .g-nav button {
+				width: 42px;
+				height: 42px;
+				display: grid;
+				place-items: center;
+				border-radius: 99px;
+				border: 1px solid var(--border);
+				background: #fff;
+				color: var(--fg);
+				font-size: 1.1rem;
+			}
+
+			.opt-e .g-nav button:disabled {
+				opacity: 0.35;
+				cursor: default;
+			}
+
+			.opt-e .g-counter {
+				font-size: 0.8rem;
+			}
+
+			@media (max-width: 760px) {
+				body {
+					padding: 20px 12px 60px;
+				}
+
+				.stage {
+					height: 660px;
+				}
+
+				.mock-page {
+					grid-template-columns: 1fr;
+					padding: 18px;
+				}
+
+				.mock-photo {
+					width: 180px;
+				}
+
+				.scrim {
+					padding: 12px;
+				}
+
+				.opt-c .g-body {
+					grid-template-columns: 1fr;
+				}
+
+				.opt-c .g-side {
+					border-left: 0;
+					border-top: 1px solid var(--border);
+				}
+
+				.opt-c .g-image-wrap {
+					aspect-ratio: 4 / 3;
+				}
+
+				.opt-c .g-side-spacer {
+					display: none;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header class="page-head">
+			<h1>Plant photo gallery — 5 design directions</h1>
+			<p>
+				Each prototype is interactive. Use the chevrons or focus a dialog and press
+				<span class="kbd">←</span> / <span class="kbd">→</span>. Order is newest → oldest, with no
+				wrap. The sample data shows three photos, their dates, and their watering-event notes.
+			</p>
+		</header>
+
+		<!-- ============================================================ -->
+		<section class="option">
+			<div class="option-head">
+				<h2>A. Classic carousel</h2>
+				<span>Top bar, image, caption below. Most conventional and readable.</span>
+			</div>
+			<div class="stage">
+				<div class="mock-page">
+					<div class="mock-photo"></div>
+					<div class="mock-lines"><i></i><i></i><i></i><i></i><i></i></div>
+				</div>
+				<div class="mock-table"><i></i><i></i><i></i></div>
+				<div class="scrim">
+					<div class="gallery opt-a" data-gallery tabindex="0" role="dialog" aria-label="Plant photos">
+						<div class="g-top">
+							<span class="g-counter">1 of 3</span>
+							<button class="g-close" aria-label="Close">✕</button>
+						</div>
+						<figure class="g-figure">
+							<div class="g-image-wrap">
+								<img class="g-image" alt="" />
+								<button class="g-arrow prev" aria-label="Newer photo">‹</button>
+								<button class="g-arrow next" aria-label="Older photo">›</button>
+							</div>
+							<figcaption class="g-caption">
+								<span class="g-date"></span>
+								<span class="g-notes"></span>
+							</figcaption>
+						</figure>
+						<div class="g-hint">← newer · older →</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============================================================ -->
+		<section class="option">
+			<div class="option-head">
+				<h2>B. Immersive overlay</h2>
+				<span>Full-bleed photo with a gradient caption. Best for large, distraction-free images.</span>
+			</div>
+			<div class="stage">
+				<div class="mock-page">
+					<div class="mock-photo"></div>
+					<div class="mock-lines"><i></i><i></i><i></i><i></i><i></i></div>
+				</div>
+				<div class="mock-table"><i></i><i></i><i></i></div>
+				<div class="scrim">
+					<div class="gallery opt-b" data-gallery tabindex="0" role="dialog" aria-label="Plant photos">
+						<div class="g-top">
+							<span class="g-counter">1 of 3</span>
+							<button class="g-close" aria-label="Close">✕</button>
+						</div>
+						<figure class="g-figure">
+							<div class="g-image-wrap">
+								<img class="g-image" alt="" />
+								<button class="g-arrow prev" aria-label="Newer photo">‹</button>
+								<button class="g-arrow next" aria-label="Older photo">›</button>
+							</div>
+							<figcaption class="g-caption">
+								<span class="g-date"></span>
+								<span class="g-notes"></span>
+							</figcaption>
+						</figure>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============================================================ -->
+		<section class="option">
+			<div class="option-head">
+				<h2>C. Side panel</h2>
+				<span>Photo left, date and notes right on desktop; stacks on mobile. Good for long notes.</span>
+			</div>
+			<div class="stage">
+				<div class="mock-page">
+					<div class="mock-photo"></div>
+					<div class="mock-lines"><i></i><i></i><i></i><i></i><i></i></div>
+				</div>
+				<div class="mock-table"><i></i><i></i><i></i></div>
+				<div class="scrim">
+					<div class="gallery opt-c" data-gallery tabindex="0" role="dialog" aria-label="Plant photos">
+						<div class="g-top">
+							<span class="g-counter">1 of 3</span>
+							<button class="g-close" aria-label="Close">✕</button>
+						</div>
+						<div class="g-body">
+							<figure class="g-figure">
+								<div class="g-image-wrap">
+									<img class="g-image" alt="" />
+									<button class="g-arrow prev" aria-label="Newer photo">‹</button>
+									<button class="g-arrow next" aria-label="Older photo">›</button>
+								</div>
+							</figure>
+							<div class="g-side">
+								<span class="g-side-date g-date"></span>
+								<div class="g-side-notes g-notes"></div>
+								<div class="g-side-spacer"></div>
+								<div class="g-nav">
+									<button class="prev">‹ Newer</button>
+									<button class="next">Older ›</button>
+								</div>
+								<span class="g-side-count g-counter">1 of 3</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============================================================ -->
+		<section class="option">
+			<div class="option-head">
+				<h2>D. Filmstrip</h2>
+				<span>Caption plus a thumbnail strip. Fastest way to jump around the chronology.</span>
+			</div>
+			<div class="stage">
+				<div class="mock-page">
+					<div class="mock-photo"></div>
+					<div class="mock-lines"><i></i><i></i><i></i><i></i><i></i></div>
+				</div>
+				<div class="mock-table"><i></i><i></i><i></i></div>
+				<div class="scrim">
+					<div class="gallery opt-d" data-gallery tabindex="0" role="dialog" aria-label="Plant photos">
+						<div class="g-top">
+							<span class="g-counter">1 of 3</span>
+							<button class="g-close" aria-label="Close">✕</button>
+						</div>
+						<figure class="g-figure">
+							<div class="g-image-wrap">
+								<img class="g-image" alt="" />
+								<button class="g-arrow prev" aria-label="Newer photo">‹</button>
+								<button class="g-arrow next" aria-label="Older photo">›</button>
+							</div>
+							<figcaption class="g-caption">
+								<span class="g-date"></span>
+								<span class="g-notes"></span>
+							</figcaption>
+						</figure>
+						<div class="g-thumbs" aria-label="All photos"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============================================================ -->
+		<section class="option">
+			<div class="option-head">
+				<h2>E. Bottom sheet</h2>
+				<span>Photo on top, rounded caption sheet below with navigation. Mobile-first and tactile.</span>
+			</div>
+			<div class="stage">
+				<div class="mock-page">
+					<div class="mock-photo"></div>
+					<div class="mock-lines"><i></i><i></i><i></i><i></i><i></i></div>
+				</div>
+				<div class="mock-table"><i></i><i></i><i></i></div>
+				<div class="scrim">
+					<div class="gallery opt-e" data-gallery tabindex="0" role="dialog" aria-label="Plant photos">
+						<div class="g-top">
+							<span class="g-counter">1 of 3</span>
+							<button class="g-close" aria-label="Close">✕</button>
+						</div>
+						<figure class="g-figure">
+							<div class="g-image-wrap">
+								<img class="g-image" alt="" />
+							</div>
+						</figure>
+						<div class="g-sheet">
+							<div class="g-handle"></div>
+							<span class="g-date"></span>
+							<span class="g-notes"></span>
+							<div class="g-sheet-row">
+								<div class="g-nav">
+									<button class="prev" aria-label="Newer photo">‹</button>
+									<button class="next" aria-label="Older photo">›</button>
+								</div>
+								<span class="g-counter">1 of 3</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<script>
+			const slides = [
+				{
+					date: 'October 28, 2026 · 9:14 AM',
+					notes: 'New leaf unfurling! Moved it a little closer to the window.',
+					img: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80',
+				},
+				{
+					date: 'October 14, 2026 · 6:42 PM',
+					notes: 'Watered and fertilized. Soil was bone dry — the terracotta dries out fast.',
+					img: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
+				},
+				{
+					date: 'September 30, 2026 · 11:05 AM',
+					notes: 'Repotted into the larger terracotta pot.',
+					img: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
+				},
+			]
+
+			function setupGallery(root) {
+				const images = root.querySelectorAll('.g-image')
+				const dates = root.querySelectorAll('.g-date')
+				const notes = root.querySelectorAll('.g-notes')
+				const counters = root.querySelectorAll('.g-counter')
+				const prevButtons = root.querySelectorAll('.prev')
+				const nextButtons = root.querySelectorAll('.next')
+				const thumbsWrap = root.querySelector('.g-thumbs')
+
+				let index = 0
+				const last = slides.length - 1
+
+				if (thumbsWrap) {
+					slides.forEach((slide, i) => {
+						const button = document.createElement('button')
+						button.className = 'g-thumb'
+						button.type = 'button'
+						button.setAttribute('aria-label', `Show photo from ${slide.date}`)
+						const img = document.createElement('img')
+						img.src = slide.img
+						img.alt = ''
+						img.onerror = () => img.remove()
+						button.append(img)
+						button.addEventListener('click', () => {
+							index = i
+							render()
+						})
+						thumbsWrap.append(button)
+					})
+				}
+
+				function render() {
+					const slide = slides[index]
+					images.forEach((img) => {
+						img.classList.remove('is-broken')
+						img.onerror = () => img.classList.add('is-broken')
+						img.src = slide.img
+						img.alt = `Plant photo from ${slide.date}`
+					})
+					dates.forEach((el) => (el.textContent = slide.date))
+					notes.forEach((el) => {
+						el.textContent = slide.notes || 'No notes for this watering.'
+						el.classList.toggle('is-empty', !slide.notes)
+					})
+					counters.forEach((el) => (el.textContent = `${index + 1} of ${slides.length}`))
+
+					// Newest → oldest: prev goes toward index 0 (newer), next goes older.
+					prevButtons.forEach((button) => (button.disabled = index === 0))
+					nextButtons.forEach((button) => (button.disabled = index === last))
+
+					if (thumbsWrap) {
+						;[...thumbsWrap.children].forEach((button, i) => {
+							button.setAttribute('aria-current', String(i === index))
+						})
+					}
+				}
+
+				prevButtons.forEach((button) =>
+					button.addEventListener('click', () => {
+						index = Math.max(0, index - 1)
+						render()
+					}),
+				)
+				nextButtons.forEach((button) =>
+					button.addEventListener('click', () => {
+						index = Math.min(last, index + 1)
+						render()
+					}),
+				)
+
+				root.addEventListener('keydown', (event) => {
+					if (event.key === 'ArrowLeft') {
+						event.preventDefault()
+						index = Math.max(0, index - 1)
+						render()
+					}
+					if (event.key === 'ArrowRight') {
+						event.preventDefault()
+						index = Math.min(last, index + 1)
+						render()
+					}
+				})
+
+				const scrim = root.closest('.scrim')
+				let reopen = scrim?.querySelector('.reopen')
+				if (scrim && !reopen) {
+					reopen = document.createElement('button')
+					reopen.type = 'button'
+					reopen.className = 'reopen'
+					reopen.textContent = 'Reopen gallery'
+					reopen.addEventListener('click', () => {
+						scrim.classList.remove('is-closed')
+						root.focus()
+					})
+					scrim.append(reopen)
+				}
+
+				root.querySelector('.g-close')?.addEventListener('click', () => {
+					scrim?.classList.add('is-closed')
+					reopen?.focus()
+				})
+
+				render()
+			}
+
+			document.querySelectorAll('[data-gallery]').forEach(setupGallery)
+		</script>
+	</body>
+</html>

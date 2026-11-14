@@ -15,6 +15,11 @@
 		(u: { id: number; name: string }) => u.id == wateringEvent.user_id,
 	)?.name
 
+	const initialPhotoIndex = Math.max(
+		0,
+		data.photos.findIndex((photo: { id: number }) => photo.id === wateringEvent.id),
+	)
+
 	let deleteEventForm: HTMLFormElement
 	let deleteDialogOpen = $state(false)
 	let editDialogOpen = $state(false)
@@ -38,7 +43,11 @@
 		</div>
 		<div class="event-thumb">
 			{#if wateringEvent.image_url}
-				<Lightbox url={wateringEvent.image_url} />
+				<Lightbox
+					url={wateringEvent.image_url}
+					photos={data.photos}
+					initialIndex={initialPhotoIndex}
+				/>
 			{/if}
 		</div>
 	</Table.Cell>

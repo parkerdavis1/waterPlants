@@ -16,6 +16,7 @@ import s3Client from '#src/lib/s3Client.js'
 import { DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { error, redirect } from '@sveltejs/kit'
 import { getProgressPercent } from '#src/lib/utils/getProgressPercent.js'
+import { getPlantPhotos } from '#src/lib/utils/getPlantPhotos.js'
 import { deleteImageByUrl, uploadImageFile } from '#src/lib/uploadImage.js'
 
 export async function load({ params, parent }) {
@@ -60,6 +61,8 @@ export async function load({ params, parent }) {
 			)
 		: Infinity
 
+	const photos = getPlantPhotos(wateringEventsResolved)
+
 	return {
 		plant: {
 			...plantData,
@@ -70,6 +73,7 @@ export async function load({ params, parent }) {
 			// 	?.name,
 		},
 		wateringEvents: await wateringEvents,
+		photos,
 		editForm: await superValidate(
 			{ ...plantData, name: plantData.name ?? '', notes: plantData.notes ?? '' },
 			zod(editPlantSchema),

@@ -16,6 +16,11 @@
 	const title = data.plant.name
 		? `${data.plant.name} (${data.plant.species}) - Happy Plants`
 		: `${data.plant.species} - Happy Plants`
+
+	const initialPhotoIndex = Math.max(
+		0,
+		data.photos.findIndex((photo: { url: string }) => photo.url === data.plant.image_url),
+	)
 </script>
 
 <svelte:head>
@@ -28,6 +33,8 @@
 		<div class="relative">
 			<Lightbox
 				url={data.plant.image_url ? data.plant.image_url : bluegrad}
+				photos={data.photos}
+				initialIndex={initialPhotoIndex}
 				className="mx-auto aspect-square min-h-16 w-full max-w-80 rounded-lg object-cover"
 			/>
 		</div>
