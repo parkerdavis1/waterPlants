@@ -17,6 +17,7 @@ test('photo gallery opens from a past watering thumbnail and navigates', async (
 	const date = gallery.locator('time')
 
 	await expect(gallery).toBeVisible()
+	await expect(gallery.getByRole('img').first()).toHaveCSS('object-fit', 'contain')
 	await expect(counter).toHaveText(/^1 of \d+$/)
 
 	const total = Number((await counter.textContent())?.match(/of (\d+)/)?.[1])

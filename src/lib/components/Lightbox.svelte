@@ -185,6 +185,7 @@
 											src={photo.url}
 											width={1600}
 											height={1600}
+											objectFit="contain"
 											alt={slideAlt(photo)}
 											loading={index === clampedInitialIndex ? 'eager' : 'lazy'}
 											draggable={false}
