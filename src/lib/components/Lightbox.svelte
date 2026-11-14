@@ -134,7 +134,7 @@
 	onclick={openGallery}
 	aria-label={triggerLabel}
 >
-	<CfImage src={url} height={320} width={320} alt="" class={`event-thumb ${className}`} />
+	<CfImage src={url} height={320} width={320} alt="" class={className} />
 </button>
 
 <dialog
@@ -183,13 +183,12 @@
 									<div class="flex h-full w-full items-center justify-center">
 										<CfImage
 											src={photo.url}
-											width={1600}
-											height={1600}
+											layout="fullWidth"
 											objectFit="contain"
 											alt={slideAlt(photo)}
 											loading={index === clampedInitialIndex ? 'eager' : 'lazy'}
 											draggable={false}
-											class="h-full w-full select-none object-contain"
+											class="h-full w-full max-w-none select-none object-contain"
 										/>
 									</div>
 								</Carousel.Item>

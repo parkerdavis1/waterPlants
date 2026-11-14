@@ -41,12 +41,13 @@
 		<div>
 			{wateringEvent.notes || ''}
 		</div>
-		<div class="event-thumb">
+		<div>
 			{#if wateringEvent.image_url}
 				<Lightbox
 					url={wateringEvent.image_url}
 					photos={data.photos}
 					initialIndex={initialPhotoIndex}
+					className="max-w-48"
 				/>
 			{/if}
 		</div>

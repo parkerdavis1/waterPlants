@@ -109,10 +109,6 @@
 		overflow: hidden;
 	}
 
-	.event-thumb img {
-		max-width: 12rem;
-	}
-
 	input {
 		appearance: none;
 	}
